@@ -1,0 +1,25 @@
+{
+  "name": "dzfone",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "PORT=8080 react-scripts start",
+    "prod:build": "react-scripts build",
+    "prod:start": "serve -s build -p 8080"
+  },
+  "dependencies": {
+    "axios": "^0.17.0",
+    "classnames": "^2.2.5",
+    "react": "^16.1.0",
+    "react-dom": "^16.1.0",
+    "react-redux": "^5.0.6",
+    "react-router-dom": "^4.2.2",
+    "redux": "^3.7.2",
+    "redux-thunk": "^2.2.0",
+    "serve": "^6.4.1"
+  },
+  "devDependencies": {
+    "react-scripts": "1.0.17",
+    "redux-logger": "^3.0.6"
+  }
+}
