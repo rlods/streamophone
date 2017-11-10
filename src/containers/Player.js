@@ -13,8 +13,8 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-	onPlayStart: e         => !e.repeat && dispatch(startSample(e.keyCode - A_CHAR_CODE)),
-	onPlayStop: e          => dispatch(stopSample(e.keyCode - A_CHAR_CODE))
+	onPlayStart: e => !e.repeat && dispatch(startSample(e.keyCode - A_CHAR_CODE)),
+	onPlayStop: e  => dispatch(stopSample(e.keyCode - A_CHAR_CODE))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Player)
