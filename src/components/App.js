@@ -1,21 +1,46 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react'
+import './App.css'
+import PropTypes from 'prop-types'
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-      </div>
-    );
-  }
+class Field extends Component {
+	render() {
+		return (
+			<div className="Field">
+				<label>{this.props.name}</label>
+				<input type="number" value={this.props.value} placeholder={this.props.name} onChange={this.props.onChange} />
+			</div>
+		)
+	}
 }
 
-export default App;
+class App extends Component {
+	render() {
+		return (
+			<div className="App">
+				<div>
+					<Field name="Playlist ID" value={this.props.playlistId} onChange={this.props.onChangePlaylistId} />
+					<Field name="Sample Count" value={this.props.sampleCount} onChange={this.props.onChangeSampleCount} />
+					<Field name="Sample Duration" value={this.props.sampleDuration} onChange={this.props.onChangeSampleDuration} />
+				</div>
+				<div>
+					<button onClick={this.props.onLoadPlaylist}>Load playlist</button>
+				</div>
+				<div>
+					<span>Loaded: {this.props.playlistId}</span>
+				</div>
+			</div>
+		)
+	}
+}
+
+App.propTypes = {
+	playlistId: PropTypes.number,
+	sampleCount: PropTypes.number,
+	sampleDuration: PropTypes.number,
+	onChangeSampleCount: PropTypes.func,
+	onChangeSampleDuration: PropTypes.func,
+	onChangePlaylistId: PropTypes.func,
+	onLoadPlaylist: PropTypes.func
+}
+
+export default App
