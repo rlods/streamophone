@@ -38,7 +38,7 @@ class App extends Component {
 					<button onClick={this.props.onLoadPlaylist}>Load playlist</button>
 				</div>
 				<div>
-					<span>{this.props.loaded ? 'Loaded' : 'Not Loaded'}</span>
+					<span>{this.props.playlistLoaded ? 'Loaded' : 'Not Loaded'}</span>
 				</div>
 			</div>
 		)
