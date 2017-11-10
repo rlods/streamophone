@@ -14,6 +14,15 @@ export const startSample = sampleIndex => (dispatch, getState) => {
 		audio.currentTime = 0
 		audio.play()
 	}
+
+/*
+	dispatch({
+		type: 'SAMPLING_SAMPLE_ON',
+		data: {
+			sampleIndex
+		}
+	})
+*/
 }
 
 export const stopSample = sampleIndex => (dispatch, getState) => {
@@ -30,6 +39,6 @@ export const setSampleVolume = (sampleIndex, volume) => (dispatch, getState) => 
 	const indexMod = Math.abs(sampleIndex) % audios.length
 	const audio = audios[indexMod]
 	const track = tracks[indexMod]
-	track.volume2 = volume
+	track.volume2 = volume < 0 ? 0 : volume > 1 ? 1 : volume
 	audio.volume = track.volume1 * track.volume2
 }
