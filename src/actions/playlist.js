@@ -1,18 +1,4 @@
-import { fetchDeezerAPI } from '../tools'
-
-// ------------------------------------------------------------------
-
-const shuffleArray = (arr, size) => {
-    const shuffled = arr.slice(0)
-    let i = arr.length, temp, index
-    while (i--) {
-        index = Math.floor((i + 1) * Math.random())
-        temp = shuffled[index]
-        shuffled[index] = shuffled[i]
-        shuffled[i] = temp
-    }
-    return shuffled.slice(0, size)
-}
+import { fetchDeezerAPI, shuffleArray } from '../tools'
 
 // ------------------------------------------------------------------
 
@@ -29,15 +15,14 @@ export const loadPlaylist = () => async (dispatch, getState) => {
 	const samplingCount = state.sampling.count
     
     const playlistUrl = `playlist/${playlistId}`
-	fetchDeezerAPI(playlistUrl).then(data => {
-		//const trackUrl = `track/${trackId}`
+	const playlistData = await fetchDeezerAPI(playlistUrl)
+	// const trackUrl = `track/${trackId}`
 
-        const tracks = shuffleArray(data.tracks.data, samplingCount).map(item => new Audio(item.preview))
-	 	dispatch({
-			type: 'PLAYLIST_SET_TRACKS',
-			data: {
-				tracks
-			}
-		})
+	const tracks = shuffleArray(playlistData.tracks.data, samplingCount).map(item => new Audio(item.preview))
+	dispatch({
+		type: 'PLAYLIST_SET_TRACKS',
+		data: {
+			tracks
+		}
 	})
 }
