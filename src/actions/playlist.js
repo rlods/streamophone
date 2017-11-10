@@ -11,18 +11,19 @@ export const changePlaylistId = id => dispatch => dispatch({
 
 export const loadPlaylist = () => async (dispatch, getState) => {
     const state = getState()
-	const playlistId = state.playlist.id
-	const samplingCount = state.sampling.count
-    
-    const playlistUrl = `playlist/${playlistId}`
-	const playlistData = await fetchDeezerAPI(playlistUrl)
-	// const trackUrl = `track/${trackId}`
-
-	const tracks = shuffleArray(playlistData.tracks.data, samplingCount).map(item => new Audio(item.preview))
+	const playlist = await fetchDeezerAPI(`playlist/${state.playlist.id}`)
+	let tracks = shuffleArray(playlist.tracks.data, state.sampling.count)
+	tracks = tracks.map(async track => fetchDeezerAPI(`track/${track.id}`))
+	tracks = await Promise.all(tracks)
+	const audios = tracks.map(track => {
+		const audio = new Audio(track.preview)
+		audio.volume = track.gain === 0 ? 0.5 : 0.5 * Math.pow(10, ((-12 - track.gain) / 20))
+		return audio
+	})
 	dispatch({
 		type: 'PLAYLIST_SET_TRACKS',
 		data: {
-			tracks
+			tracks: audios
 		}
 	})
 }
