@@ -1,8 +1,17 @@
 .Samples {
 	display: flex;
 	flex-direction: row;
+	flex-wrap: wrap;
 	justify-content: flex-start;
 }
 
 .Sample {
+	display: flex;
+	height: 100px;
+	width: 100px;
+}
+
+.Sample img {
+	height: 100px;
+	width: 100px;
 }

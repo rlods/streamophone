@@ -10,7 +10,6 @@ class Sample extends Component {
 			<div className="Sample">
 				<a href={this.props.link} target="_blank">
 					<img src={this.props.album.cover_medium} />
-					<span>{this.props.title}</span>
 				</a>
 			</div>
 		)
