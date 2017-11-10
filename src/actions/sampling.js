@@ -7,7 +7,7 @@ export const changeSampleCount = count => dispatch => dispatch({
 
 export const startSample = sampleIndex => (dispatch, getState) => {
 	const state = getState()
-	const { audios, tracks } = state.sampling
+	const { audios } = state.sampling
 	const indexMod = Math.abs(sampleIndex) % audios.length
 	const audio = audios[indexMod]
 	if (audio.paused) {

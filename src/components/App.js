@@ -22,12 +22,12 @@ class App extends Component {
 	render() {
 		return (
 			<div className="App">
-				<div>
+				<div className="Fields">
 					<div className="Field">
-						<label>Special Playlists</label>
-						<select>
-							<option value="">Toto1</option>
-							<option value="">Toto2</option>
+						<label>Playlists Selection</label>
+						<select onChange={this.props.onChangePlaylistId}>
+							<option value="1083902971">Hits 2017</option>
+							<option value="791313621">The Greatest Piano Classics</option>
 						</select>
 					</div>
 					<Field type="number" name="Playlist ID" value={this.props.playlistId} onChange={this.props.onChangePlaylistId} />
