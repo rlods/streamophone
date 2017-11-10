@@ -6,14 +6,16 @@ import App from '../components/App'
 
 // --------------------------------------------------------------
 
+const A_CHAR_CODE = 'a'.charCodeAt()
+
+// --------------------------------------------------------------
+
 const mapStateToProps = (state, ownProps) => ({
 	playlistId: state.playlist.id,
 	playlistLoaded: state.playlist.loaded,
 	sampleCount: state.sampling.count,
 	sampleDuration: state.sampling.duration
 })
-
-const A_CHAR_CODE = 'a'.charCodeAt()
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
 	onChangeSampleCount: e    => dispatch(changeSampleCount(parseInt(e.target.value, 10))),
