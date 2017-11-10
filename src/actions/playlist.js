@@ -23,7 +23,8 @@ export const loadPlaylist = () => async (dispatch, getState) => {
 	dispatch({
 		type: 'PLAYLIST_SET_TRACKS',
 		data: {
-			tracks: audios
+			audios,
+			tracks
 		}
 	})
 }
