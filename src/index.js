@@ -11,19 +11,22 @@ import rootReducer from './reducers'
 import registerServiceWorker from './registerServiceWorker'
 // ...
 import App from './containers/App'
+import MidiController from './midiController'
 
 // --------------------------------------------------------------
 
-const api = null
+const midiController = new MidiController()
 
 const enableLogger = process.env.NODE_ENV !== 'production'
 
 const middlewares = [
-	thunk.withExtraArgument(api),
+	thunk.withExtraArgument(midiController),
 	enableLogger && logger
 ].filter(Boolean) // filter is used to disable middlewares (ex. like for example logger which becomes false when enableLogger = false)
 
 const store = createStore(rootReducer, {}, applyMiddleware(...middlewares))
+
+midiController.attach(store.dispatch.bind(this))
 
 // --------------------------------------------------------------
 
