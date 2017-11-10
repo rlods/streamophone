@@ -7,8 +7,8 @@ import App from '../components/App'
 // --------------------------------------------------------------
 
 const mapStateToProps = (state, ownProps) => ({
+	playlistData: state.playlist.data,
 	playlistId: state.playlist.id,
-	playlistLoaded: state.playlist.loaded,
 	sampleCount: state.sampling.count
 })
 

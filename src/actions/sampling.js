@@ -7,7 +7,7 @@ export const changeSampleCount = count => dispatch => dispatch({
 
 export const startSample = sampleIndex => (dispatch, getState) => {
 	const state = getState()
-	const audios = state.playlist.audios
+	const audios = state.sampling.audios
 	const audio = audios[Math.abs(sampleIndex) % audios.length]
 	if (audio.paused) {
 		audio.currentTime = 0
@@ -17,7 +17,7 @@ export const startSample = sampleIndex => (dispatch, getState) => {
 
 export const stopSample = sampleIndex => (dispatch, getState) => {
 	const state = getState()
-	const audios = state.playlist.audios
+	const audios = state.sampling.audios
 	const audio = audios[Math.abs(sampleIndex) % audios.length]
 	if (!audio.paused)
 		audio.pause()
