@@ -16,8 +16,10 @@ export const loadPlaylist = () => async (dispatch, getState) => {
 	tracks = tracks.map(async track => fetchDeezerAPI(`track/${track.id}`))
 	tracks = await Promise.all(tracks)
 	const audios = tracks.map(track => {
+		track.volume1 = track.gain === 0 ? 0.5 : 0.5 * Math.pow(10, ((-12 - track.gain) / 20))
+		track.volume2 = 1.0
 		const audio = new Audio(track.preview)
-		audio.volume = track.gain === 0 ? 0.5 : 0.5 * Math.pow(10, ((-12 - track.gain) / 20))
+		audio.volume = track.volume1 * track.volume2
 		return audio
 	})
 	dispatch({
