@@ -26,8 +26,7 @@ export const loadPlaylist = () => async (dispatch, getState) => {
 	const samplingCount = state.sampling.count
     
 	jsonp(`https://api.deezer.com/playlist/${playlistId}?output=jsonp&strict=on`, null, function (err, data) {
-        const tracks = getRandomSubarray(data.tracks.data,      samplingCount).map(item => item.preview)
-        
+        const tracks = getRandomSubarray(data.tracks.data, samplingCount).map(item => new Audio(item.preview))
 	 	dispatch({
 			type: 'PLAYLIST_SET_TRACKS',
 			data: {

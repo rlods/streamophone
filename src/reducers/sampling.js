@@ -1,7 +1,7 @@
 
 const INITIAL_STATE = {
-	count: 0,
-	duration: 2
+	count: 26,
+	duration: 2000
 }
 
 const setCount = (state, { count }) =>

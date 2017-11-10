@@ -1,14 +1,15 @@
 
 const INITIAL_STATE = {
 	id: 1083902971,
-	tracks: []
+	tracks: [],
+	loaded: false
 }
 
 const setId = (state, { id }) =>
-	({ ...state, id })
+	({ ...state, id, loaded: false, tracks: [] })
 
 const setTracks = (state, { tracks }) =>
-	({ ...state, tracks })
+	({ ...state, loaded: true, tracks })
 
 export default (state = INITIAL_STATE, action) => {
 	switch (action.type)
