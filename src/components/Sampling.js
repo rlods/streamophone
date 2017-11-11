@@ -23,36 +23,36 @@ class Sample extends Component {
 
 class Samples extends Component {
 	render() {
+		let chunks = null
 		switch (this.props.samplerType)
 		{
+			case StrategyTypes.KEYBOARD_AZERTY.id:
+				chunks = chunkArray(this.props.tracks, 3)
+				break
 			case StrategyTypes.BCF2000_MULTISLIDERS_8_32.id:
-			case StrategyTypes.BCF2000_MULTISLIDERS_8_64.id: 
-				const chunks1 = chunkArray(this.props.tracks, this.props.tracks.length / 8, tracks => tracks)
-				return (
-					<div className="samples">
-						{chunks1.map((tracks, index) => <div key={index}>{tracks.map(track => <Sample key={track.id} {...track} />)}</div>)}
-					</div>
-				)
+			case StrategyTypes.BCF2000_MULTISLIDERS_8_64.id:
+				chunks = chunkArray(this.props.tracks, this.props.tracks.length / 8)
+				break
 			case StrategyTypes.LIGHTPADBLOCK_16.id:
-				const chunks2 = chunkArray(this.props.tracks, Math.sqrt(this.props.tracks.length), tracks => tracks)
-				return (
-					<div className="samples">
-						{chunks2.map((tracks, index) => <div key={index}>{tracks.map(track => <Sample key={track.id} {...track} />)}</div>)}
-					</div>
-				)
+				chunks = chunkArray(this.props.tracks, Math.sqrt(this.props.tracks.length))
+				break
 			case StrategyTypes.CUSTOM_SOCKET_STRATEGY.id:
-				const chunks3 = chunkArray(this.props.tracks, this.props.tracks.length / 5, tracks => tracks)
-				return (
-					<div className="samples">
-						{chunks3.map((tracks, index) => <div key={index}>{tracks.map(track => <Sample key={track.id} {...track} />)}</div>)}
-					</div>
-				)			
-			default:
-				return (
-					<div className="samples">
-						{this.props.tracks.map(track => <Sample key={track.id} {...track} />)}
-					</div>
-				)
+				chunks = chunkArray(this.props.tracks, this.props.tracks.length / 5)
+				break
+		}
+		if (null !== chunks) {
+			return (
+				<div className="samples">
+					{chunks.map((tracks, index) => <div key={index}>{tracks.map(track => <Sample key={track.id} {...track} />)}</div>)}
+				</div>
+			)
+		}
+		else {
+			return (
+				<div className="samples">
+					{this.props.tracks.map(track => <Sample key={track.id} {...track} />)}
+				</div>
+			)
 		}
 	}
 }

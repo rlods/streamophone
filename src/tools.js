@@ -4,10 +4,10 @@ import jsonp from 'jsonp'
 
 const API_BASE_URL = 'https://api.deezer.com/'
 
-export const chunkArray = (array, size, cb) => {
+export const chunkArray = (array, size) => {
 	const results = []
 	for (let i = 0, j = array.length; i < j; i += size)
-		results.push(cb(array.slice(i, i + size)))
+		results.push(array.slice(i, i + size))
 	return results
 }
 
