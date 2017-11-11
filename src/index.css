@@ -18,6 +18,5 @@ body {
 }
 
 input[type=number], input[type=text], select {
-	border: 0;
 	margin: 0;
 }
