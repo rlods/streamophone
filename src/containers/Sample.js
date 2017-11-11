@@ -14,6 +14,7 @@ const mapStateToProps = (state, ownProps) => {
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
+	// onPlay: () => dispatch(startSample(...))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Sample)

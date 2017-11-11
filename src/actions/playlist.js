@@ -8,10 +8,7 @@ import MultiSlidersStrategy from '../controllers/strategies/midiStrategy_MultiSl
 import SingleSliderStrategy from '../controllers/strategies/midiStrategy_SingleSlider'
 import LightPadBlockStrategy from '../controllers/strategies/midiStrategy_LightPadBlock'
 import KeyboardStrategy from '../controllers/strategies/midiStrategy_Keyboard'
-
-// ------------------------------------------------------------------
-
-const ENABLE_VOLUME_FROM_GAIN = false // TODO: enable that with a significative delay between calls because of Deezer API Rate Limits (not done yet)
+import config from '../config'
 
 // ------------------------------------------------------------------
 
@@ -42,7 +39,7 @@ export const loadAudios = (dispatch, tracks) => tracks.map(track => {
 	track.volume2 = 1.0
 	audio.volume = track.volume1 * track.volume2
 
-	if (ENABLE_VOLUME_FROM_GAIN)
+	if (config.ENABLE_VOLUME_FROM_GAIN)
 		normalizeAudio(dispatch, track, audio)
 
 	return audio
