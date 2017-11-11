@@ -7,10 +7,19 @@ import './Player.css'
 // --------------------------------------------------------------
 
 class Player extends Component {
+	componentWillMount(){
+		document.addEventListener("keydown", this.props.onKeyDown.bind(this))
+		document.addEventListener("keyup", this.props.onKeyUp.bind(this))
+	}
+
+	componentWillUnmount() {
+		document.removeEventListener("keydown", this.props.onKeyDown.bind(this))
+		document.addEventListener("keyup", this.props.onKeyUp.bind(this))
+	}
+
 	render() {
 		return (
 			<div className="player">
-				<input className="player-control" type="text" value="" placeholder="Click here to play with your keyboard" onKeyDown={this.props.onKeyDown} onKeyUp={this.props.onKeyUp} />
 				<Samples />
 			</div>
 		)

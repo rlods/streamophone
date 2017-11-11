@@ -4,12 +4,3 @@
 	justify-content: flex-start;
 	align-items: center;
 }
-
-.player-control {
-	flex: 1;
-	width: 400px;
-	font-size: 20px;
-	line-height: 25px;
-	padding: 10px 0;
-	text-align: center;
-}
