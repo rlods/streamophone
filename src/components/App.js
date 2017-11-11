@@ -35,7 +35,8 @@ class App extends Component {
 							</select>
 						</div>
 						<Field type="number" name="Playlist ID" value={this.props.playlistId} onChange={this.props.onChangePlaylistId} />
-						<Field type="number" name="Sample Count" value={this.props.samplesCount} onChange={this.props.onChangeSampleCount} />
+					</div>
+					<div className="app-fields">
 						<div className="app-field">
 							<select className="control" onChange={this.props.onChangeSamplerType}>
 								<option value="">Sampler Type...</option>
@@ -44,6 +45,9 @@ class App extends Component {
 								<option value="multisliders8">Multi Sliders 8</option>
 							</select>
 						</div>
+						<Field type="number" name="Sample Count" value={this.props.samplesCount} onChange={this.props.onChangeSampleCount} />
+					</div>
+					<div className="app-fields">
 						<div className="app-field">
 							<button className="control" onClick={this.props.onLoadPlaylist}>Load playlist</button>
 						</div>
