@@ -23,20 +23,21 @@ class Sample extends Component {
 
 class Samples extends Component {
 	render() {
-		if (false) { //this.props.samplerType === 'standard') {
-			return (
-				<div className="Samples">
-					{this.props.tracks.map(track => <Sample key={track.id} {...track} />)}
-				</div>
-			)
-		}
-		else {
-			const chunks = chunkArray(this.props.tracks, this.props.tracks.length / 8, tracks => tracks)
-			return (
-				<div className="Samples">
-					{chunks.map((tracks, index) => <div key={index}>{tracks.map(track => <Sample key={track.id} {...track} />)}</div>)}
-				</div>
-			)
+		switch (this.props.samplerType)
+		{
+			case 'multisliders_8_columns':
+				const chunks = chunkArray(this.props.tracks, this.props.tracks.length / 8, tracks => tracks)
+				return (
+					<div className="Samples">
+						{chunks.map((tracks, index) => <div key={index}>{tracks.map(track => <Sample key={track.id} {...track} />)}</div>)}
+					</div>
+				)
+			default:
+				return (
+					<div className="Samples">
+						{this.props.tracks.map(track => <Sample key={track.id} {...track} />)}
+					</div>
+				)
 		}
 	}
 }

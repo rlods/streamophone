@@ -3,7 +3,7 @@ const INITIAL_STATE = {
 	count: 26,
 	audios: [],
 	tracks: [],
-	samplerType: 'standard'
+	samplerType: 'multisliders_8_columns'
 }
 
 const setCount = (state, { count }) =>

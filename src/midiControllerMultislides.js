@@ -2,10 +2,14 @@ import {startSample, stopSample, setSampleVolume} from './actions/sampling'
 
 export default class MidiControllerMultilides {
 	constructor() {
+		this.slidersCount = 8 // TODO: configurable
+		this.slidersSteps = 128 // TODO: configurable
 		this.dispatch = null
 		this.ready = false
 		this.initMIDI()
-		this.currentSample = 0
+		this.currentSamples = []
+		for (let i = 0; i < this.slidersCount; ++i)
+			this.currentSamples.push(0)
 	}
 
 	initMIDI() {
@@ -35,16 +39,20 @@ export default class MidiControllerMultilides {
 		const data = message.data; // this gives us our [command/channel, note, velocity] data.
 		console.log('MIDI data', data); // MIDI data [144, 63, 73]
 
-		var ch = data[0]
-		var key = data[1]
-		var vel = data[2]
+		const channel = data[0]
+		const key = data[1]
+		const vel = data[2]
+		const sample = (key * 8) - Math.floor(vel * 8 / this.slidersSteps) + (this.slidersCount * (key - 1)) - 1
 
-		if (ch===176 && key>=1 && key<=8) {
-			// change sample
-			console.log("Start sample ", vel)
-			this.dispatch(stopSample(this.currentSample))
-			this.dispatch(startSample(vel))
-			this.currentSample = vel
+		if (channel === 176 && key >= 1 && key <= this.slidersCount) {
+			const oldSample = this.currentSamples[key-1]
+			if (sample !== oldSample) {
+				// change sample
+				console.log("Start sample ", sample)
+				this.dispatch(stopSample(oldSample))
+				this.dispatch(startSample(sample))
+				this.currentSamples[key-1] = sample
+			}
 		}
 	}
 

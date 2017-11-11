@@ -11,13 +11,13 @@ import rootReducer from './reducers'
 import registerServiceWorker from './registerServiceWorker'
 // ...
 import App from './containers/App'
-import MidiController from './midiController'
+import MidiController from './midiControllerMultislides'
 
 // --------------------------------------------------------------
 
 const midiController = new MidiController()
 
-const enableLogger = process.env.NODE_ENV !== 'production'
+const enableLogger = false // process.env.NODE_ENV !== 'production'
 
 const middlewares = [
 	thunk.withExtraArgument(midiController),
