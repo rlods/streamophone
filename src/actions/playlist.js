@@ -64,11 +64,11 @@ export const loadPlaylist = () => async (dispatch, getState, midiController) => 
 		break
 	case StrategyTypes.BCF2000_MULTISLIDERS_8_32.id:
 		samplingCount = 32
-		midiController.strategy = new MultiSlidersStrategy(8, samplingCount)
+		midiController.strategy = new MultiSlidersStrategy(8, 128, samplingCount)
 		break
 	case StrategyTypes.BCF2000_MULTISLIDERS_8_64.id:
 		samplingCount = 64
-		midiController.strategy = new MultiSlidersStrategy(8, samplingCount)
+		midiController.strategy = new MultiSlidersStrategy(8, 128, samplingCount)
 		break
 	default:
 		samplingCount = 32
