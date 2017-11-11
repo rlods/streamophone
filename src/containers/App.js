@@ -7,6 +7,7 @@ import App from '../components/App'
 // --------------------------------------------------------------
 
 const mapStateToProps = (state, ownProps) => ({
+	curatedPlaylists: state.app.curatedPlaylists,
 	playlistData: state.playlist.data,
 	playlistId: state.playlist.id,
 	sampleDuration: state.sampling.sampleDuration,
