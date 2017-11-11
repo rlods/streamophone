@@ -2,7 +2,6 @@ import { fetchDeezerAPI, shuffleArray } from '../tools'
 import { StrategyTypes } from '../controllers/Strategy'
 import { changeSampleNormalizationVolume } from './sampling'
 //
-import BasicStrategy from '../controllers/Strategy'
 import ButtonsStrategy from '../controllers/midiStrategy_Buttons'
 import CustomSocketStrategy from '../controllers/strategy_CustomSocket'
 import MultiSlidersStrategy from '../controllers/midiStrategy_MultiSliders'
@@ -58,7 +57,6 @@ export const loadPlaylist = () => async (dispatch, getState, { midiController, s
 	{
 	case StrategyTypes.KEYBOARD_AZERTY.id:
 		samplingCount = 26
-		midiController.strategy = new BasicStrategy()
 		break
 	case StrategyTypes.BCF2000_BUTTONS.id:
 		samplingCount = 8
@@ -82,7 +80,6 @@ export const loadPlaylist = () => async (dispatch, getState, { midiController, s
 		break
 	case StrategyTypes.CUSTOM_SOCKET_STRATEGY.id:
 		samplingCount = 25
-		midiController.strategy = new BasicStrategy() // to support keyboard
 		socketController.strategy = new CustomSocketStrategy()
 		break
 	case StrategyTypes.KEYBOARD_24.id:
@@ -90,8 +87,7 @@ export const loadPlaylist = () => async (dispatch, getState, { midiController, s
 		midiController.strategy = new KeyboardStrategy()
 		break
 	default:
-		samplingCount = 26
-		midiController.strategy = new BasicStrategy()
+		console.log('Unkown strategy:', state.sampling.samplerType)
 		break
 	}
 
