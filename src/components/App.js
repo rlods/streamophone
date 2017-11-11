@@ -29,11 +29,12 @@ class App extends Component {
 			body = (
 				<div className="app-menu">
 					<div className="app-field">
-						<select className="control" onChange={this.props.onChangeSamplerType}>
+						<select className="control" onChange={this.props.onChangeSamplerType} value={this.props.samplerType}>
 							{Object.values(StrategyTypes).map((strategy) =>
 								<option key={strategy.id} value={strategy.id}>{strategy.label}</option>)}
 						</select>
 					</div>
+					<Field type="number" name="Sample Duration" value={this.props.sampleDuration} onChange={this.props.onChangeSampleDuration} />
 					<div className="app-field">
 						<select className="control" onChange={this.props.onChangePlaylistId}>
 							<option value="1083902971">Hits 2017</option>
@@ -64,6 +65,9 @@ class App extends Component {
 App.propTypes = {
 	playlistId: PropTypes.number,
 	playlistData: PropTypes.object,
+	sampleDuration: PropTypes.number,
+	samplerType: PropTypes.string,
+	onChangeSampleDuration: PropTypes.func,
 	onChangeSamplerType: PropTypes.func,
 	onChangePlaylistId: PropTypes.func,
 	onLoadPlaylist: PropTypes.func

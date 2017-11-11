@@ -12,9 +12,8 @@ class Sample extends Component {
 	render() {
 		return (
 			<div className={classNames('sample', { playing: this.props.playing })}>
-				<a href={this.props.link} target="_blank">
-					<img className="sample-cover" src={this.props.album.cover_medium} alt={this.props.title} />
-				</a>
+				<img className="sample-cover" src={this.props.album.cover_medium} alt={this.props.title} />
+				<div className="sample-info">{this.props.title}</div>
 			</div>
 		)
 	}
