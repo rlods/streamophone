@@ -25,6 +25,7 @@ export const shuffleArray = (arr, size, validateItem) => {
 		item = copy.splice(index, 1)[0]
 		if (validateItem(item)) {
 			res.push(item)
+			size--
 		}
 		else {
 			// console.log('Skipping', index, copy.length)

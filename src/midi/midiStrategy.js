@@ -36,6 +36,8 @@ export const StrategyTypes = {
 // --------------------------------------------------------------
 
 const A_CHAR_CODE = 65
+const KEY_ORDER_ALPHABET = 'azertyuiopqsdfghjklmwxcvbn'
+const KEY_ORDER_AZERTY   = 'abcdefghijklmnopqrstuvwxyz'
 
 // --------------------------------------------------------------
 
