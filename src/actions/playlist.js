@@ -82,6 +82,7 @@ export const loadPlaylist = () => async (dispatch, getState, { midiController, s
 		break
 	case StrategyTypes.CUSTOM_SOCKET_STRATEGY.id:
 		samplingCount = 5
+		midiController.strategy = new BasicStrategy() // to support keyboard
 		socketController.strategy = new CustomSocketStrategy()
 		break
 	case StrategyTypes.KEYBOARD_24.id:
