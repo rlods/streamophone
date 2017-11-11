@@ -11,8 +11,8 @@ import rootReducer from './reducers'
 import registerServiceWorker from './registerServiceWorker'
 // ...
 import App from './containers/App'
-import MidiController from './midi/MidiController'
-import SocketController from './midi/SocketController'
+import MidiController from './controllers/MidiController'
+import SocketController from './controllers/SocketController'
 
 // --------------------------------------------------------------
 

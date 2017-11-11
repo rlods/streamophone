@@ -1,6 +1,8 @@
 import { startSample, stopSample, setSampleVolume } from '../actions/sampling'
 import Strategy from './Strategy'
 
+// --------------------------------------------------------------
+
 export default class ButonsStrategy extends Strategy {
 	handleMIDI(dispatch, channel, key, velocity) {
 		if (channel===176 && key>=1 && key<=8) {

@@ -1,12 +1,13 @@
 import io from 'socket.io-client'
+//
+import Controller from './Controller'
 
 // --------------------------------------------------------------
 
-export default class SocketController {
+export default class SocketController extends Controller {
 	constructor(url, prefix) {
-		this.dispatch = null
+		super()
 		this.prefix = prefix
-		this.strategy = null
 		this.url = url
 		this.ws = null
 		this.init()
@@ -15,10 +16,6 @@ export default class SocketController {
 	init() {
 		this.ws = io(this.url)
 		this.ws.on(this.prefix, this.onMessage.bind(this))
-	}
-
-	attach(dispatch) {
-		this.dispatch = dispatch
 	}
 
 	onMessage(message) {

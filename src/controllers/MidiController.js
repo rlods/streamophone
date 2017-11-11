@@ -1,8 +1,10 @@
+import Controller from './Controller'
 
-export default class MidiController {
+// --------------------------------------------------------------
+
+export default class MidiController extends Controller {
 	constructor() {
-		this.dispatch = null
-		this.strategy = null
+		super()
 		this.init()
 	}
 
@@ -26,10 +28,6 @@ export default class MidiController {
 				reject()
 			});
 		})
-	}
-
-	attach(dispatch) {
-		this.dispatch = dispatch
 	}
 
 	onMessage(message) {
