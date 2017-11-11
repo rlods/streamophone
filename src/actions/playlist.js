@@ -3,7 +3,7 @@ import { StrategyTypes } from '../controllers/strategies'
 import { changeSampleNormalizationVolume } from './sampling'
 //
 import ButtonsStrategy from '../controllers/strategies/midiStrategy_Buttons'
-import CustomSocketStrategy from '../controllers/strategies/strategy_CustomSocket'
+import CustomSocketStrategy from '../controllers/strategies/CustomSocketStrategy'
 import MultiSlidersStrategy from '../controllers/strategies/midiStrategy_MultiSliders'
 import SingleSliderStrategy from '../controllers/strategies/midiStrategy_SingleSlider'
 import LightPadBlockStrategy from '../controllers/strategies/midiStrategy_LightPadBlock'
