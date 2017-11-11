@@ -1,25 +1,31 @@
+import { startSample, stopSample } from '../actions/sampling'
 import Strategy from './Strategy'
 
 // --------------------------------------------------------------
 
 export default class CustomSocketStrategy extends Strategy {
-	handleWebSocket(dispatch, { id, type, x, y }) {
-		console.log(id, type, x, y)
+	constructor(samplesCount) {
+		super()
+		this.slidersCount = 5
+		this.samplesCount = 5
+		this.currentSamplesIndexes = []
+		for (let i = 0; i < this.samplesCount; ++i)
+			this.currentSamplesIndexes.push(0)
+	}
 
-		switch (id)
-		{
-		case 'annulaire':
-			break;
-		case 'majeur':
-			break;
+	handleWebSocket(dispatch, { id, type, x, y }) {
+		if (type === 'position') {
+			y = Math.floor((y * 10 + 10) / 2)
+			console.log(id, y)
+			const base =
+				id === 'pouce' ? 0 :
+				id === 'index' ? 10 :
+				id === 'majeur' ? 20 :
+				id === 'annulaire' ? 30 :
+				40
+			const sampleIndex = base + y
+			// TODO : dispatch(stopSample(this.currentSamplesIndexes[index]))
+			dispatch(startSample(sampleIndex))
 		}
-		/*
-		{id: "majeur", type: "position", x: 0.046966731548309326, y: 0}
-		{id: "annulaire", type: "position", x: 0, y: -0.001956947147846222}
-		{id: "annulaire", type: "position", x: 0, y: 0}
-		{id: "majeur", type: "position", x: 0.045009784400463104, y: 0}
-		{id: "annulaire", type: "position", x: 0, y: -0.001956947147846222}
-		{id: "majeur", type: "position
-		*/
 	}
 }
