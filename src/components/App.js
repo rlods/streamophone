@@ -48,10 +48,13 @@ class App extends Component {
 					<div className="app-field">
 						<select className="control" onChange={this.props.onChangePlaylistId}>
 							<option value="1083902971">Hits 2017</option>
-							<option value="791313621">The Greatest Piano Classics</option>
+							<option value="791313621">The Greatest Piano Classics (++)</option>
 							<option value="548368765">Long Playlist</option>
 							<option value="3789105302">Steve Reich</option>
 							<option value="10178447">Percus</option>
+							<option value="3791846562">Speeches (++)</option>
+							<option value="1194890603">Best of - Daft Punk</option>
+							<option value="771276181">Musique concrète et électronique</option>
 						</select>
 					</div>
 					<Field type="number" name="Playlist ID" value={this.props.playlistId} onChange={this.props.onChangePlaylistId} />
