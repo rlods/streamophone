@@ -26,6 +26,10 @@ export const StrategyTypes = {
 	LIGHTPADBLOCK_32: {
 		id: 'LIGHTPADBLOCK_32',
 		label: 'LIGHTPADBLOCK (32 samples)'
+	},
+	CUSTOM_SOCKET_STRATEGY: {
+		id: 'CUSTOM_SOCKET_STRATEGY',
+		label: 'CUSTOM_SOCKET_STRATEGY (10 samples)'
 	}
 }
 
@@ -53,4 +57,6 @@ export default class MidiStrategy {
 			dispatch(stopSample(KEY_ORDER_AZERTY.indexOf(KEY_ORDER_ALPHABET[alphabetIndex])))
 	}
 
+	handleWebSocket(dispatch, message) {
+	}
 }

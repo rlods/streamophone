@@ -4,6 +4,7 @@ import { changeSampleNormalizationVolume } from './sampling'
 //
 import BasicStrategy from '../midi/midiStrategy'
 import ButtonsStrategy from '../midi/midiStrategy_Buttons'
+import CustomSocketStrategy from '../midi/strategy_CustomSocket'
 import MultiSlidersStrategy from '../midi/midiStrategy_MultiSliders'
 import SingleSliderStrategy from '../midi/midiStrategy_SingleSlider'
 import LightPadBlockStrategy from '../midi/midiStrategy_LightPadBlock'
@@ -44,7 +45,7 @@ export const loadAudios = (dispatch, tracks) => tracks.map(track => {
 
 export const validateTrack = track => !!track.preview
 
-export const loadPlaylist = () => async (dispatch, getState, midiController) => { 
+export const loadPlaylist = () => async (dispatch, getState, midiController, socketController) => { 
 	const state = getState()
 
 	// Stop all previously loaded audios
@@ -54,7 +55,7 @@ export const loadPlaylist = () => async (dispatch, getState, midiController) => 
 	let samplingCount = 0
 	switch (state.sampling.samplerType)
 	{
-	case StrategyTypes.KEYBOARD_AZERTY:
+	case StrategyTypes.KEYBOARD_AZERTY.id:
 		samplingCount = 26
 		midiController.strategy = new BasicStrategy()
 		break
@@ -77,6 +78,10 @@ export const loadPlaylist = () => async (dispatch, getState, midiController) => 
 	case StrategyTypes.LIGHTPADBLOCK_32.id:
 		samplingCount = 16
 		midiController.strategy = new LightPadBlockStrategy()
+		break
+	case StrategyTypes.CUSTOM_SOCKET_STRATEGY.id:
+		samplingCount = 5
+		socketController.strategy = new CustomSocketStrategy()
 		break
 	default:
 		samplingCount = 26

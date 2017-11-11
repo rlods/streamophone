@@ -1,7 +1,7 @@
 import { startSample, stopSample } from '../actions/sampling'
-import MidiStrategy from './midiStrategy'
+import Strategy from './Strategy'
 
-export default class Strategy extends MidiStrategy {
+export default class SingleSliderStrategy extends Strategy {
 	constructor() {
 		super()
 		this.currentSample = 0

@@ -1,5 +1,5 @@
 import { startSample, stopSample, setSampleVolume } from '../actions/sampling'
-import MidiStrategy from './midiStrategy'
+import Strategy from './Strategy'
 
 let msgNum = 0
 
@@ -22,7 +22,7 @@ const keyMapping = {
     60: [15, 147, 131]
 }
 
-export default class Strategy extends MidiStrategy {
+export default class LightPadStrategy extends Strategy {
 	
 	handleMIDI(dispatch, channel, key, velocity) {
 		// messages are given four by four
