@@ -28,6 +28,7 @@ class App extends Component {
 		else {
 			body = (
 				<div className="app-menu">
+					<div className="app-title">DZFONE</div>
 					<div className="app-field">
 						<select className="control" onChange={this.props.onChangeSamplerType} value={this.props.samplerType}>
 							{Object.values(StrategyTypes).map((strategy) =>
@@ -52,9 +53,7 @@ class App extends Component {
 		}
 		return (
 			<div className="App">
-				<div className="app-body">
-					{body}
-				</div>
+				{body}
 			</div>
 		)
 	}
