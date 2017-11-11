@@ -3,21 +3,9 @@ import PropTypes from 'prop-types'
 import classNames from 'classnames'
 //
 import { chunkArray } from '../tools'
+import Sample from '../containers/Sample'
 import { StrategyTypes } from '../controllers/strategies'
-import './Sampling.css'
-
-// --------------------------------------------------------------
-
-class Sample extends Component {
-	render() {
-		return (
-			<div className={classNames('sample', { playing: this.props.playing })}>
-				<img className="sample-cover" src={this.props.album.cover_medium} alt={this.props.title} />
-				<div className="sample-info">{this.props.title}</div>
-			</div>
-		)
-	}
-}
+import './Samples.css'
 
 // --------------------------------------------------------------
 
@@ -43,14 +31,14 @@ class Samples extends Component {
 		if (null !== chunks) {
 			return (
 				<div className="samples">
-					{chunks.map((tracks, index) => <div key={index}>{tracks.map(track => <Sample key={track.id} {...track} />)}</div>)}
+					{chunks.map((tracks, index) => <div key={index}>{tracks.map(track => <Sample key={track.id} id={track.id} />)}</div>)}
 				</div>
 			)
 		}
 		else {
 			return (
 				<div className="samples">
-					{this.props.tracks.map(track => <Sample key={track.id} {...track} />)}
+					{this.props.tracks.map(track => <Sample key={track.id} id={track.id} />)}
 				</div>
 			)
 		}

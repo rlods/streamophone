@@ -1,0 +1,19 @@
+import { connect } from 'react-redux'
+//
+import Sample from '../components/Sample'
+
+// --------------------------------------------------------------
+
+const mapStateToProps = (state, ownProps) => {
+	const track = state.sampling.tracks.find(other => other.id === ownProps.id)
+	return {
+		cover: track.album.cover_medium,
+		playing: track.playing,
+		title: track.title
+	}
+}
+
+const mapDispatchToProps = (dispatch, ownProps) => ({
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Sample)

@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 //
-import Samples from '../components/Sampling'
+import Samples from '../components/Samples'
 
 // --------------------------------------------------------------
 
