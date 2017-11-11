@@ -26,7 +26,7 @@ export const normalizeAudio = async (dispatch, track, audio) => {
 	const augmentedTrack = await fetchDeezerAPI(`track/${track.id}`)
 	let volume1 = !augmentedTrack.gain ? 0.5 : 0.5 * Math.pow(10, ((-12 - augmentedTrack.gain) / 20))
 	if (volume1 > 1.0) volume1 = 1.0
-	console.log(`Normalized ${track.id}: ${track.volume1} -> ${volume1}`)
+	// console.log(`Normalized ${track.id}: ${track.volume1} -> ${volume1}`)
 	audio.volume = volume1 * track.volume2
 	dispatch(changeSampleNormalizationVolume(track.id, volume1))
 }

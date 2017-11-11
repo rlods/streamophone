@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import classNames from 'classnames'
 //
 import { chunkArray } from '../tools'
 import Sample from '../containers/Sample'
@@ -11,7 +10,7 @@ import './Samples.css'
 
 class Samples extends Component {
 	render() {
-		let chunks = null
+		let chunks
 		switch (this.props.samplerType)
 		{
 			case StrategyTypes.KEYBOARD_AZERTY.id:
@@ -26,6 +25,9 @@ class Samples extends Component {
 				break
 			case StrategyTypes.CUSTOM_SOCKET_STRATEGY.id:
 				chunks = chunkArray(this.props.tracks, this.props.tracks.length / 5)
+				break
+			default:
+				chunks = null
 				break
 		}
 		if (null !== chunks) {

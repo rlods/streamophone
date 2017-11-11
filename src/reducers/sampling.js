@@ -2,18 +2,18 @@
 const INITIAL_STATE = {
 	audios: [],
 	tracks: [],
-	sampleDuration: 2000, // full sample is played
+	sampleDuration: 2000,
 	samplerType: 'KEYBOARD_AZERTY'
 }
 
 const setTracks = (state, { audios, tracks }) =>
 	({ ...state, audios, tracks })
 
-const setTrackNormalizationVolume = (state, { trackId, volume1 }) =>
-	({ ...state, tracks: state.tracks.map(other => other.id !== trackId ? other : { ...other, volume1 }) })
+const setTrackNormalizationVolume = (state, { trackId, volume }) =>
+	({ ...state, tracks: state.tracks.map(other => other.id !== trackId ? other : { ...other, volume1: volume }) })
 
-const setTrackVolume = (state, { trackId, volume2 }) =>
-	({ ...state, tracks: state.tracks.map(other => other.id !== trackId ? other : { ...other, volume2 }) })
+const setTrackVolume = (state, { trackId, volume }) =>
+	({ ...state, tracks: state.tracks.map(other => other.id !== trackId ? other : { ...other, volume2: volume }) })
 
 const setTrackStatus = (state, { playing, trackId }) =>
 	({ ...state, tracks: state.tracks.map(other => other.id !== trackId ? other : { ...other, playing }) })
