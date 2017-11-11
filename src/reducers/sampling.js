@@ -2,7 +2,7 @@
 const INITIAL_STATE = {
 	audios: [],
 	tracks: [],
-	samplerType: ''
+	samplerType: 'KEYBOARD_AZERTY'
 }
 
 const setTracks = (state, { audios, tracks }) =>

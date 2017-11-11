@@ -49,6 +49,10 @@ export const loadPlaylist = () => async (dispatch, getState, midiController) => 
 	let samplingCount = 0
 	switch (state.sampling.samplerType)
 	{
+	case StrategyTypes.KEYBOARD_AZERTY:
+		samplingCount = 26
+		midiController.strategy = new BasicStrategy()
+		break
 	case StrategyTypes.BCF2000_BUTTONS_32.id:
 		samplingCount = 32
 		midiController.strategy = new ButtonsStrategy()
@@ -78,7 +82,7 @@ export const loadPlaylist = () => async (dispatch, getState, midiController) => 
 		midiController.strategy = new LightPadBlockStrategy()
 		break
 	default:
-		samplingCount = 32
+		samplingCount = 26
 		midiController.strategy = new BasicStrategy()
 		break
 	}

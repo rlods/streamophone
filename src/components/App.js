@@ -30,7 +30,6 @@ class App extends Component {
 				<div className="app-menu">
 					<div className="app-field">
 						<select className="control" onChange={this.props.onChangeSamplerType}>
-							<option value="">No MIDI</option>
 							{Object.values(StrategyTypes).map((strategy) =>
 								<option key={strategy.id} value={strategy.id}>{strategy.label}</option>)}
 						</select>
