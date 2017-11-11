@@ -11,8 +11,8 @@ import rootReducer from './reducers'
 import registerServiceWorker from './registerServiceWorker'
 // ...
 import App from './containers/App'
-import MidiController from './midiController'
-import MidiStrategy from './midiStrategy_MultiSliders'
+import MidiController from './midi/midiController'
+import MidiStrategy from './midi/midiStrategy_MultiSliders'
 
 // --------------------------------------------------------------
 

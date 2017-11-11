@@ -1,4 +1,4 @@
-import { startSample, stopSample, setSampleVolume } from './actions/sampling'
+import { startSample, stopSample, setSampleVolume } from '../actions/sampling'
 
 export default class MidiController {
 	constructor() {
