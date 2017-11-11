@@ -10,6 +10,8 @@ const A_CHAR_CODE = 65
 // --------------------------------------------------------------
 
 const mapStateToProps = (state, ownProps) => ({
+	playlistTitle: state.playlist.data.title,
+	playlistUrl: state.playlist.data.link
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({

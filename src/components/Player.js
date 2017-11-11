@@ -10,7 +10,9 @@ class Player extends Component {
 	render() {
 		return (
 			<div className="Player">
-				<input type="text" value="" placeholder="Click here to play with your keyboard" onKeyDown={this.props.onPlayStart} onKeyUp={this.props.onPlayStop} />
+				<div className="player-body">
+					<input className="PlayWithYourKeyboard" type="text" value="" placeholder="Click here to play with your keyboard" onKeyDown={this.props.onPlayStart} onKeyUp={this.props.onPlayStop} />
+				</div>
 				<Samples />
 			</div>
 		)
@@ -20,6 +22,9 @@ class Player extends Component {
 // --------------------------------------------------------------
 
 Player.propTypes = {
+	playlistTitle: PropTypes.string,
+	playlistUrl: PropTypes.string,
+	//
 	onPlayStart: PropTypes.func,
 	onPlayStop: PropTypes.func
 }
