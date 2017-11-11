@@ -27,6 +27,10 @@ export const StrategyTypes = {
 		id: 'LIGHTPADBLOCK_32',
 		label: 'LIGHTPADBLOCK (32 samples)'
 	},
+	KEYBOARD_24: {
+		id: 'KEYBOARD_24',
+		label: 'OXYGEN25 (24 samples)'
+	},
 	CUSTOM_SOCKET_STRATEGY: {
 		id: 'CUSTOM_SOCKET_STRATEGY',
 		label: 'CUSTOM_SOCKET_STRATEGY (10 samples)'
