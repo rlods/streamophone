@@ -1,4 +1,4 @@
-import { chunkArray, fetchDeezerAPI, shuffleArray } from '../tools'
+import { fetchDeezerAPI, shuffleArray } from '../tools'
 import { StrategyTypes } from '../midi/midiStrategy'
 //
 import BasicStrategy from '../midi/midiStrategy'
@@ -9,7 +9,6 @@ import LightPadBlockStrategy from '../midi/midiStrategy_LightPadBlock'
 
 // ------------------------------------------------------------------
 
-const DEEZER_API_SIMULTANEOUS_MAX_CALLS = 15
 const ENABLE_VOLUME_FROM_GAIN = false
 
 // ------------------------------------------------------------------
@@ -22,19 +21,21 @@ export const changePlaylistId = id => dispatch => dispatch({
 })
 
 export const loadAudios = tracks => tracks.map(track => {
-	// We test if gain is available on track but sadly it's only available when getting the track data individually
-	track.volume1 = !track.gain ? 0.5 : 0.5 * Math.pow(10, ((-12 - track.gain) / 20))
-	if (track.volume1 > 1.0) track.volume1 = 1.0
+	track.volume1 = 0.5
 	track.volume2 = 1.0
 	const audio = new Audio(track.preview)
 	audio.volume = track.volume1 * track.volume2
 	return audio
 })
 
-export const loadTracks = async tracksIds => {
-	const tracks = await Promise.all(tracksIds.map(async trackId => fetchDeezerAPI(`track/${trackId}`)))
-	const audios = loadAudios(tracks)
-	return { audios, tracks }
+export const normalizeTracks = (tracks, audios) => {
+	tracks.forEach(async (track, index) => {
+		const audio = audios[index]
+		const augmentedTrack = await fetchDeezerAPI(`track/${track.id}`)
+		let volume = !augmentedTrack.gain ? 0.5 : 0.5 * Math.pow(10, ((-12 - augmentedTrack.gain) / 20))
+		if (volume > 1.0) volume = 1.0
+		console.log('Normalized Volume:', volume) // TODO: apply on audio
+	})
 }
 
 export const validateTrack = track => !!track.preview
@@ -89,18 +90,11 @@ export const loadPlaylist = () => async (dispatch, getState, midiController) => 
 
 	// Fetch playlist tracks data
 	const playlist = await fetchDeezerAPI(`playlist/${state.playlist.id}`)
-	let audios = null, tracks = null
-	if (ENABLE_VOLUME_FROM_GAIN) {
-		// It's really cool but we should not rely on it since it requires to request the API for each track
-		const tracksIds = shuffleArray(playlist.tracks.data, samplingCount, validateTrack).map(track => track.id)
-		const chunks = await Promise.all(chunkArray(tracksIds, DEEZER_API_SIMULTANEOUS_MAX_CALLS, loadTracks))
-		audios = Array.prototype.concat.apply([], chunks.map(chunk => chunk.audios))
-		tracks = Array.prototype.concat.apply([], chunks.map(chunk => chunk.tracks))
-	}
-	else {
-		tracks = shuffleArray(playlist.tracks.data, samplingCount, validateTrack)
-		audios = loadAudios(tracks)
-	}
+	const tracks = shuffleArray(playlist.tracks.data, samplingCount, validateTrack)
+	const audios = loadAudios(tracks)
+
+	if (ENABLE_VOLUME_FROM_GAIN)
+		normalizeTracks(tracks, audios)
 
 	dispatch({
 		type: 'PLAYLIST_SET_DATA',
