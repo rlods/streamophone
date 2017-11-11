@@ -33,9 +33,7 @@ midiController.attach(store.dispatch.bind(this))
 ReactDOM.render(
 	<Provider store={store}>
 		<Router>
-			<div>
-				<Route exact path="/" component={App} />
-			</div>
+			<Route exact path="/" component={App} />
 		</Router>
 	</Provider>,
 	document.getElementById('root')

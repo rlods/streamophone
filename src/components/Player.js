@@ -9,10 +9,8 @@ import './Player.css'
 class Player extends Component {
 	render() {
 		return (
-			<div className="Player">
-				<div className="player-body">
-					<input className="PlayWithYourKeyboard" type="text" value="" placeholder="Click here to play with your keyboard" onKeyDown={this.props.onPlayStart} onKeyUp={this.props.onPlayStop} />
-				</div>
+			<div className="player">
+				<input className="player-control" type="text" value="" placeholder="Click here to play with your keyboard" onKeyDown={this.props.onPlayStart} onKeyUp={this.props.onPlayStop} />
 				<Samples />
 			</div>
 		)

@@ -11,9 +11,9 @@ import './Sampling.css'
 class Sample extends Component {
 	render() {
 		return (
-			<div className={classNames('Sample', { playing: this.props.playing })}>
+			<div className={classNames('sample', { playing: this.props.playing })}>
 				<a href={this.props.link} target="_blank">
-					<img src={this.props.album.cover_medium} alt={this.props.title} />
+					<img className="sample-cover" src={this.props.album.cover_medium} alt={this.props.title} />
 				</a>
 			</div>
 		)
@@ -30,13 +30,13 @@ class Samples extends Component {
 			case StrategyTypes.BCF2000_MULTISLIDERS_8_64.id:
 				const chunks = chunkArray(this.props.tracks, this.props.tracks.length / 8, tracks => tracks)
 				return (
-					<div className="Samples">
+					<div className="samples">
 						{chunks.map((tracks, index) => <div key={index}>{tracks.map(track => <Sample key={track.id} {...track} />)}</div>)}
 					</div>
 				)
 			default:
 				return (
-					<div className="Samples">
+					<div className="samples">
 						{this.props.tracks.map(track => <Sample key={track.id} {...track} />)}
 					</div>
 				)

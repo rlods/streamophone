@@ -23,6 +23,10 @@ export const StrategyTypes = {
 	BCF2000_MULTISLIDERS_8_64: {
 		id: 'BCF2000_MULTISLIDERS_8_64',
 		label: 'BCF2000 - 8 Sliders (64 samples)'
+	},
+	LIGHTPADBLOCK_32: {
+		id: 'LIGHTPADBLOCK_32',
+		label: 'LIGHTPADBLOCK (32 samples)'
 	}
 }
 

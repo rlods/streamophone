@@ -4,12 +4,20 @@
 	align-items: center;
 }
 
+.app-body {
+	display: flex;
+	flex: 1;
+	padding: 20px;
+}
+
 .app-menu {
 	display: flex;
 	flex: 1;
-	flex-direction: row;
-	margin-top: 20px;
+	flex-direction: column;
 	text-align: center;
+	background-color: #DDD;
+	border-radius: 5px;
+	padding: 20px;
 }
 
 .app-field {
@@ -22,8 +30,6 @@
 
 .app-field .control {
 	flex: 1;
-}
-
-.app-actions {
-	margin-top: 5px;
+	font-size: 15px;
+	line-height: 25px;
 }

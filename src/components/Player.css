@@ -1,14 +1,15 @@
-.Player {
-	margin-top: 20px;
-	text-align: center;
+.player {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
 }
 
-.PlayWithYourKeyboard {
-	margin: 10px;
+.player-control {
 	flex: 1;
-	width: 100%;
-	padding: 5px;
-	font-size: 15px;
-	line-height: 20px;
+	width: 400px;
+	font-size: 20px;
+	line-height: 25px;
+	padding: 10px 0;
 	text-align: center;
 }

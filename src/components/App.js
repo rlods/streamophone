@@ -21,33 +21,39 @@ class Field extends Component {
 
 class App extends Component {
 	render() {
+		let body = null
+		if (this.props.playlistData) {
+			body = <Player />
+		}
+		else {
+			body = (
+				<div className="app-menu">
+					<div className="app-field">
+						<select className="control" onChange={this.props.onChangeSamplerType}>
+							<option value="">No MIDI</option>
+							{Object.values(StrategyTypes).map((strategy) =>
+								<option key={strategy.id} value={strategy.id}>{strategy.label}</option>)}
+						</select>
+					</div>
+					<div className="app-field">
+						<select className="control" onChange={this.props.onChangePlaylistId}>
+							<option value="1083902971">Hits 2017</option>
+							<option value="791313621">The Greatest Piano Classics</option>
+							<option value="548368765">Long Playlist</option>
+							<option value="3789105302">Steve Reich</option>
+						</select>
+					</div>
+					<Field type="number" name="Playlist ID" value={this.props.playlistId} onChange={this.props.onChangePlaylistId} />
+					<div className="app-field">
+						<button className="control" onClick={this.props.onLoadPlaylist}>Start</button>
+					</div>
+				</div>
+			)
+		}
 		return (
 			<div className="App">
 				<div className="app-body">
-					{this.props.playlistData ? <Player /> : null}
-				</div>
-				<div className="app-menu">
-					<div className="app-fields">
-						<div className="app-field">
-							<select className="control" onChange={this.props.onChangeSamplerType}>
-								<option value="">Sampler Type...</option>
-								{Object.values(StrategyTypes).map((strategy) =>
-									<option key={strategy.id} value={strategy.id}>{strategy.label}</option>)}
-							</select>
-						</div>
-						<div className="app-field">
-							<select className="control" onChange={this.props.onChangePlaylistId}>
-								<option value="1083902971">Hits 2017</option>
-								<option value="791313621">The Greatest Piano Classics</option>
-								<option value="548368765">Long Playlist</option>
-								<option value="3789105302">Steve Reich</option>
-							</select>
-						</div>
-						<Field type="number" name="Playlist ID" value={this.props.playlistId} onChange={this.props.onChangePlaylistId} />
-						<div className="app-field">
-							<button className="control" onClick={this.props.onLoadPlaylist}>Load playlist</button>
-						</div>
-					</div>
+					{body}
 				</div>
 			</div>
 		)
