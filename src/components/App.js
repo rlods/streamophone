@@ -35,7 +35,16 @@ class App extends Component {
 								<option key={strategy.id} value={strategy.id}>{strategy.label}</option>)}
 						</select>
 					</div>
-					<Field type="number" name="Sample Duration" value={this.props.sampleDuration} onChange={this.props.onChangeSampleDuration} />
+					<div className="app-field">
+						<select className="control" onChange={this.props.onChangeSampleDuration} value={this.props.sampleDuration}>
+							<option value="0">Full track duration</option>
+							<option value="1000">1 second</option>
+							<option value="2000">2 seconds</option>
+							<option value="3000">3 seconds</option>
+							<option value="10000">10 seconds</option>
+							<option value="20000">20 seconds</option>
+						</select>
+					</div>
 					<div className="app-field">
 						<select className="control" onChange={this.props.onChangePlaylistId}>
 							<option value="1083902971">Hits 2017</option>
