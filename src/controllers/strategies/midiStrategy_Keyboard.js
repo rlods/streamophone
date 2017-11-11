@@ -1,5 +1,7 @@
-import { startSample, stopSample, setSampleVolume } from '../actions/sampling'
-import Strategy from './Strategy'
+import { startSample, stopSample, setSampleVolume } from '../../actions/sampling'
+import { Strategy } from './'
+
+// --------------------------------------------------------------
 
 let msgNum = 0
 const mapping = [42, 46]

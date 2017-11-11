@@ -1,13 +1,13 @@
 import { fetchDeezerAPI, shuffleArray } from '../tools'
-import { StrategyTypes } from '../controllers/Strategy'
+import { StrategyTypes } from '../controllers/strategies'
 import { changeSampleNormalizationVolume } from './sampling'
 //
-import ButtonsStrategy from '../controllers/midiStrategy_Buttons'
-import CustomSocketStrategy from '../controllers/strategy_CustomSocket'
-import MultiSlidersStrategy from '../controllers/midiStrategy_MultiSliders'
-import SingleSliderStrategy from '../controllers/midiStrategy_SingleSlider'
-import LightPadBlockStrategy from '../controllers/midiStrategy_LightPadBlock'
-import KeyboardStrategy from '../controllers/midiStrategy_Keyboard'
+import ButtonsStrategy from '../controllers/strategies/midiStrategy_Buttons'
+import CustomSocketStrategy from '../controllers/strategies/strategy_CustomSocket'
+import MultiSlidersStrategy from '../controllers/strategies/midiStrategy_MultiSliders'
+import SingleSliderStrategy from '../controllers/strategies/midiStrategy_SingleSlider'
+import LightPadBlockStrategy from '../controllers/strategies/midiStrategy_LightPadBlock'
+import KeyboardStrategy from '../controllers/strategies/midiStrategy_Keyboard'
 
 // ------------------------------------------------------------------
 

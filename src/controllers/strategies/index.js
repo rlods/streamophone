@@ -1,4 +1,4 @@
-import { startSample, stopSample } from '../actions/sampling'
+import { startSample, stopSample } from '../../actions/sampling'
 
 // --------------------------------------------------------------
 
@@ -45,7 +45,7 @@ const KEY_ORDER_AZERTY   = 'azertyuiopqsdfghjklmwxcvbn'
 
 // --------------------------------------------------------------
 
-export default class Strategy {
+export class Strategy {
 	handleMIDI(dispatch, channel, key, velocity) {
 	}
 

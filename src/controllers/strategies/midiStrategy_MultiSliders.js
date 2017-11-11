@@ -1,5 +1,7 @@
-import { startSample, stopSample } from '../actions/sampling'
-import Strategy from './Strategy'
+import { startSample, stopSample } from '../../actions/sampling'
+import { Strategy } from './'
+
+// --------------------------------------------------------------
 
 export default class MultiSlidersStrategy extends Strategy {
 	constructor(slidersCount, slidersSteps, samplesCount) {

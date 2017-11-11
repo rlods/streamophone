@@ -1,5 +1,5 @@
-import { startSample } from '../actions/sampling'
-import Strategy from './Strategy'
+import { startSample } from '../../actions/sampling'
+import { Strategy } from './'
 
 // --------------------------------------------------------------
 
