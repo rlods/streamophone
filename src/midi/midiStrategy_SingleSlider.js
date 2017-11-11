@@ -7,7 +7,7 @@ export default class Strategy extends MidiStrategy {
 		this.currentSample = 0
 	}
 
-	handleMessage(dispatch, channel, key, velocity) {
+	handleMIDI(dispatch, channel, key, velocity) {
 		if (channel === 176 && key >= 1 && key <= 8) {
 			console.log("Start sample", velocity)
 			dispatch(stopSample(this.currentSample))

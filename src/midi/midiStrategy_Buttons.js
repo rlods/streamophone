@@ -2,7 +2,7 @@ import { startSample, stopSample, setSampleVolume } from '../actions/sampling'
 import MidiStrategy from './midiStrategy'
 
 export default class Strategy extends MidiStrategy {
-	handleMessage(dispatch, channel, key, velocity) {
+	handleMIDI(dispatch, channel, key, velocity) {
 		if (channel===176 && key>=1 && key<=8) {
 			// change volume of key-1
 			console.log("Change volume of ", key-1, " to ", velocity/127)

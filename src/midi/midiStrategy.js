@@ -38,7 +38,7 @@ const KEY_ORDER_AZERTY   = 'azertyuiopqsdfghjklmwxcvbn'
 // --------------------------------------------------------------
 
 export default class MidiStrategy {
-	handleMessage(dispatch, channel, key, velocity) {
+	handleMIDI(dispatch, channel, key, velocity) {
 	}
 
 	handleKeyDown(dispatch, keyCode) {

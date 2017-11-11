@@ -24,7 +24,7 @@ const keyMapping = {
 
 export default class Strategy extends MidiStrategy {
 	
-	handleMessage(dispatch, channel, key, velocity) {
+	handleMIDI(dispatch, channel, key, velocity) {
 		// messages are given four by four
 		if (key >= 48 && key <= 63 && channel < 209) {
 			console.log("key", key, "channel", channel)

@@ -14,7 +14,7 @@ export default class Strategy extends MidiStrategy {
 			this.currentSamples.push(0)
 	}
 
-	handleMessage(dispatch, channel, key, velocity) {
+	handleMIDI(dispatch, channel, key, velocity) {
 		const sample = (key * this.samplesCountPerSlider) - Math.floor(velocity * this.samplesCountPerSlider / this.slidersSteps) - 1
 		if (velocity === 0) {
 			console.log("stop column")
