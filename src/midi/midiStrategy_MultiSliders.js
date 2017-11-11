@@ -2,10 +2,12 @@ import { startSample, stopSample } from '../actions/sampling'
 import MidiStrategy from './midiStrategy'
 
 export default class MidiControllerMultiSliders extends MidiStrategy {
-	constructor() {
+	constructor(samplesCount) {
 		super()
 		this.slidersCount = 8 // TODO: configurable
 		this.slidersSteps = 128 // TODO: configurable
+		this.samplesCount = samplesCount
+		this.samplesCountPerSlider = this.samplesCount / this.slidersCount
 		this.currentSamples = []
 		this.oldSample = -1
 		for (let i = 0; i < this.slidersCount; ++i)
@@ -13,8 +15,7 @@ export default class MidiControllerMultiSliders extends MidiStrategy {
 	}
 
 	handleMessage(dispatch, channel, key, velocity) {
-		const samplesCountPerSlider = this.samplesCount / this.slidersCount
-		const sample = (key * samplesCountPerSlider) - Math.floor(velocity * samplesCountPerSlider / this.slidersSteps) - 1
+		const sample = (key * this.samplesCountPerSlider) - Math.floor(velocity * this.samplesCountPerSlider / this.slidersSteps) - 1
 		if (velocity === 0) {
 			console.log("stop column")
 			dispatch(stopSample(this.oldSample))

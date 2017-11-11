@@ -1,4 +1,7 @@
 import { chunkArray, fetchDeezerAPI, shuffleArray } from '../tools'
+import ButtonsStrategy from '../midi/midiStrategy_Buttons'
+import MultiSlidersStrategy from '../midi/midiStrategy_MultiSliders'
+import SingleSliderStrategy from '../midi/midiStrategy_SingleSlider'
 
 // ------------------------------------------------------------------
 
@@ -35,7 +38,18 @@ export const loadTracks = async tracksIds => {
 export const loadPlaylist = () => async (dispatch, getState, midiController) => { 
 	const state = getState()
 
- 	midiController.strategy.samplesCount = state.sampling.count
+	switch (state.sampling.samplerType)
+	{
+	case 'buttons':
+		midiController.strategy = new ButtonsStrategy()
+		break
+	case 'singleslider':
+		midiController.strategy = new SingleSliderStrategy()
+		break
+	case 'multisliders8':
+		midiController.strategy = new MultiSlidersStrategy(state.sampling.count)
+		break
+	}
 
 	const playlist = await fetchDeezerAPI(`playlist/${state.playlist.id}`)
 	let audios = null, tracks = null

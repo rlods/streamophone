@@ -12,11 +12,10 @@ import registerServiceWorker from './registerServiceWorker'
 // ...
 import App from './containers/App'
 import MidiController from './midi/midiController'
-import MidiStrategy from './midi/midiStrategy_MultiSliders'
 
 // --------------------------------------------------------------
 
-const midiController = new MidiController(new MidiStrategy())
+const midiController = new MidiController()
 
 const enableLogger = false // process.env.NODE_ENV !== 'production'
 

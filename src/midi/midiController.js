@@ -1,8 +1,8 @@
 
 export default class MidiController {
-	constructor(strategy) {
+	constructor() {
 		this.dispatch = null
-		this.strategy = strategy
+		this.strategy = null
 		this.initMIDI()
 	}
 
@@ -31,7 +31,8 @@ export default class MidiController {
 	onMIDIMessage(message) {
 		const data = message.data; // this gives us our [command/channel, note, velocity] data.
 		console.log('MIDI data', data); // MIDI data [144, 63, 73]
-		this.strategy.handleMessage(this.dispatch, data[0], data[1], data[2])
+		if (this.strategy)
+			this.strategy.handleMessage(this.dispatch, data[0], data[1], data[2])
 	}
 
 	attach(dispatch) {

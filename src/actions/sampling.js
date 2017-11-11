@@ -5,6 +5,13 @@ export const changeSampleCount = count => dispatch => dispatch({
 	}
 })
 
+export const changeSamplerType = samplerType => dispatch => dispatch({
+	type: 'SAMPLING_SET_SAMPLER_TYPE',
+	data: {
+		samplerType
+	}
+})
+
 export const startSample = sampleIndex => async (dispatch, getState) => {
 	const state = getState()
 	const { audios, tracks } = state.sampling
