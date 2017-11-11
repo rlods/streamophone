@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 //
-import { StrategyTypes } from '../midi/midiStrategy'
+import { StrategyTypes } from '../midi/Strategy'
 import Player from '../containers/Player'
 import './App.css'
 

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import classNames from 'classnames'
 //
 import { chunkArray } from '../tools'
-import { StrategyTypes } from '../midi/midiStrategy'
+import { StrategyTypes } from '../midi/Strategy'
 import './Sampling.css'
 
 // --------------------------------------------------------------

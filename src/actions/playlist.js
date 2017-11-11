@@ -1,8 +1,8 @@
 import { fetchDeezerAPI, shuffleArray } from '../tools'
-import { StrategyTypes } from '../midi/midiStrategy'
+import { StrategyTypes } from '../midi/Strategy'
 import { changeSampleNormalizationVolume } from './sampling'
 //
-import BasicStrategy from '../midi/midiStrategy'
+import BasicStrategy from '../midi/Strategy'
 import ButtonsStrategy from '../midi/midiStrategy_Buttons'
 import CustomSocketStrategy from '../midi/strategy_CustomSocket'
 import MultiSlidersStrategy from '../midi/midiStrategy_MultiSliders'
