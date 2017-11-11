@@ -9,9 +9,14 @@
 	display: flex;
 	height: 100px;
 	width: 100px;
+	opacity: 0.2;
 }
 
 .Sample img {
 	height: 100px;
 	width: 100px;
+}
+
+.Sample.playing {
+	opacity: 1.0;
 }
