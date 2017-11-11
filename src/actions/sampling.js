@@ -56,7 +56,7 @@ export const startSample = sampleIndex => async (dispatch, getState) => {
 				trackId: track.id
 			}
 		})
-		if (sampleDuration) {
+		if (sampleDuration && sampleDuration < 30000) {
 			setTimeout(() => dispatch(stopSample(sampleIndex)), sampleDuration)
 		}
 	}
