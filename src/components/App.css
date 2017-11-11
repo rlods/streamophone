@@ -1,14 +1,29 @@
 .App {
 	display: flex;
 	flex-direction: column;
+	align-items: center;
 }
 
-.Fields {
+.app-menu {
 	display: flex;
 	flex: 1;
-	flex-direction: column;
+	flex-direction: row;
+	margin-top: 20px;
+	text-align: center;
 }
 
-.Field {
+.app-field {
+	display: flex;
 	flex: 1;
+	flex-direction: row;
+	text-align: center;
+	margin-top: 5px;
+}
+
+.app-field .control {
+	flex: 1;
+}
+
+.app-actions {
+	margin-top: 5px;
 }

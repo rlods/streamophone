@@ -1,2 +1,14 @@
 .Player {
+	margin-top: 20px;
+	text-align: center;
+}
+
+.PlayWithYourKeyboard {
+	margin: 10px;
+	flex: 1;
+	width: 100%;
+	padding: 5px;
+	font-size: 15px;
+	line-height: 20px;
+	text-align: center;
 }
