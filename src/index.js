@@ -11,11 +11,12 @@ import rootReducer from './reducers'
 import registerServiceWorker from './registerServiceWorker'
 // ...
 import App from './containers/App'
-import MidiController from './midiControllerMultislides'
+import MidiController from './midiController'
+import MidiStrategy from './midiStrategy_MultiSliders'
 
 // --------------------------------------------------------------
 
-const midiController = new MidiController()
+const midiController = new MidiController(new MidiStrategy())
 
 const enableLogger = false // process.env.NODE_ENV !== 'production'
 
