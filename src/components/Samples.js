@@ -13,37 +13,32 @@ class Samples extends Component {
 		let chunks
 		switch (this.props.samplerType)
 		{
-			case StrategyTypes.KEYBOARD_AZERTY.id:
-				chunks = chunkArray(this.props.tracks, 3)
-				break
 			case StrategyTypes.BCF2000_MULTISLIDERS_8_32.id:
 			case StrategyTypes.BCF2000_MULTISLIDERS_8_64.id:
 				chunks = chunkArray(this.props.tracks, this.props.tracks.length / 8)
 				break
+
 			case StrategyTypes.LIGHTPADBLOCK_16.id:
 				chunks = chunkArray(this.props.tracks, Math.sqrt(this.props.tracks.length))
 				break
+
 			case StrategyTypes.CUSTOM_SOCKET_STRATEGY.id:
 				chunks = chunkArray(this.props.tracks, this.props.tracks.length / 5)
 				break
+
 			default:
 				chunks = null
 				break
 		}
-		if (null !== chunks) {
-			return (
-				<div className="samples">
-					{chunks.map((tracks, index) => <div key={index}>{tracks.map(track => <Sample key={track.id} id={track.id} />)}</div>)}
-				</div>
-			)
-		}
-		else {
-			return (
-				<div className="samples">
-					{this.props.tracks.map(track => <Sample key={track.id} id={track.id} />)}
-				</div>
-			)
-		}
+		return (
+			<div className="samples">
+				{
+					null !== chunks
+					? chunks.map((tracks, index) => <div key={index}>{tracks.map(track => <Sample key={track.id} id={track.id} />)}</div>)
+					: this.props.tracks.map(track => <Sample key={track.id} id={track.id} />)
+				}
+			</div>
+		)
 	}
 }
 

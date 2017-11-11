@@ -1,24 +1,25 @@
-.App {
+.app {
 	display: flex;
 	flex-direction: column;
-	align-items: center;
-}
-
-.app-title {
-	font-size: 40px;
-	font-weight: bold;
-	margin-bottom: 15px;
+	justify-content: center;
+	flex: 1;
 }
 
 .app-menu {
+	align-self: center;
 	display: flex;
-	flex: 1;
 	flex-direction: column;
 	text-align: center;
 	background-color: #EEE;
 	border-radius: 5px;
 	padding: 20px;
 	box-shadow: 3px 3px 20px;
+}
+
+.app-title {
+	font-size: 40px;
+	font-weight: bold;
+	margin-bottom: 15px;
 }
 
 .app-menu-field {

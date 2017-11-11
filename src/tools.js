@@ -13,7 +13,12 @@ export const chunkArray = (array, size) => {
 
 export const fetchDeezerAPI = url => new Promise((resolve, reject) => {
 	jsonp(API_BASE_URL + url + '?output=jsonp&strict=on', null, (err, data) => {
-		resolve(data)
+		if (err)
+			reject(err)
+		else if (data && data.error)
+			reject(data.error)
+		else
+			resolve(data)
 	})
 })
 

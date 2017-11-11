@@ -46,12 +46,15 @@ class SelectField extends Component {
 
 class App extends Component {
 	render() {
-		let body = null
 		if (this.props.playlistData) {
-			body = <Player />
+			return (
+				<div className="app">
+					<Player />
+				</div>
+			)
 		}
 		else {
-			body = (
+			return (
 				<div className="app-menu">
 					<div className="app-title">DZFONE</div>
 					<SelectField
@@ -84,11 +87,6 @@ class App extends Component {
 				</div>
 			)
 		}
-		return (
-			<div className="App">
-				{body}
-			</div>
-		)
 	}
 }
 
