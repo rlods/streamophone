@@ -55,6 +55,7 @@ class App extends Component {
 							<option value="3791846562">Speeches (++)</option>
 							<option value="1194890603">Best of - Daft Punk</option>
 							<option value="771276181">Musique concrète et électronique</option>
+							<option value="3510240466">Soul to Funk</option>
 						</select>
 					</div>
 					<Field type="number" name="Playlist ID" value={this.props.playlistId} onChange={this.props.onChangePlaylistId} />
