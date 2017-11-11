@@ -22,8 +22,7 @@ const socketController = new SocketController('http://129.102.147.114:3000', 'ma
 const enableLogger = false // process.env.NODE_ENV !== 'production'
 
 const middlewares = [
-	thunk.withExtraArgument(midiController),
-	thunk.withExtraArgument(socketController),
+	thunk.withExtraArgument({ midiController, socketController }),
 	enableLogger && logger
 ].filter(Boolean) // filter is used to disable middlewares (ex. like for example logger which becomes false when enableLogger = false)
 

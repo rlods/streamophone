@@ -34,11 +34,11 @@ export const changeSamplerType = samplerType => dispatch => dispatch({
 
 // --------------------------------------------------------------
 
-export const handleKeyDown = keyCode => async (dispatch, getState, midiController) => {
+export const handleKeyDown = keyCode => async (dispatch, getState, { midiController }) => {
 	midiController.strategy.handleKeyDown(dispatch, keyCode)
 }
 
-export const handleKeyUp = keyCode => (dispatch, getState, midiController) => {
+export const handleKeyUp = keyCode => (dispatch, getState, { midiController }) => {
 	midiController.strategy.handleKeyUp(dispatch, keyCode)
 }
 

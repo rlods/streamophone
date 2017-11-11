@@ -3,7 +3,7 @@ import Strategy from './Strategy'
 // --------------------------------------------------------------
 
 export default class CustomSocketStrategy extends Strategy {
-	handleWebSocket(dispatch, message) { // TODO: create a specific Strategy
+	handleWebSocket(dispatch, message) {
 		console.log(message)
 		/*
 		{id: "majeur", type: "position", x: 0.046966731548309326, y: 0}

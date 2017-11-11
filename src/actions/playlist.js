@@ -45,7 +45,7 @@ export const loadAudios = (dispatch, tracks) => tracks.map(track => {
 
 export const validateTrack = track => !!track.preview
 
-export const loadPlaylist = () => async (dispatch, getState, midiController, socketController) => { 
+export const loadPlaylist = () => async (dispatch, getState, { midiController, socketController }) => { 
 	const state = getState()
 
 	// Stop all previously loaded audios
