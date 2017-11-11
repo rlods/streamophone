@@ -14,12 +14,12 @@ import App from './containers/App'
 import Controller from './controllers/Controller'
 import MidiController from './controllers/MidiController'
 import SocketController from './controllers/SocketController'
-import { Strategy } from './controllers/strategies'
+import KeyboardBasicStrategy from './controllers/strategies/KeyboardBasicStrategy'
 
 // --------------------------------------------------------------
 
 const enableLogger = false // process.env.NODE_ENV !== 'production'
-const controller = new Controller(new Strategy()) // Basic controller with basic strategy (eg. for computer keyboard)
+const controller = new Controller(new KeyboardBasicStrategy()) // Basic controller with basic strategy (eg. for computer keyboard)
 const midiController = new MidiController()
 const socketController = new SocketController('http://129.102.147.114:3000', 'main')
 
