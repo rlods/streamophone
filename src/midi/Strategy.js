@@ -29,7 +29,7 @@ export const StrategyTypes = {
 	},
 	KEYBOARD_24: {
 		id: 'KEYBOARD_24',
-		label: 'OXYGEN25 (24 samples)'
+		label: 'OXYGEN25 (32 samples)'
 	},
 	CUSTOM_SOCKET_STRATEGY: {
 		id: 'CUSTOM_SOCKET_STRATEGY',
