@@ -2,10 +2,6 @@ import { startSample, stopSample, setSampleVolume } from '../actions/sampling'
 import MidiStrategy from './midiStrategy'
 
 export default class MidiController extends MidiStrategy {
-	constructor() {
-		super()
-	}
-
 	handleMessage(dispatch, channel, key, velocity) {
 		if (channel===176 && key>=1 && key<=8) {
 			// change volume of key-1

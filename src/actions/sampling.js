@@ -1,9 +1,3 @@
-export const changeSampleCount = count => dispatch => dispatch({
-	type: 'SAMPLING_SET_COUNT',
-	data: {
-		count
-	}
-})
 
 export const changeSamplerType = samplerType => dispatch => dispatch({
 	type: 'SAMPLING_SET_SAMPLER_TYPE',
@@ -48,6 +42,14 @@ export const stopSample = sampleIndex => (dispatch, getState) => {
 	const track = tracks[indexMod]
 	if (track.playing) {
 		audio.pause()
+		// TODO: do we really need the following dispatch which is already handle by the addEventListener('pause')
+		dispatch({
+			type: 'SAMPLING_SET_TRACK_STATUS',
+			data: {
+				playing: false,
+				trackId: track.id
+			}
+		})
 	}
 }
 

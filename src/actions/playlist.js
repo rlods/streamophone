@@ -18,6 +18,7 @@ export const changePlaylistId = id => dispatch => dispatch({
 })
 
 export const loadAudios = tracks => tracks.map(track => {
+	// We test if gain is available on track but sadly it's only available when getting the track data individually
 	track.volume1 = !track.gain ? 0.5 : 0.5 * Math.pow(10, ((-12 - track.gain) / 20))
 	if (track.volume1 > 1.0) track.volume1 = 1.0
 	track.volume2 = 1.0
@@ -29,38 +30,60 @@ export const loadAudios = tracks => tracks.map(track => {
 export const loadTracks = async tracksIds => {
 	const tracks = await Promise.all(tracksIds.map(async trackId => fetchDeezerAPI(`track/${trackId}`)))
 	const audios = loadAudios(tracks)
-	return {
-		audios,
-		tracks
-	}
+	return { audios, tracks }
 }
 
 export const loadPlaylist = () => async (dispatch, getState, midiController) => { 
 	const state = getState()
 
+	// Stop all previously loaded audios
+	state.sampling.audios.forEach(audio => audio.pause())
+
+	// Create sampling midi strategy if specified
+	let samplingCount = 32
 	switch (state.sampling.samplerType)
 	{
-	case 'buttons':
+	case 'buttons-32':
+		samplingCount = 32
 		midiController.strategy = new ButtonsStrategy()
 		break
-	case 'singleslider':
+	case 'buttons-64':
+		samplingCount = 64
+		midiController.strategy = new ButtonsStrategy()
+		break
+	case 'singleslider-32':
+		samplingCount = 32
 		midiController.strategy = new SingleSliderStrategy()
 		break
-	case 'multisliders8':
-		midiController.strategy = new MultiSlidersStrategy(state.sampling.count)
+	case 'singleslider-64':
+		samplingCount = 64
+		midiController.strategy = new SingleSliderStrategy()
+		break
+	case 'multisliders-8-32':
+		samplingCount = 32
+		midiController.strategy = new MultiSlidersStrategy(samplingCount)
+		break
+	case 'multisliders-8-64':
+		samplingCount = 64
+		midiController.strategy = new MultiSlidersStrategy(samplingCount)
+		break
+	default:
+		midiController.strategy = null
 		break
 	}
 
+	// Fetch playlist tracks data
 	const playlist = await fetchDeezerAPI(`playlist/${state.playlist.id}`)
 	let audios = null, tracks = null
 	if (ENABLE_VOLUME_FROM_GAIN) {
-		const tracksIds = shuffleArray(playlist.tracks.data, state.sampling.count).map(track => track.id)
+		// It's really cool but we should not rely on it since it requires to request the API for each track
+		const tracksIds = shuffleArray(playlist.tracks.data, samplingCount).map(track => track.id)
 		const chunks = await Promise.all(chunkArray(tracksIds, DEEZER_API_SIMULTANEOUS_MAX_CALLS, loadTracks))
 		audios = Array.prototype.concat.apply([], chunks.map(chunk => chunk.audios))
 		tracks = Array.prototype.concat.apply([], chunks.map(chunk => chunk.tracks))
 	}
 	else {
-		tracks = shuffleArray(playlist.tracks.data, state.sampling.count)
+		tracks = shuffleArray(playlist.tracks.data, samplingCount)
 		audios = loadAudios(tracks)
 	}
 

@@ -27,6 +27,17 @@ class App extends Component {
 				<div className="app-menu">
 					<div className="app-fields">
 						<div className="app-field">
+							<select className="control" onChange={this.props.onChangeSamplerType}>
+								<option value="">Sampler Type...</option>
+								<option value="buttons-32">BCF2000 - Buttons (32 samples)</option>
+								<option value="buttons-64">BCF2000 - Buttons (64 samples)</option>
+								<option value="singleslider-32">BCF2000 - Single Slider (32 samples)</option>
+								<option value="singleslider-64">BCF2000 - Single Slider (64 samples)</option>
+								<option value="multisliders-8-32">BCF2000 - 8 Sliders (32 samples)</option>
+								<option value="multisliders-8-64">BCF2000 - 8 Sliders (64 samples)</option>
+							</select>
+						</div>
+						<div className="app-field">
 							<select className="control" onChange={this.props.onChangePlaylistId}>
 								<option value="1083902971">Hits 2017</option>
 								<option value="791313621">The Greatest Piano Classics</option>
@@ -35,19 +46,6 @@ class App extends Component {
 							</select>
 						</div>
 						<Field type="number" name="Playlist ID" value={this.props.playlistId} onChange={this.props.onChangePlaylistId} />
-					</div>
-					<div className="app-fields">
-						<div className="app-field">
-							<select className="control" onChange={this.props.onChangeSamplerType}>
-								<option value="">Sampler Type...</option>
-								<option value="buttons">Buttons</option>
-								<option value="singleslider">Single Slider</option>
-								<option value="multisliders8">Multi Sliders 8</option>
-							</select>
-						</div>
-						<Field type="number" name="Sample Count" value={this.props.samplesCount} onChange={this.props.onChangeSampleCount} />
-					</div>
-					<div className="app-fields">
 						<div className="app-field">
 							<button className="control" onClick={this.props.onLoadPlaylist}>Load playlist</button>
 						</div>
@@ -63,8 +61,6 @@ class App extends Component {
 App.propTypes = {
 	playlistId: PropTypes.number,
 	playlistData: PropTypes.object,
-	samplesCount: PropTypes.number,
-	onChangeSampleCount: PropTypes.func,
 	onChangeSamplerType: PropTypes.func,
 	onChangePlaylistId: PropTypes.func,
 	onLoadPlaylist: PropTypes.func

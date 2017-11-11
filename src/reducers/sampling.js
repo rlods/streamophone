@@ -1,13 +1,9 @@
 
 const INITIAL_STATE = {
-	count: 26,
 	audios: [],
 	tracks: [],
 	samplerType: ''
 }
-
-const setCount = (state, { count }) =>
-	({ ...state, count })
 
 const setTracks = (state, { audios, tracks }) =>
 	({ ...state, audios, tracks })
@@ -21,8 +17,6 @@ const setSamplerType = (state, { samplerType }) =>
 export default (state = INITIAL_STATE, action) => {
 	switch (action.type)
 	{
-	case 'SAMPLING_SET_COUNT':
-		return setCount(state, action.data)
 	case 'SAMPLING_SET_SAMPLER_TYPE':
 		return setSamplerType(state, action.data)
 	case 'SAMPLING_SET_TRACKS':

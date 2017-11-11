@@ -1,4 +1,4 @@
-import { startSample, stopSample, setSampleVolume } from '../actions/sampling'
+import { startSample, stopSample } from '../actions/sampling'
 import MidiStrategy from './midiStrategy'
 
 export default class MidiControllerSlides extends MidiStrategy {

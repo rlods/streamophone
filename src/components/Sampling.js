@@ -25,7 +25,8 @@ class Samples extends Component {
 	render() {
 		switch (this.props.samplerType)
 		{
-			case 'multisliders8':
+			case 'multisliders-8-32':
+			case 'multisliders-8-64':
 				const chunks = chunkArray(this.props.tracks, this.props.tracks.length / 8, tracks => tracks)
 				return (
 					<div className="Samples">
