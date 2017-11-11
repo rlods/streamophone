@@ -8,6 +8,7 @@ import CustomSocketStrategy from '../midi/strategy_CustomSocket'
 import MultiSlidersStrategy from '../midi/midiStrategy_MultiSliders'
 import SingleSliderStrategy from '../midi/midiStrategy_SingleSlider'
 import LightPadBlockStrategy from '../midi/midiStrategy_LightPadBlock'
+import KeyboardStrategy from '../midi/midiStrategy_Keyboard'
 
 // ------------------------------------------------------------------
 
@@ -82,6 +83,10 @@ export const loadPlaylist = () => async (dispatch, getState, { midiController, s
 	case StrategyTypes.CUSTOM_SOCKET_STRATEGY.id:
 		samplingCount = 5
 		socketController.strategy = new CustomSocketStrategy()
+		break
+	case StrategyTypes.KEYBOARD_24.id:
+		samplingCount = 24
+		midiController.strategy = new KeyboardStrategy()
 		break
 	default:
 		samplingCount = 26
