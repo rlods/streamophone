@@ -1,6 +1,7 @@
 import { chunkArray, fetchDeezerAPI, shuffleArray } from '../tools'
 import { StrategyTypes } from '../midi/midiStrategy'
 //
+import BasicStrategy from '../midi/midiStrategy'
 import ButtonsStrategy from '../midi/midiStrategy_Buttons'
 import MultiSlidersStrategy from '../midi/midiStrategy_MultiSliders'
 import SingleSliderStrategy from '../midi/midiStrategy_SingleSlider'
@@ -78,7 +79,7 @@ export const loadPlaylist = () => async (dispatch, getState, midiController) => 
 		break
 	default:
 		samplingCount = 32
-		midiController.strategy = null
+		midiController.strategy = new BasicStrategy()
 		break
 	}
 

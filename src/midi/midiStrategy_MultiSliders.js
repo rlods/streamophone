@@ -1,5 +1,5 @@
 import { startSample, stopSample } from '../actions/sampling'
-import { MidiStrategy } from './midiStrategy'
+import MidiStrategy from './midiStrategy'
 
 export default class Strategy extends MidiStrategy {
 	constructor(slidersCount, slidersSteps, samplesCount) {

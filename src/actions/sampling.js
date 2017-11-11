@@ -6,6 +6,24 @@ export const changeSamplerType = samplerType => dispatch => dispatch({
 	}
 })
 
+export const handleKeyDown = keyCode => async (dispatch, getState, midiController) => {
+	midiController.strategy.handleKeyDown(dispatch, keyCode)
+}
+
+export const handleKeyUp = keyCode => (dispatch, getState, midiController) => {
+	midiController.strategy.handleKeyUp(dispatch, keyCode)
+}
+
+export const setSampleVolume = (sampleIndex, volume) => (dispatch, getState) => {
+	const state = getState()
+	const { audios, tracks } = state.sampling
+	const indexMod = Math.abs(sampleIndex) % audios.length
+	const audio = audios[indexMod]
+	const track = tracks[indexMod]
+	track.volume2 = volume < 0 ? 0 : volume > 1 ? 1 : volume
+	audio.volume = track.volume1 * track.volume2
+}
+
 export const startSample = sampleIndex => async (dispatch, getState) => {
 	const state = getState()
 	const { audios, tracks } = state.sampling
@@ -37,7 +55,7 @@ export const startSample = sampleIndex => async (dispatch, getState) => {
 	}
 }
 
-export const stopSample = sampleIndex => (dispatch, getState) => {
+export const stopSample = sampleIndex => async (dispatch, getState) => {
 	const state = getState()
 	const { audios, tracks } = state.sampling
 	const indexMod = Math.abs(sampleIndex) % audios.length
@@ -56,14 +74,4 @@ export const stopSample = sampleIndex => (dispatch, getState) => {
 		})
 		*/
 	}
-}
-
-export const setSampleVolume = (sampleIndex, volume) => (dispatch, getState) => {
-	const state = getState()
-	const { audios, tracks } = state.sampling
-	const indexMod = Math.abs(sampleIndex) % audios.length
-	const audio = audios[indexMod]
-	const track = tracks[indexMod]
-	track.volume2 = volume < 0 ? 0 : volume > 1 ? 1 : volume
-	audio.volume = track.volume1 * track.volume2
 }

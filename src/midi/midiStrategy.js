@@ -1,3 +1,6 @@
+import { startSample, stopSample } from '../actions/sampling'
+
+// --------------------------------------------------------------
 
 export const StrategyTypes = {
 	BCF2000_BUTTONS_32: {
@@ -30,5 +33,22 @@ export const StrategyTypes = {
 	}
 }
 
-export class MidiStrategy {
+// --------------------------------------------------------------
+
+const A_CHAR_CODE = 65
+
+// --------------------------------------------------------------
+
+export default class MidiStrategy {
+	handleMessage(dispatch, channel, key, velocity) {
+	}
+
+	handleKeyDown(dispatch, keyCode) {
+		dispatch(startSample(keyCode - A_CHAR_CODE))
+	}
+
+	handleKeyUp(dispatch, keyCode) {
+		dispatch(stopSample(keyCode - A_CHAR_CODE))
+	}
+
 }
