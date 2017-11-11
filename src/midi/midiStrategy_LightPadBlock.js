@@ -30,9 +30,10 @@ export default class Strategy extends MidiStrategy {
 			console.log("key", key, "channel", channel)
             if (keyMapping[key]) {
                 const mapping = keyMapping[key]
-                if (channel===mapping[1]) {
+                console.log("mapping", mapping)
+                if (channel>=145 && channel<160) {
                     dispatch(startSample(mapping[0]))
-                } else if (channel===mapping[2]) {
+                } else if (channel<145 && channel>=130) {
                     dispatch(stopSample(mapping[0]))
                 }
             }
