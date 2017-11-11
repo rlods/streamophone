@@ -76,12 +76,12 @@ export const loadPlaylist = () => async (dispatch, getState, { midiController, s
 		samplingCount = 64
 		midiController.strategy = new MultiSlidersStrategy(8, 128, samplingCount)
 		break
-	case StrategyTypes.LIGHTPADBLOCK_32.id:
+	case StrategyTypes.LIGHTPADBLOCK_16.id:
 		samplingCount = 16
 		midiController.strategy = new LightPadBlockStrategy()
 		break
 	case StrategyTypes.CUSTOM_SOCKET_STRATEGY.id:
-		samplingCount = 5
+		samplingCount = 25
 		midiController.strategy = new BasicStrategy() // to support keyboard
 		socketController.strategy = new CustomSocketStrategy()
 		break

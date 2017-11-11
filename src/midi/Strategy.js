@@ -23,9 +23,9 @@ export const StrategyTypes = {
 		id: 'BCF2000_MULTISLIDERS_8_64',
 		label: 'BCF2000 - 8 Sliders (64 samples)'
 	},
-	LIGHTPADBLOCK_32: {
-		id: 'LIGHTPADBLOCK_32',
-		label: 'LIGHTPADBLOCK (32 samples)'
+	LIGHTPADBLOCK_16: {
+		id: 'LIGHTPADBLOCK_16',
+		label: 'LIGHTPADBLOCK (16 samples)'
 	},
 	KEYBOARD_24: {
 		id: 'KEYBOARD_24',
@@ -33,7 +33,7 @@ export const StrategyTypes = {
 	},
 	CUSTOM_SOCKET_STRATEGY: {
 		id: 'CUSTOM_SOCKET_STRATEGY',
-		label: 'CUSTOM_SOCKET_STRATEGY (10 samples)'
+		label: 'CUSTOM_SOCKET_STRATEGY (25 samples)'
 	}
 }
 

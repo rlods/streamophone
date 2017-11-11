@@ -33,14 +33,20 @@ class Samples extends Component {
 						{chunks1.map((tracks, index) => <div key={index}>{tracks.map(track => <Sample key={track.id} {...track} />)}</div>)}
 					</div>
 				)
-			case StrategyTypes.LIGHTPADBLOCK_32.id:
+			case StrategyTypes.LIGHTPADBLOCK_16.id:
 				const chunks2 = chunkArray(this.props.tracks, Math.sqrt(this.props.tracks.length), tracks => tracks)
 				return (
 					<div className="samples">
 						{chunks2.map((tracks, index) => <div key={index}>{tracks.map(track => <Sample key={track.id} {...track} />)}</div>)}
 					</div>
 				)
-			
+			case StrategyTypes.CUSTOM_SOCKET_STRATEGY.id:
+				const chunks3 = chunkArray(this.props.tracks, this.props.tracks.length / 5, tracks => tracks)
+				return (
+					<div className="samples">
+						{chunks3.map((tracks, index) => <div key={index}>{tracks.map(track => <Sample key={track.id} {...track} />)}</div>)}
+					</div>
+				)			
 			default:
 				return (
 					<div className="samples">
