@@ -1,7 +1,9 @@
 import { startSample, stopSample, setSampleVolume } from '../actions/sampling'
+import MidiStrategy from './midiStrategy'
 
-export default class MidiController {
+export default class MidiController extends MidiStrategy {
 	constructor() {
+		super()
 	}
 
 	handleMessage(dispatch, ch, key, vel) {

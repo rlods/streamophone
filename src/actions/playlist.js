@@ -32,8 +32,11 @@ export const loadTracks = async tracksIds => {
 	}
 }
 
-export const loadPlaylist = () => async (dispatch, getState) => {
-    const state = getState()
+export const loadPlaylist = () => async (dispatch, getState, midiController) => { 
+	const state = getState()
+
+ 	midiController.strategy.samplesCount = state.sampling.count
+
 	const playlist = await fetchDeezerAPI(`playlist/${state.playlist.id}`)
 	let audios = null, tracks = null
 	if (ENABLE_VOLUME_FROM_GAIN) {

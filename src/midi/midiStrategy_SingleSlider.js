@@ -1,7 +1,9 @@
 import { startSample, stopSample, setSampleVolume } from '../actions/sampling'
+import MidiStrategy from './midiStrategy'
 
-export default class MidiControllerSlides {
+export default class MidiControllerSlides extends MidiStrategy {
 	constructor() {
+		super()
 		this.currentSample = 0
 	}
 

@@ -9,7 +9,7 @@ import App from '../components/App'
 const mapStateToProps = (state, ownProps) => ({
 	playlistData: state.playlist.data,
 	playlistId: state.playlist.id,
-	sampleCount: state.sampling.count
+	samplesCount: state.sampling.count
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({

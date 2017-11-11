@@ -35,7 +35,7 @@ class App extends Component {
 							</select>
 						</div>
 						<Field type="number" name="Playlist ID" value={this.props.playlistId} onChange={this.props.onChangePlaylistId} />
-						<Field type="number" name="Sample Count" value={this.props.sampleCount} onChange={this.props.onChangeSampleCount} />
+						<Field type="number" name="Sample Count" value={this.props.samplesCount} onChange={this.props.onChangeSampleCount} />
 						<div className="app-field">
 							<button className="control" onClick={this.props.onLoadPlaylist}>Load playlist</button>
 						</div>
@@ -51,7 +51,7 @@ class App extends Component {
 App.propTypes = {
 	playlistId: PropTypes.number,
 	playlistData: PropTypes.object,
-	sampleCount: PropTypes.number,
+	samplesCount: PropTypes.number,
 	onChangeSampleCount: PropTypes.func,
 	onChangePlaylistId: PropTypes.func,
 	onLoadPlaylist: PropTypes.func
