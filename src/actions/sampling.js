@@ -5,13 +5,13 @@ export const changeSampleCount = count => dispatch => dispatch({
 	}
 })
 
-export const startSample = sampleIndex => (dispatch, getState) => {
+export const startSample = sampleIndex => async (dispatch, getState) => {
 	const state = getState()
 	const { audios, tracks } = state.sampling
 	const indexMod = Math.abs(sampleIndex) % audios.length
 	const audio = audios[indexMod]
 	const track = tracks[indexMod]
-	if (audio.paused) {
+	if (!track.playing) {
 		audio.addEventListener('pause', () => {
 			dispatch({
 				type: 'SAMPLING_SET_TRACK_STATUS',
@@ -22,7 +22,7 @@ export const startSample = sampleIndex => (dispatch, getState) => {
 			})
 		})
 		audio.currentTime = 0
-		audio.play()
+		await audio.play()
 		dispatch({
 			type: 'SAMPLING_SET_TRACK_STATUS',
 			data: {
@@ -35,10 +35,13 @@ export const startSample = sampleIndex => (dispatch, getState) => {
 
 export const stopSample = sampleIndex => (dispatch, getState) => {
 	const state = getState()
-	const audios = state.sampling.audios
-	const audio = audios[Math.abs(sampleIndex) % audios.length]
-	if (!audio.paused)
+	const { audios, tracks } = state.sampling
+	const indexMod = Math.abs(sampleIndex) % audios.length
+	const audio = audios[indexMod]
+	const track = tracks[indexMod]
+	if (track.playing) {
 		audio.pause()
+	}
 }
 
 export const setSampleVolume = (sampleIndex, volume) => (dispatch, getState) => {
