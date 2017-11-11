@@ -1,10 +1,10 @@
 import { startSample, stopSample } from '../actions/sampling'
-import MidiStrategy from './midiStrategy'
+import { MidiStrategy } from './midiStrategy'
 
 export default class MidiControllerMultiSliders extends MidiStrategy {
-	constructor(samplesCount) {
+	constructor(slidersCount, samplesCount) {
 		super()
-		this.slidersCount = 8 // TODO: configurable
+		this.slidersCount = slidersCount
 		this.slidersSteps = 128 // TODO: configurable
 		this.samplesCount = samplesCount
 		this.samplesCountPerSlider = this.samplesCount / this.slidersCount

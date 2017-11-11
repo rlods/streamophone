@@ -1,5 +1,5 @@
 import { startSample, stopSample, setSampleVolume } from '../actions/sampling'
-import MidiStrategy from './midiStrategy'
+import { MidiStrategy } from './midiStrategy'
 
 export default class MidiController extends MidiStrategy {
 	handleMessage(dispatch, channel, key, velocity) {

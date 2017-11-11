@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import classNames from 'classnames'
 //
 import { chunkArray } from '../tools'
+import { StrategyTypes } from '../midi/midiStrategy'
 import './Sampling.css'
 
 // --------------------------------------------------------------
@@ -25,8 +26,8 @@ class Samples extends Component {
 	render() {
 		switch (this.props.samplerType)
 		{
-			case 'multisliders-8-32':
-			case 'multisliders-8-64':
+			case StrategyTypes.BCF2000_MULTISLIDERS_8_32.id:
+			case StrategyTypes.BCF2000_MULTISLIDERS_8_64.id:
 				const chunks = chunkArray(this.props.tracks, this.props.tracks.length / 8, tracks => tracks)
 				return (
 					<div className="Samples">

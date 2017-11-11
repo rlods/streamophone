@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+//
+import { StrategyTypes } from '../midi/midiStrategy'
 import Player from '../containers/Player'
 import './App.css'
 
@@ -29,12 +31,8 @@ class App extends Component {
 						<div className="app-field">
 							<select className="control" onChange={this.props.onChangeSamplerType}>
 								<option value="">Sampler Type...</option>
-								<option value="buttons-32">BCF2000 - Buttons (32 samples)</option>
-								<option value="buttons-64">BCF2000 - Buttons (64 samples)</option>
-								<option value="singleslider-32">BCF2000 - Single Slider (32 samples)</option>
-								<option value="singleslider-64">BCF2000 - Single Slider (64 samples)</option>
-								<option value="multisliders-8-32">BCF2000 - 8 Sliders (32 samples)</option>
-								<option value="multisliders-8-64">BCF2000 - 8 Sliders (64 samples)</option>
+								{Object.values(StrategyTypes).map((strategy) =>
+									<option key={strategy.id} value={strategy.id}>{strategy.label}</option>)}
 							</select>
 						</div>
 						<div className="app-field">

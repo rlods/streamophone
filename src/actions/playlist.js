@@ -2,6 +2,7 @@ import { chunkArray, fetchDeezerAPI, shuffleArray } from '../tools'
 import ButtonsStrategy from '../midi/midiStrategy_Buttons'
 import MultiSlidersStrategy from '../midi/midiStrategy_MultiSliders'
 import SingleSliderStrategy from '../midi/midiStrategy_SingleSlider'
+import { StrategyTypes } from '../midi/midiStrategy'
 
 // ------------------------------------------------------------------
 
@@ -45,29 +46,29 @@ export const loadPlaylist = () => async (dispatch, getState, midiController) => 
 	let samplingCount = 0
 	switch (state.sampling.samplerType)
 	{
-	case 'buttons-32':
+	case StrategyTypes.BCF2000_BUTTONS_32.id:
 		samplingCount = 32
 		midiController.strategy = new ButtonsStrategy()
 		break
-	case 'buttons-64':
+	case StrategyTypes.BCF2000_BUTTONS_64.id:
 		samplingCount = 64
 		midiController.strategy = new ButtonsStrategy()
 		break
-	case 'singleslider-32':
+	case StrategyTypes.BCF2000_SINGLESLIDER_32.id:
 		samplingCount = 32
 		midiController.strategy = new SingleSliderStrategy()
 		break
-	case 'singleslider-64':
+	case StrategyTypes.BCF2000_SINGLESLIDER_64.id:
 		samplingCount = 64
 		midiController.strategy = new SingleSliderStrategy()
 		break
-	case 'multisliders-8-32':
+	case StrategyTypes.BCF2000_MULTISLIDERS_8_32.id:
 		samplingCount = 32
-		midiController.strategy = new MultiSlidersStrategy(samplingCount)
+		midiController.strategy = new MultiSlidersStrategy(8, samplingCount)
 		break
-	case 'multisliders-8-64':
+	case StrategyTypes.BCF2000_MULTISLIDERS_8_64.id:
 		samplingCount = 64
-		midiController.strategy = new MultiSlidersStrategy(samplingCount)
+		midiController.strategy = new MultiSlidersStrategy(8, samplingCount)
 		break
 	default:
 		samplingCount = 32
