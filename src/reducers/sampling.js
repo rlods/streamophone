@@ -9,6 +9,12 @@ const INITIAL_STATE = {
 const setTracks = (state, { audios, tracks }) =>
 	({ ...state, audios, tracks })
 
+const setTrackNormalizationVolume = (state, { trackId, volume1 }) =>
+	({ ...state, tracks: state.tracks.map(other => other.id !== trackId ? other : { ...other, volume1 }) })
+
+const setTrackVolume = (state, { trackId, volume2 }) =>
+	({ ...state, tracks: state.tracks.map(other => other.id !== trackId ? other : { ...other, volume2 }) })
+
 const setTrackStatus = (state, { playing, trackId }) =>
 	({ ...state, tracks: state.tracks.map(other => other.id !== trackId ? other : { ...other, playing }) })
 
@@ -27,8 +33,12 @@ export default (state = INITIAL_STATE, action) => {
 		return setSamplerType(state, action.data)
 	case 'SAMPLING_SET_TRACKS':
 		return setTracks(state, action.data)
+	case 'SAMPLING_SET_TRACK_NORMALIZATION_VOLUME':
+		return setTrackNormalizationVolume(state, action.data)
 	case 'SAMPLING_SET_TRACK_STATUS':
 		return setTrackStatus(state, action.data)
+	case 'SAMPLING_SET_TRACK_VOLUME':
+		return setTrackVolume(state, action.data)
 	default:
 		return state
 	}

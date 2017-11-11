@@ -7,21 +7,13 @@ export const StrategyTypes = {
 		id: 'KEYBOARD_AZERTY',
 		label: 'Keyboard Azerty (26 samples)'
 	},
-	BCF2000_BUTTONS_32: {
-		id: 'BCF2000_BUTTONS_32',
-		label: 'BCF2000 - Buttons (32 samples)'
+	BCF2000_BUTTONS: {
+		id: 'BCF2000_BUTTONS',
+		label: 'BCF2000 - Buttons (8 samples)'
 	},
-	BCF2000_BUTTONS_64: {
-		id: 'BCF2000_BUTTONS_64',
-		label: 'BCF2000 - Buttons (64 samples)'
-	},
-	BCF2000_SINGLESLIDER_32: {
-		id: 'BCF2000_SINGLESLIDER_32',
-		label: 'BCF2000 - Single Slider (32 samples)'
-	},
-	BCF2000_SINGLESLIDER_64: {
-		id: 'BCF2000_SINGLESLIDER_64',
-		label: 'BCF2000 - Single Slider (64 samples)'
+	BCF2000_SINGLESLIDER: {
+		id: 'BCF2000_SINGLESLIDER',
+		label: 'BCF2000 - 1 Slider (127 samples)'
 	},
 	BCF2000_MULTISLIDERS_8_32: {
 		id: 'BCF2000_MULTISLIDERS_8_32',

@@ -9,12 +9,30 @@ export const changeSampleDuration = sampleDuration => dispatch => dispatch({
 	}
 })
 
+export const changeSampleNormalizationVolume = (trackId, volume1) => dispatch => dispatch({
+	type: 'SAMPLING_SET_TRACK_NORMALIZATION_VOLUME',
+	data: {
+		trackId,
+		volume1
+	}
+})
+
+export const changeSampleVolume = (trackId, volume2) => dispatch => dispatch({
+	type: 'SAMPLING_SET_TRACK_VOLUME',
+	data: {
+		trackId,
+		volume2
+	}
+})
+
 export const changeSamplerType = samplerType => dispatch => dispatch({
 	type: 'SAMPLING_SET_SAMPLER_TYPE',
 	data: {
 		samplerType
 	}
 })
+
+// --------------------------------------------------------------
 
 export const handleKeyDown = keyCode => async (dispatch, getState, midiController) => {
 	midiController.strategy.handleKeyDown(dispatch, keyCode)
@@ -30,8 +48,9 @@ export const setSampleVolume = (sampleIndex, volume) => (dispatch, getState) => 
 	const indexMod = Math.abs(sampleIndex) % audios.length
 	const audio = audios[indexMod]
 	const track = tracks[indexMod]
-	track.volume2 = volume < 0 ? 0 : volume > 1 ? 1 : volume
-	audio.volume = track.volume1 * track.volume2
+	const volume2 = volume < 0 ? 0 : volume > 1 ? 1 : volume
+	audio.volume = track.volume1 * volume2
+	changeSampleVolume(track.id, volume2)
 }
 
 export const startSample = sampleIndex => async (dispatch, getState) => {

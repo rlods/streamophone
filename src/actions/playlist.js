@@ -1,5 +1,6 @@
 import { fetchDeezerAPI, shuffleArray } from '../tools'
 import { StrategyTypes } from '../midi/midiStrategy'
+import { changeSampleNormalizationVolume } from './sampling'
 //
 import BasicStrategy from '../midi/midiStrategy'
 import ButtonsStrategy from '../midi/midiStrategy_Buttons'
@@ -9,7 +10,7 @@ import LightPadBlockStrategy from '../midi/midiStrategy_LightPadBlock'
 
 // ------------------------------------------------------------------
 
-const ENABLE_VOLUME_FROM_GAIN = false
+const ENABLE_VOLUME_FROM_GAIN = true
 
 // ------------------------------------------------------------------
 
@@ -20,23 +21,26 @@ export const changePlaylistId = id => dispatch => dispatch({
 	}
 })
 
-export const loadAudios = tracks => tracks.map(track => {
+export const normalizeAudio = async (dispatch, track, audio) => {
+	const augmentedTrack = await fetchDeezerAPI(`track/${track.id}`)
+	let volume1 = !augmentedTrack.gain ? 0.5 : 0.5 * Math.pow(10, ((-12 - augmentedTrack.gain) / 20))
+	if (volume1 > 1.0) volume1 = 1.0
+	console.log(`Normalized ${track.id}: ${track.volume1} -> ${volume1}`)
+	audio.volume = volume1 * track.volume2
+	dispatch(changeSampleNormalizationVolume(track.id, volume1))
+}
+
+export const loadAudios = (dispatch, tracks) => tracks.map(track => {
+	const audio = new Audio(track.preview)
 	track.volume1 = 0.5
 	track.volume2 = 1.0
-	const audio = new Audio(track.preview)
 	audio.volume = track.volume1 * track.volume2
+
+	if (ENABLE_VOLUME_FROM_GAIN)
+		normalizeAudio(dispatch, track, audio)
+
 	return audio
 })
-
-export const normalizeTracks = (tracks, audios) => {
-	tracks.forEach(async (track, index) => {
-		const audio = audios[index]
-		const augmentedTrack = await fetchDeezerAPI(`track/${track.id}`)
-		let volume = !augmentedTrack.gain ? 0.5 : 0.5 * Math.pow(10, ((-12 - augmentedTrack.gain) / 20))
-		if (volume > 1.0) volume = 1.0
-		console.log('Normalized Volume:', volume) // TODO: apply on audio
-	})
-}
 
 export const validateTrack = track => !!track.preview
 
@@ -54,20 +58,12 @@ export const loadPlaylist = () => async (dispatch, getState, midiController) => 
 		samplingCount = 26
 		midiController.strategy = new BasicStrategy()
 		break
-	case StrategyTypes.BCF2000_BUTTONS_32.id:
-		samplingCount = 32
+	case StrategyTypes.BCF2000_BUTTONS.id:
+		samplingCount = 8
 		midiController.strategy = new ButtonsStrategy()
 		break
-	case StrategyTypes.BCF2000_BUTTONS_64.id:
-		samplingCount = 64
-		midiController.strategy = new ButtonsStrategy()
-		break
-	case StrategyTypes.BCF2000_SINGLESLIDER_32.id:
-		samplingCount = 32
-		midiController.strategy = new SingleSliderStrategy()
-		break
-	case StrategyTypes.BCF2000_SINGLESLIDER_64.id:
-		samplingCount = 64
+	case StrategyTypes.BCF2000_SINGLESLIDER.id:
+		samplingCount = 127
 		midiController.strategy = new SingleSliderStrategy()
 		break
 	case StrategyTypes.BCF2000_MULTISLIDERS_8_32.id:
@@ -91,10 +87,7 @@ export const loadPlaylist = () => async (dispatch, getState, midiController) => 
 	// Fetch playlist tracks data
 	const playlist = await fetchDeezerAPI(`playlist/${state.playlist.id}`)
 	const tracks = shuffleArray(playlist.tracks.data, samplingCount, validateTrack)
-	const audios = loadAudios(tracks)
-
-	if (ENABLE_VOLUME_FROM_GAIN)
-		normalizeTracks(tracks, audios)
+	const audios = loadAudios(dispatch, tracks)
 
 	dispatch({
 		type: 'PLAYLIST_SET_DATA',
