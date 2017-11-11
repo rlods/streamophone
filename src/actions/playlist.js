@@ -75,7 +75,7 @@ export const loadPlaylist = () => async (dispatch, getState, midiController) => 
 		midiController.strategy = new MultiSlidersStrategy(8, 128, samplingCount)
 		break
 	case StrategyTypes.LIGHTPADBLOCK_32.id:
-		samplingCount = 32
+		samplingCount = 16
 		midiController.strategy = new LightPadBlockStrategy()
 		break
 	default:

@@ -30,7 +30,7 @@ export default class MidiController {
 
 	onMIDIMessage(message) {
 		const data = message.data; // this gives us our [command/channel, note, velocity] data.
-		console.log('MIDI data', data); // MIDI data [144, 63, 73]
+		// console.log('MIDI data', data); // MIDI data [144, 63, 73]
 		if (this.strategy)
 			this.strategy.handleMessage(this.dispatch, data[0], data[1], data[2])
 	}

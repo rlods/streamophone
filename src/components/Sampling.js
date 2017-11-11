@@ -26,13 +26,21 @@ class Samples extends Component {
 		switch (this.props.samplerType)
 		{
 			case StrategyTypes.BCF2000_MULTISLIDERS_8_32.id:
-			case StrategyTypes.BCF2000_MULTISLIDERS_8_64.id:
-				const chunks = chunkArray(this.props.tracks, this.props.tracks.length / 8, tracks => tracks)
+			case StrategyTypes.BCF2000_MULTISLIDERS_8_64.id: 
+				const chunks1 = chunkArray(this.props.tracks, this.props.tracks.length / 8, tracks => tracks)
 				return (
 					<div className="samples">
-						{chunks.map((tracks, index) => <div key={index}>{tracks.map(track => <Sample key={track.id} {...track} />)}</div>)}
+						{chunks1.map((tracks, index) => <div key={index}>{tracks.map(track => <Sample key={track.id} {...track} />)}</div>)}
 					</div>
 				)
+			case StrategyTypes.LIGHTPADBLOCK_32.id:
+				const chunks2 = chunkArray(this.props.tracks, Math.sqrt(this.props.tracks.length), tracks => tracks)
+				return (
+					<div className="samples">
+						{chunks2.map((tracks, index) => <div key={index}>{tracks.map(track => <Sample key={track.id} {...track} />)}</div>)}
+					</div>
+				)
+			
 			default:
 				return (
 					<div className="samples">
