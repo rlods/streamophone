@@ -1,7 +1,7 @@
-import { startSample, stopSample, setSampleVolume } from '../actions/sampling'
+import { startSample, stopSample } from '../actions/sampling'
 import Strategy from './Strategy'
 
-let msgNum = 0
+// --------------------------------------------------------------
 
 const keyMapping = {
     51: [0, 152, 136],
@@ -22,8 +22,9 @@ const keyMapping = {
     60: [15, 147, 131]
 }
 
+// --------------------------------------------------------------
+
 export default class LightPadStrategy extends Strategy {
-	
 	handleMIDI(dispatch, channel, key, velocity) {
 		// messages are given four by four
 		if (key >= 48 && key <= 63 && channel < 209) {
@@ -33,7 +34,8 @@ export default class LightPadStrategy extends Strategy {
                 console.log("mapping", mapping)
                 if (channel>=145 && channel<160) {
                     dispatch(startSample(mapping[0]))
-                } else if (channel<145 && channel>=130) {
+                }
+                else if (channel<145 && channel>=130) {
                     dispatch(stopSample(mapping[0]))
                 }
             }

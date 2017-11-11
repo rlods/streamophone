@@ -6,7 +6,7 @@ import Controller from './Controller'
 
 export default class SocketController extends Controller {
 	constructor(url, prefix) {
-		super()
+		super(null)
 		this.prefix = prefix
 		this.url = url
 		this.ws = null

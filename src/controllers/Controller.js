@@ -1,8 +1,8 @@
 
 export default class Controller {
-	constructor() {
+	constructor(strategy) {
 		this.dispatch = null
-		this.strategy = null
+		this.strategy = strategy
 	}
 
 	attach(dispatch) {

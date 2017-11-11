@@ -4,7 +4,7 @@ import Controller from './Controller'
 
 export default class MidiController extends Controller {
 	constructor() {
-		super()
+		super(null)
 		this.init()
 	}
 
