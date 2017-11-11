@@ -33,6 +33,8 @@ export const loadTracks = async tracksIds => {
 	return { audios, tracks }
 }
 
+export const validateTrack = track => !!track.preview
+
 export const loadPlaylist = () => async (dispatch, getState, midiController) => { 
 	const state = getState()
 
@@ -40,7 +42,7 @@ export const loadPlaylist = () => async (dispatch, getState, midiController) => 
 	state.sampling.audios.forEach(audio => audio.pause())
 
 	// Create sampling midi strategy if specified
-	let samplingCount = 32
+	let samplingCount = 0
 	switch (state.sampling.samplerType)
 	{
 	case 'buttons-32':
@@ -68,6 +70,7 @@ export const loadPlaylist = () => async (dispatch, getState, midiController) => 
 		midiController.strategy = new MultiSlidersStrategy(samplingCount)
 		break
 	default:
+		samplingCount = 32
 		midiController.strategy = null
 		break
 	}
@@ -77,13 +80,13 @@ export const loadPlaylist = () => async (dispatch, getState, midiController) => 
 	let audios = null, tracks = null
 	if (ENABLE_VOLUME_FROM_GAIN) {
 		// It's really cool but we should not rely on it since it requires to request the API for each track
-		const tracksIds = shuffleArray(playlist.tracks.data, samplingCount).map(track => track.id)
+		const tracksIds = shuffleArray(playlist.tracks.data, samplingCount, validateTrack).map(track => track.id)
 		const chunks = await Promise.all(chunkArray(tracksIds, DEEZER_API_SIMULTANEOUS_MAX_CALLS, loadTracks))
 		audios = Array.prototype.concat.apply([], chunks.map(chunk => chunk.audios))
 		tracks = Array.prototype.concat.apply([], chunks.map(chunk => chunk.tracks))
 	}
 	else {
-		tracks = shuffleArray(playlist.tracks.data, samplingCount)
+		tracks = shuffleArray(playlist.tracks.data, samplingCount, validateTrack)
 		audios = loadAudios(tracks)
 	}
 

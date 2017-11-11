@@ -17,14 +17,18 @@ export const fetchDeezerAPI = url => new Promise((resolve, reject) => {
 	})
 })
 
-export const shuffleArray = (arr, size) => {
-	const shuffled = arr.slice(0)
-	let i = arr.length, temp, index
-	while (i--) {
-		index = Math.floor((i + 1) * Math.random())
-		temp = shuffled[index]
-		shuffled[index] = shuffled[i]
-		shuffled[i] = temp
+export const shuffleArray = (arr, size, validateItem) => {
+	const copy = arr.slice(0), res = []
+	let index, item
+	while (size > 0 && copy.length > 0) {
+		index = Math.floor(copy.length * Math.random())
+		item = copy.splice(index, 1)[0]
+		if (validateItem(item)) {
+			res.push(item)
+		}
+		else {
+			// console.log('Skipping', index, copy.length)
+		}
 	}
-	return shuffled.slice(0, size)
+	return res
 }

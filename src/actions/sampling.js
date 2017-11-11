@@ -12,7 +12,7 @@ export const startSample = sampleIndex => async (dispatch, getState) => {
 	const indexMod = Math.abs(sampleIndex) % audios.length
 	const audio = audios[indexMod]
 	const track = tracks[indexMod]
-	if (!track.playing) {
+	if (!track.playing && audio.readyState) {
 		audio.addEventListener('pause', () => {
 			dispatch({
 				type: 'SAMPLING_SET_TRACK_STATUS',
@@ -32,6 +32,9 @@ export const startSample = sampleIndex => async (dispatch, getState) => {
 			}
 		})
 	}
+	else {
+		console.log('Audio track is not available or ready', audio.readyState, track)
+	}
 }
 
 export const stopSample = sampleIndex => (dispatch, getState) => {
@@ -43,6 +46,7 @@ export const stopSample = sampleIndex => (dispatch, getState) => {
 	if (track.playing) {
 		audio.pause()
 		// TODO: do we really need the following dispatch which is already handle by the addEventListener('pause')
+		/*
 		dispatch({
 			type: 'SAMPLING_SET_TRACK_STATUS',
 			data: {
@@ -50,6 +54,7 @@ export const stopSample = sampleIndex => (dispatch, getState) => {
 				trackId: track.id
 			}
 		})
+		*/
 	}
 }
 
