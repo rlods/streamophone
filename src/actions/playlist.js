@@ -1,8 +1,9 @@
-import { fetchDeezerAPI, shuffleArray } from '../tools'
+import { chunkArray, fetchDeezerAPI, shuffleArray } from '../tools'
 
 // ------------------------------------------------------------------
 
 const DEEZER_API_SIMULTANEOUS_MAX_CALLS = 15
+const ENABLE_VOLUME_FROM_GAIN = false
 
 // ------------------------------------------------------------------
 
@@ -13,23 +14,18 @@ export const changePlaylistId = id => dispatch => dispatch({
 	}
 })
 
-export const chunkArray = (array, size, cb) => {
-	const results = []
-	for (let i = 0, j = array.length; i < j; i += size)
-		results.push(cb(array.slice(i, i + size)))
-	return results
-}
+export const loadAudios = tracks => tracks.map(track => {
+	track.volume1 = !track.gain ? 0.5 : 0.5 * Math.pow(10, ((-12 - track.gain) / 20))
+	if (track.volume1 > 1.0) track.volume1 = 1.0
+	track.volume2 = 1.0
+	const audio = new Audio(track.preview)
+	audio.volume = track.volume1 * track.volume2
+	return audio
+})
 
 export const loadTracks = async tracksIds => {
 	const tracks = await Promise.all(tracksIds.map(async trackId => fetchDeezerAPI(`track/${trackId}`)))
-	const audios = tracks.map(track => {
-		track.volume1 = track.gain === 0 ? 0.5 : 0.5 * Math.pow(10, ((-12 - track.gain) / 20))
-		if (track.volume1 > 1.0) track.volume1 = 1.0
-		track.volume2 = 1.0
-		const audio = new Audio(track.preview)
-		audio.volume = track.volume1 * track.volume2
-		return audio
-	})
+	const audios = loadAudios(tracks)
 	return {
 		audios,
 		tracks
@@ -39,11 +35,17 @@ export const loadTracks = async tracksIds => {
 export const loadPlaylist = () => async (dispatch, getState) => {
     const state = getState()
 	const playlist = await fetchDeezerAPI(`playlist/${state.playlist.id}`)
-	const tracksIds = shuffleArray(playlist.tracks.data, state.sampling.count).map(track => track.id)
-
-	const chunks = await Promise.all(chunkArray(tracksIds, DEEZER_API_SIMULTANEOUS_MAX_CALLS, loadTracks))
-	const audios = Array.prototype.concat.apply([], chunks.map(chunk => chunk.audios))
-	const tracks = Array.prototype.concat.apply([], chunks.map(chunk => chunk.tracks))
+	let audios = null, tracks = null
+	if (ENABLE_VOLUME_FROM_GAIN) {
+		const tracksIds = shuffleArray(playlist.tracks.data, state.sampling.count).map(track => track.id)
+		const chunks = await Promise.all(chunkArray(tracksIds, DEEZER_API_SIMULTANEOUS_MAX_CALLS, loadTracks))
+		audios = Array.prototype.concat.apply([], chunks.map(chunk => chunk.audios))
+		tracks = Array.prototype.concat.apply([], chunks.map(chunk => chunk.tracks))
+	}
+	else {
+		tracks = shuffleArray(playlist.tracks.data, state.sampling.count)
+		audios = loadAudios(tracks)
+	}
 
 	dispatch({
 		type: 'PLAYLIST_SET_DATA',
@@ -51,6 +53,7 @@ export const loadPlaylist = () => async (dispatch, getState) => {
 			playlist
 		}
 	})
+	
 	dispatch({
 		type: 'SAMPLING_SET_TRACKS',
 		data: {
