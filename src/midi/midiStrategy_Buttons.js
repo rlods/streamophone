@@ -6,16 +6,18 @@ export default class MidiController extends MidiStrategy {
 		super()
 	}
 
-	handleMessage(dispatch, ch, key, vel) {
-		if (ch===176 && key>=1 && key<=8) {
+	handleMessage(dispatch, channel, key, velocity) {
+		if (channel===176 && key>=1 && key<=8) {
 			// change volume of key-1
-			console.log("Change volume of ", key-1, " to ", vel/127)
-			dispatch(setSampleVolume(key-1, vel/127))
-		} else {
+			console.log("Change volume of ", key-1, " to ", velocity/127)
+			dispatch(setSampleVolume(key-1, velocity/127))
+		}
+		else {
 			// start one sample
-			var val = ch + "-" + key
+			var val = channel + "-" + key
 			var sample = -1
-			switch(val) {
+			switch (val)
+			{
 				case "176-0":
 					sample=0
 					break;
@@ -45,10 +47,10 @@ export default class MidiController extends MidiStrategy {
 					break
 			}
 			if (sample!==-1) {
-				if (vel===0) {
+				if (velocity === 0) {
 					console.log("stop sample ", sample)
 					dispatch(stopSample(sample))
-				} else if (vel===127) {
+				} else if (velocity === 127) {
 					console.log("start sample ", sample)
 					dispatch(startSample(sample))
 				}

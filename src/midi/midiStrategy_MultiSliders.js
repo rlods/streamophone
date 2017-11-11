@@ -12,16 +12,16 @@ export default class MidiControllerMultiSliders extends MidiStrategy {
 			this.currentSamples.push(0)
 	}
 
-	handleMessage(dispatch, ch, key, vel) {
+	handleMessage(dispatch, channel, key, velocity) {
 		const samplesCountPerSlider = this.samplesCount / this.slidersCount
-		const sample = (key * samplesCountPerSlider) - Math.floor(vel * samplesCountPerSlider / this.slidersSteps) - 1
-		if (vel === 0) {
+		const sample = (key * samplesCountPerSlider) - Math.floor(velocity * samplesCountPerSlider / this.slidersSteps) - 1
+		if (velocity === 0) {
 			console.log("stop column")
 			dispatch(stopSample(this.oldSample))
 			this.currentSamples[key-1] = -1
 			return
 		}
-		if (ch === 176 && key >= 1 && key <= this.slidersCount) {
+		if (channel === 176 && key >= 1 && key <= this.slidersCount) {
 			this.oldSample = this.currentSamples[key-1]
 			if (sample !== this.oldSample) {
 				// change sample
