@@ -10,8 +10,8 @@ export default class MidiControllerSlides extends MidiStrategy {
 	handleMessage(dispatch, channel, key, velocity) {
 		if (channel === 176 && key >= 1 && key <= 8) {
 			console.log("Start sample", velocity)
-			this.dispatch(stopSample(this.currentSample))
-			this.dispatch(startSample(velocity))
+			dispatch(stopSample(this.currentSample))
+			dispatch(startSample(velocity))
 			this.currentSample = velocity
 		}
 	}
