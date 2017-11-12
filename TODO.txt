@@ -1,0 +1,16 @@
+
+
+- Add loop option on samples
+
+- Add source type selection on splash screen (playlist, albums, etc.)
+
+- Add music provider selection on splash screen (...)
+
+- Add messages reducer to display information to user
+
+- Move strategies definitions in ./src/config
+
+- Only instantiate the needed controller (basic, midi or socket) - needs a small refacto
+
+- ...
+
