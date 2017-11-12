@@ -58,27 +58,27 @@ class App extends Component {
 				<div className="app-menu">
 					<div className="app-title">DZFONE</div>
 					<SelectField
-						name="Sampler Type"
+						name="Controller"
 						items={Object.entries(config.STRATEGIES)}
 						value={this.props.samplingStrategyId}
 						onChange={this.props.onChangeSamplingStrategy}
 						getValue={([strategyId, strategyDefinition]) => strategyId}
 						getText={([strategyId, strategyDefinition]) => strategyDefinition.label} />
 					<SelectField
-						name="Sampler Duration"
+						name="Sample Duration"
 						items={DURATIONS}
 						value={this.props.sampleDuration}
 						onChange={this.props.onChangeSampleDuration}
 						getValue={duration => duration.value}
 						getText={duration => duration.label} />
 					<SelectField
-						name="Playlist"
+						name="Curated"
 						items={config.CURATED_PLAYLISTS}
 						value={this.props.playlistId} onChange={this.props.onChangePlaylistId}
 						getValue={playlist => playlist.id}
 						getText={playlist => playlist.title} />
 					<InputField
-						name="Playlist ID"
+						name="Playlist"
 						value={this.props.playlistId}
 						onChange={this.props.onChangePlaylistId} />
 					<div className="app-menu-field">
