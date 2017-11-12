@@ -18,12 +18,12 @@ const DURATIONS = [
 
 // --------------------------------------------------------------
 
-class InputField extends Component {
+class TextField extends Component {
 	render() {
 		return (
 			<div className="app-menu-field">
 				<label className="app-menu-field-label">{this.props.name}</label>
-				<input className="app-menu-field-control" type="number" value={this.props.value} placeholder={this.props.name} onChange={this.props.onChange} />
+				<input className="app-menu-field-control" type="text" value={this.props.value} placeholder={this.props.name} onChange={this.props.onChange} />
 			</div>
 		)
 	}
@@ -44,9 +44,15 @@ class SelectField extends Component {
 
 // --------------------------------------------------------------
 
+const SOURCE_TYPES = {
+	album: 'Album',
+	artist: 'Artist',
+	playlist: 'Playlist'
+}
+
 class App extends Component {
 	render() {
-		if (this.props.playlistData) {
+		if (this.props.sourceData) {
 			return (
 				<div className="app">
 					<Player />
@@ -73,14 +79,21 @@ class App extends Component {
 						getText={duration => duration.label} />
 					<SelectField
 						name="Curated"
-						items={config.CURATED_PLAYLISTS}
-						value={this.props.playlistId} onChange={this.props.onChangePlaylistId}
-						getValue={playlist => playlist.id}
-						getText={playlist => playlist.title} />
-					<InputField
-						name="Playlist"
-						value={this.props.playlistId}
-						onChange={this.props.onChangePlaylistId} />
+						items={config.CURATED_SOURCES}
+						value={`${this.props.sourceType}:${this.props.sourceId}`} onChange={this.props.onChangeCurated}
+						getValue={curated => `${curated.sourceType}:${curated.sourceId}`}
+						getText={curated => `${SOURCE_TYPES[curated.sourceType]} / ${curated.title}`} />
+					<SelectField
+						name="Source Type"
+						items={Object.entries(SOURCE_TYPES)}
+						value={this.props.sourceType} onChange={this.props.onChangeSourceType}
+						getValue={([sourceType, sourceLabel]) => sourceType}
+						getText={([sourceType, sourceLabel]) => sourceLabel}
+						canBeEmpty={true} />
+					<TextField
+						name="Source ID"
+						value={this.props.sourceId}
+						onChange={this.props.onChangeSourceId} />
 					<div className="app-menu-field">
 						<button className="app-menu-action" onClick={this.props.onLoadPlaylist}>Start</button>
 					</div>
@@ -93,13 +106,16 @@ class App extends Component {
 // --------------------------------------------------------------
 
 App.propTypes = {
-	playlistId: PropTypes.number,
-	playlistData: PropTypes.object,
 	sampleDuration: PropTypes.number,
 	samplingStrategyId: PropTypes.string,
+	sourceData: PropTypes.object,
+	sourceId: PropTypes.string,
+	sourceType: PropTypes.string,
+	onChangeCurated: PropTypes.func,
 	onChangeSampleDuration: PropTypes.func,
 	onChangeSamplingStrategy: PropTypes.func,
-	onChangePlaylistId: PropTypes.func,
+	onChangeSourceId: PropTypes.func,
+	onChangeSourceType: PropTypes.func,
 	onLoadPlaylist: PropTypes.func
 }
 

@@ -32,6 +32,14 @@ export const changeSamplingStrategy = strategyId => dispatch => dispatch({
 	}
 })
 
+export const changeSamplingTracks = (audios, tracks) => dispatch => dispatch({
+	type: 'SAMPLING_SET_TRACKS',
+	data: {
+		audios,
+		tracks
+	}
+})
+
 // --------------------------------------------------------------
 
 export const handleKeyDown = keyCode => async (dispatch, getState, { drivers }) => {

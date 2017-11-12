@@ -2,8 +2,6 @@
 
 - Add loop option on samples
 
-- Add source type selection on splash screen (playlist, albums, etc.)
-
 - Add music provider selection on splash screen (...)
 
 - Add messages reducer to display information to user
