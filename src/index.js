@@ -9,10 +9,9 @@ import thunk from 'redux-thunk'
 import rootReducer from './reducers'
 import registerServiceWorker from './registerServiceWorker'
 import App from './containers/App'
-import Controller from './controllers/Controller'
-import MidiController from './controllers/MidiController'
-import SocketController from './controllers/SocketController'
-import KeyboardBasicStrategy from './controllers/strategies/KeyboardBasicStrategy'
+import Driver from './drivers/Driver'
+import MidiDriver from './drivers/MidiDriver'
+import SocketDriver from './drivers/SocketDriver'
 import config from './config'
 import './index.css'
 
@@ -25,13 +24,13 @@ Object.entries(config.DRIVERS).forEach(([driverId, driverDefinition]) => {
 		switch (driverDefinition.type)
 		{
 			case 'basic':
-				driver = new Controller(new KeyboardBasicStrategy()) // Basic controller with basic strategy (eg. for computer keyboard)
+				driver = new Driver()
 				break 
 			case 'midi':
-				driver = new MidiController()
+				driver = new MidiDriver()
 				break 
 			case 'socket':
-				driver = new SocketController(driverDefinition.socketUrl, driverDefinition.socketPrefix)
+				driver = new SocketDriver(driverDefinition.socketUrl, driverDefinition.socketPrefix)
 				break
 			default:
 				throw new Error(`Unknown driver type "${driverDefinition.type}"`)

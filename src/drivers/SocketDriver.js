@@ -1,12 +1,12 @@
 import io from 'socket.io-client'
 //
-import Controller from './Controller'
+import Driver from './Driver'
 
 // --------------------------------------------------------------
 
-export default class SocketController extends Controller {
+export default class SocketDriver extends Driver {
 	constructor(url, prefix) {
-		super(null)
+		super()
 		this.prefix = prefix
 		this.url = url
 		this.ws = null

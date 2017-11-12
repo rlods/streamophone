@@ -1,12 +1,13 @@
 import { fetchDeezerAPI, shuffleArray } from '../tools'
 import { changeSampleNormalizationVolume } from './sampling'
 //
-import ButtonsStrategy from '../controllers/strategies/midiStrategy_Buttons'
-import CustomSocketStrategy from '../controllers/strategies/CustomSocketStrategy'
-import MultiSlidersStrategy from '../controllers/strategies/midiStrategy_MultiSliders'
-import SingleSliderStrategy from '../controllers/strategies/midiStrategy_SingleSlider'
-import LightPadBlockStrategy from '../controllers/strategies/midiStrategy_LightPadBlock'
-import KeyboardStrategy from '../controllers/strategies/midiStrategy_Keyboard'
+import KeyboardBasicStrategy from '../strategies/KeyboardBasicStrategy'
+import ButtonsStrategy from '../strategies/midiStrategy_Buttons'
+import CustomSocketStrategy from '../strategies/CustomSocketStrategy'
+import MultiSlidersStrategy from '../strategies/midiStrategy_MultiSliders'
+import SingleSliderStrategy from '../strategies/midiStrategy_SingleSlider'
+import LightPadBlockStrategy from '../strategies/midiStrategy_LightPadBlock'
+import KeyboardStrategy from '../strategies/midiStrategy_Keyboard'
 import config from '../config'
 
 // ------------------------------------------------------------------
@@ -61,6 +62,9 @@ export const loadPlaylist = () => async (dispatch, getState, { drivers }) => {
 
 		switch (state.sampling.strategyId)
 		{
+		case 'KEYBOARD_AZERTY':
+			driver.strategy = new KeyboardBasicStrategy()
+			break
 		case 'BCF2000_BUTTONS':
 			driver.strategy = new ButtonsStrategy()
 			break

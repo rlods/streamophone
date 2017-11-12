@@ -1,4 +1,4 @@
-import { startSample, stopSample, setSampleVolume } from '../../actions/sampling'
+import { startSample, stopSample, setSampleVolume } from '../actions/sampling'
 import Strategy from './Strategy'
 
 // --------------------------------------------------------------

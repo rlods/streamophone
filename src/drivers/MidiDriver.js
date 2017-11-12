@@ -1,10 +1,10 @@
-import Controller from './Controller'
+import Driver from './Driver'
 
 // --------------------------------------------------------------
 
-export default class MidiController extends Controller {
+export default class MidiDriver extends Driver {
 	constructor() {
-		super(null)
+		super()
 		this.init()
 	}
 
