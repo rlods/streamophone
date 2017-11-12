@@ -20,4 +20,8 @@
 
 - Display letters on the covers for the azerty keyboard
 
+- Select a fade in and a fade on demand for some sample
+
+- Do not highlight sample on mouseover (confusing with other already playing) but still display the tooltip
+
 - ...
