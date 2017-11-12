@@ -45,11 +45,11 @@ const Config = {
 		},
 		BCF2000_SINGLESLIDER: {
 			driver: 'midi',
-			label: 'BCF2000 - 1 Slider'
+			label: 'BCF2000 - Single Slider'
 		},
-		BCF2000_MULTISLIDERS_8_32: {
+		BCF2000_MULTISLIDERS: {
 			driver: 'midi',
-			label: 'BCF2000 - 8 Sliders'
+			label: 'BCF2000 - Multi Sliders'
 		},
 		LIGHTPADBLOCK_16: {
 			driver: 'midi',

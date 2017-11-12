@@ -71,7 +71,7 @@ export const loadPlaylist = () => async (dispatch, getState, { drivers }) => {
 		case 'BCF2000_SINGLESLIDER':
 			driver.strategy = new SingleSliderStrategy()
 			break
-		case 'BCF2000_MULTISLIDERS_8_32':
+		case 'BCF2000_MULTISLIDERS':
 			driver.strategy = new MultiSlidersStrategy(8, 128)
 			break
 		case 'LIGHTPADBLOCK_16':
