@@ -26,7 +26,7 @@
 	display: none;
 }
 
-.sample:hover .sample-cover, .sample.playing .sample-cover {
+.sample.playing .sample-cover {
 	opacity: 1.0;
 }
 
