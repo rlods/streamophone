@@ -8,10 +8,6 @@
 
 - Add messages reducer to display information to user
 
-- Strategy definition should be used to instanciate the strategy and sampleCount should be returned by the strategy instance
-
-- Only instantiate the needed controller (basic, midi or socket) - needs a small refacto
-
 - In the mixing page, be able to "lock" samples and refresh all the others
 
 - When reloading samples, use "similar" ones instead of random ones from playlist. Explore deezer more with that
