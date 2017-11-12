@@ -25,6 +25,11 @@ const keyMapping = {
 // --------------------------------------------------------------
 
 export default class LightPadStrategy extends Strategy {
+    constructor() {
+        super()
+        this.samplesCount = 16
+    }
+
 	handleMIDI(dispatch, channel, key, velocity) {
 		// messages are given four by four
 		if (key >= 48 && key <= 63 && channel < 209) {

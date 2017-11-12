@@ -46,7 +46,7 @@ export const loadAudios = (dispatch, tracks) => tracks.map(track => {
 
 export const validateTrack = track => !!track.preview
 
-export const loadPlaylist = () => async (dispatch, getState, { midiController, socketController }) => { 
+export const loadPlaylist = () => async (dispatch, getState, { drivers }) => { 
 	try {
 		const state = getState()
 
@@ -54,38 +54,38 @@ export const loadPlaylist = () => async (dispatch, getState, { midiController, s
 		state.sampling.audios.forEach(audio => audio.pause())
 
 		// Create sampling midi strategy if specified
-		let samplingCount = 0
 		const strategyDefinition = config.STRATEGIES[state.sampling.strategyId]
+		const driver = drivers[strategyDefinition.driver]
+		if (!driver)
+			throw new Error(`Unknown driver "${strategyDefinition.driver}"`)
+
 		switch (state.sampling.strategyId)
 		{
 		case 'BCF2000_BUTTONS':
-			midiController.strategy = new ButtonsStrategy()
+			driver.strategy = new ButtonsStrategy()
 			break
 		case 'BCF2000_SINGLESLIDER':
-			midiController.strategy = new SingleSliderStrategy()
+			driver.strategy = new SingleSliderStrategy()
 			break
 		case 'BCF2000_MULTISLIDERS_8_32':
-			midiController.strategy = new MultiSlidersStrategy(8, 128, samplingCount)
-			break
-		case 'BCF2000_MULTISLIDERS_8_64':
-			midiController.strategy = new MultiSlidersStrategy(8, 128, samplingCount)
+			driver.strategy = new MultiSlidersStrategy(8, 128)
 			break
 		case 'LIGHTPADBLOCK_16':
-			midiController.strategy = new LightPadBlockStrategy()
+			driver.strategy = new LightPadBlockStrategy()
 			break
 		case 'CUSTOM_SOCKET_STRATEGY':
-			socketController.strategy = new CustomSocketStrategy()
+			driver.strategy = new CustomSocketStrategy()
 			break
 		case 'KEYBOARD_24':
-			midiController.strategy = new KeyboardStrategy()
+			driver.strategy = new KeyboardStrategy()
 			break
 		default:
-			break
+			throw new Error(`Unknown strategy "${state.sampling.strategyId}"`)
 		}
 
 		// Fetch playlist tracks data
 		const playlist = await fetchDeezerAPI(`playlist/${state.playlist.id}`)
-		const tracks = shuffleArray(playlist.tracks.data, strategyDefinition.samplingCount, validateTrack)
+		const tracks = shuffleArray(playlist.tracks.data, driver.strategy.samplesCount, validateTrack)
 		const audios = loadAudios(dispatch, tracks)
 
 		dispatch({

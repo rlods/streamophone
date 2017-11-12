@@ -34,12 +34,12 @@ export const changeSamplingStrategy = strategyId => dispatch => dispatch({
 
 // --------------------------------------------------------------
 
-export const handleKeyDown = keyCode => async (dispatch, getState, { controller }) => {
-	controller.strategy.handleKeyDown(dispatch, keyCode)
+export const handleKeyDown = keyCode => async (dispatch, getState, { drivers }) => {
+	drivers['basic'].strategy.handleKeyDown(dispatch, keyCode) // TODO what if basic driver is not registered ?
 }
 
-export const handleKeyUp = keyCode => (dispatch, getState, { controller }) => {
-	controller.strategy.handleKeyUp(dispatch, keyCode)
+export const handleKeyUp = keyCode => (dispatch, getState, { drivers }) => {
+	drivers['basic'].strategy.handleKeyUp(dispatch, keyCode) // TODO what if basic driver is not registered ?
 }
 
 export const setSampleVolume = (sampleIndex, volume) => (dispatch, getState) => {

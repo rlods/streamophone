@@ -62,8 +62,8 @@ class App extends Component {
 						items={Object.entries(config.STRATEGIES)}
 						value={this.props.samplingStrategyId}
 						onChange={this.props.onChangeSamplingStrategy}
-						getValue={([strategy, strategyDefinition]) => strategy}
-						getText={([strategy, strategyDefinition]) => strategyDefinition.label} />
+						getValue={([strategyId, strategyDefinition]) => strategyId}
+						getText={([strategyId, strategyDefinition]) => strategyDefinition.label} />
 					<SelectField
 						name="Sampler Duration"
 						items={DURATIONS}

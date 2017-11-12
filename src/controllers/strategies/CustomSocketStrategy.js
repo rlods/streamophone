@@ -4,10 +4,10 @@ import Strategy from './Strategy'
 // --------------------------------------------------------------
 
 export default class CustomSocketStrategy extends Strategy {
-	constructor(samplesCount) {
+	constructor() {
 		super()
 		this.slidersCount = 5
-		this.samplesCount = 5
+		this.samplesCount = 25
 		this.currentSamplesIndexes = []
 		for (let i = 0; i < this.samplesCount; ++i)
 			this.currentSamplesIndexes.push(0)

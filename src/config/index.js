@@ -20,51 +20,49 @@ const Config = {
 
 	SAMPLE_MAX_DURATION: 30000,
 
+	DRIVERS: {
+		basic: {
+			type: 'basic'
+		},
+		midi: {
+			type: 'midi'
+		},
+		// socket: {
+		//	type: 'socket',
+		//	socketUrl: 'http://129.102.147.114:3000',
+		//	socketPrefix: 'main'
+		// }
+	},
+
 	STRATEGIES: {
 		KEYBOARD_AZERTY: {
 			driver: 'basic',
-			label: 'Keyboard Azerty (26 samples)',
-			samplingCount: 26
+			label: 'Keyboard Azerty'
 		},
 		BCF2000_BUTTONS: {
 			driver: 'midi',
-			label: 'BCF2000 - Buttons (8 samples)',
-			samplingCount: 8
+			label: 'BCF2000 - Buttons'
 		},
 		BCF2000_SINGLESLIDER: {
 			driver: 'midi',
-			label: 'BCF2000 - 1 Slider (127 samples)',
-			samplingCount: 127
+			label: 'BCF2000 - 1 Slider'
 		},
 		BCF2000_MULTISLIDERS_8_32: {
 			driver: 'midi',
-			label: 'BCF2000 - 8 Sliders (32 samples)',
-			samplingCount: 32
-		},
-		BCF2000_MULTISLIDERS_8_64: {
-			driver: 'midi',
-			label: 'BCF2000 - 8 Sliders (64 samples)',
-			samplingCount: 64
+			label: 'BCF2000 - 8 Sliders'
 		},
 		LIGHTPADBLOCK_16: {
 			driver: 'midi',
-			label: 'ROLI LightPadBlock (16 samples)',
-			samplingCount: 16
+			label: 'ROLI LightPadBlock'
 		},
 		KEYBOARD_24: {
 			driver: 'midi',
-			label: 'OXYGEN25 (32 samples)',
-			samplingCount: 24
+			label: 'OXYGEN25'
 		},
-		CUSTOM_SOCKET_STRATEGY: {
-			driver: 'socket',
-			driverParams: { // specific to socket driver
-				url: 'http://129.102.147.114:3000',
-				prefix: 'main'
-			}
-			label: 'CUSTOM_SOCKET_STRATEGY (25 samples)',
-			samplingCount: 25
-		}
+		// CUSTOM_SOCKET_STRATEGY: {
+		//	driver: 'socket',
+		//	label: 'CUSTOM_SOCKET_STRATEGY (25 samples)'
+		//}
 	}
 
 }

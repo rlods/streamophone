@@ -7,6 +7,7 @@ export default class SingleSliderStrategy extends Strategy {
 	constructor() {
 		super()
 		this.currentSample = 0
+		this.samplesCount = 127
 	}
 
 	handleMIDI(dispatch, channel, key, velocity) {

@@ -8,7 +8,11 @@ const mapping = [42, 46]
 // --------------------------------------------------------------
 
 export default class KeyboardStrategy extends Strategy {
-	
+	constructor() {
+		super()
+		this.samplesCount = 24
+	}
+
 	handleMIDI(dispatch, channel, key, velocity) {
 		// the key is between 48 and 72
 		// channel 144 is key down and 128 keyup

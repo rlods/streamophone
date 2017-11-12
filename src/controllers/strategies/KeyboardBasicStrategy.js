@@ -10,6 +10,11 @@ const KEY_ORDER_AZERTY   = 'azertyuiopqsdfghjklmwxcvbn'
 // --------------------------------------------------------------
 
 export default class KeyboardBasicStrategy extends Strategy {
+	constructor() {
+		super()
+		this.samplesCount = 26
+	}
+
 	handleKeyDown(dispatch, keyCode) {
 		const alphabetIndex = Math.abs(keyCode - A_CHAR_CODE)
 		if (alphabetIndex >= 0 && alphabetIndex < 26)

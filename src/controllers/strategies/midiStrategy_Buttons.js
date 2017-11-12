@@ -3,9 +3,14 @@ import Strategy from './Strategy'
 
 // --------------------------------------------------------------
 
-export default class ButonsStrategy extends Strategy {
+export default class ButtonsStrategy extends Strategy {
+	constructor() {
+		super()
+		this.samplesCount = 8
+	}
+
 	handleMIDI(dispatch, channel, key, velocity) {
-		if (channel===176 && key>=1 && key<=8) {
+		if (channel === 176 && key >= 1 && key <= 8) {
 			// change volume of key-1
 			console.log("Change volume of ", key-1, " to ", velocity/127)
 			dispatch(setSampleVolume(key-1, velocity/127))
