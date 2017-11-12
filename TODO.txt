@@ -18,4 +18,6 @@
 
 - Display the samples in the shape of the keyboard for keyboard strategy
 
+- Display letters on the covers for the azerty keyboard
+
 - ...
