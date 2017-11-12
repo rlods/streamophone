@@ -7,11 +7,17 @@ import './Samples.css'
 
 // --------------------------------------------------------------
 
+const A_KEYCODE = 65
+
 class Samples extends Component {
 	render() {
-		let chunks
+		let chunks, samples
 		switch (this.props.samplingStrategyId)
 		{
+			case 'KEYBOARD_AZERTY':
+				samples = this.props.tracks.map((track, index) => <Sample key={track.id} id={track.id} info={String.fromCharCode(A_KEYCODE + index)} />)
+				break
+
 			case 'BCF2000_MULTISLIDERS_8_32':
 				chunks = chunkArray(this.props.tracks, this.props.tracks.length / 8)
 				break
@@ -31,7 +37,8 @@ class Samples extends Component {
 		return (
 			<div className="samples">
 				{
-					null !== chunks
+					samples
+					? samples : chunks
 					? chunks.map((tracks, index) => <div key={index}>{tracks.map(track => <Sample key={track.id} id={track.id} />)}</div>)
 					: this.props.tracks.map(track => <Sample key={track.id} id={track.id} />)
 				}

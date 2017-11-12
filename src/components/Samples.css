@@ -22,7 +22,7 @@
 	transition: opacity 0.5s ease-in-out;
 }
 
-.sample-info {
+.sample-title {
 	display: none;
 }
 
@@ -30,7 +30,7 @@
 	opacity: 1.0;
 }
 
-.sample:hover .sample-info {
+.sample:hover .sample-title {
 	display: block;
 	position: absolute;
 	top: -35px;
@@ -38,6 +38,18 @@
 	color: #FFF;
 	padding: 5px;
 	white-space: nowrap;
+}
+
+.sample-info {
+	position: absolute;
+	top: 0;
+	left: 0;
+	background-color: #000;
+	color: #FFF;
+	display: inline;
+	padding: 5px;
+	min-width: 20px;
+	text-align: center;
 }
 
 /* --------------------------------------------------------------- */
