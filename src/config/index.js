@@ -59,9 +59,9 @@ const Config = {
 			driver: 'midi',
 			label: 'OXYGEN25'
 		},
-		// CUSTOM_SOCKET_STRATEGY: {
+		// CUSTOM_SOCKET: {
 		//	driver: 'socket',
-		//	label: 'CUSTOM_SOCKET_STRATEGY (25 samples)'
+		//	label: 'CUSTOM_SOCKET (25 samples)'
 		//}
 	}
 
