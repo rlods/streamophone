@@ -12,4 +12,10 @@
 
 - Only instantiate the needed controller (basic, midi or socket) - needs a small refacto
 
+- In the mixing page, be able to "lock" samples and refresh all the others
+
+- When reloading samples, use "similar" ones instead of random ones from playlist. Explore deezer more with that
+
+- Display the samples in the shape of the keyboard for keyboard strategy
+
 - ...
