@@ -34,13 +34,13 @@ export default class LightPadStrategy extends Strategy {
 		// messages are given four by four
 		if (key >= 48 && key <= 63 && channel < 209) {
 			console.log("key", key, "channel", channel)
-            if (keyMapping[key]) {
-                const mapping = keyMapping[key]
+            const mapping = keyMapping[key]
+            if (mapping) {
                 console.log("mapping", mapping)
                 if (channel>=145 && channel<160) {
                     dispatch(startSample(mapping[0]))
                 }
-                else if (channel<145 && channel>=130) {
+                else if (channel<145 && channel>=129) {
                     dispatch(stopSample(mapping[0]))
                 }
             }
