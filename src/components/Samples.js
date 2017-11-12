@@ -7,7 +7,9 @@ import './Samples.css'
 
 // --------------------------------------------------------------
 
-const A_KEYCODE = 65
+const KEY_ORDER_AZERTY = 'AZERTYUIOPQSDFGHJKLMWXCVBN'
+
+// --------------------------------------------------------------
 
 class Samples extends Component {
 	render() {
@@ -15,7 +17,7 @@ class Samples extends Component {
 		switch (this.props.samplingStrategyId)
 		{
 			case 'KEYBOARD_AZERTY':
-				samples = this.props.tracks.map((track, index) => <Sample key={track.id} id={track.id} info={String.fromCharCode(A_KEYCODE + index)} />)
+				samples = this.props.tracks.map((track, index) => <Sample key={track.id} id={track.id} info={KEY_ORDER_AZERTY[index]} />)
 				break
 
 			case 'BCF2000_MULTISLIDERS_8_32':
