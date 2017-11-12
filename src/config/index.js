@@ -58,6 +58,10 @@ const Config = {
 		},
 		CUSTOM_SOCKET_STRATEGY: {
 			driver: 'socket',
+			driverParams: { // specific to socket driver
+				url: 'http://129.102.147.114:3000',
+				prefix: 'main'
+			}
 			label: 'CUSTOM_SOCKET_STRATEGY (25 samples)',
 			samplingCount: 25
 		}
