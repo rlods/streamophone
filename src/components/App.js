@@ -74,7 +74,7 @@ class App extends Component {
 					<SelectField
 						name="Playlist"
 						items={config.CURATED_PLAYLISTS}
-						value="" onChange={this.props.onChangePlaylistId}
+						value={this.props.playlistId} onChange={this.props.onChangePlaylistId}
 						getValue={playlist => playlist.id}
 						getText={playlist => playlist.title} />
 					<InputField
