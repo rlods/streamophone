@@ -1,4 +1,4 @@
-const SAMPLE_MAX_DURATION = 30000
+import config from '../config'
 
 // --------------------------------------------------------------
 
@@ -81,7 +81,7 @@ export const startSample = sampleIndex => async (dispatch, getState) => {
 					trackId: track.id
 				}
 			})
-			if (sampleDuration > 0 && sampleDuration < SAMPLE_MAX_DURATION) {
+			if (sampleDuration > 0 && sampleDuration < config.SAMPLE_MAX_DURATION) {
 				setTimeout(() => dispatch(stopSample(sampleIndex)), sampleDuration)
 			}
 		}

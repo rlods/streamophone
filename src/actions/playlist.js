@@ -1,5 +1,5 @@
 import { fetchDeezerAPI, shuffleArray } from '../tools'
-import { StrategyTypes } from '../controllers/strategies'
+import StrategyDefinitions from '../controllers/strategies/StrategyDefinitions'
 import { changeSampleNormalizationVolume } from './sampling'
 //
 import ButtonsStrategy from '../controllers/strategies/midiStrategy_Buttons'
@@ -56,47 +56,37 @@ export const loadPlaylist = () => async (dispatch, getState, { midiController, s
 
 		// Create sampling midi strategy if specified
 		let samplingCount = 0
+		const strategyType = StrategyDefinitions[state.sampling.samplerType]
 		switch (state.sampling.samplerType)
 		{
-		case StrategyTypes.KEYBOARD_AZERTY.id:
-			samplingCount = 26
-			break
-		case StrategyTypes.BCF2000_BUTTONS.id:
-			samplingCount = 8
+		case 'BCF2000_BUTTONS':
 			midiController.strategy = new ButtonsStrategy()
 			break
-		case StrategyTypes.BCF2000_SINGLESLIDER.id:
-			samplingCount = 127
+		case 'BCF2000_SINGLESLIDER':
 			midiController.strategy = new SingleSliderStrategy()
 			break
-		case StrategyTypes.BCF2000_MULTISLIDERS_8_32.id:
-			samplingCount = 32
+		case 'BCF2000_MULTISLIDERS_8_32':
 			midiController.strategy = new MultiSlidersStrategy(8, 128, samplingCount)
 			break
-		case StrategyTypes.BCF2000_MULTISLIDERS_8_64.id:
-			samplingCount = 64
+		case 'BCF2000_MULTISLIDERS_8_64':
 			midiController.strategy = new MultiSlidersStrategy(8, 128, samplingCount)
 			break
-		case StrategyTypes.LIGHTPADBLOCK_16.id:
-			samplingCount = 16
+		case 'LIGHTPADBLOCK_16':
 			midiController.strategy = new LightPadBlockStrategy()
 			break
-		case StrategyTypes.CUSTOM_SOCKET_STRATEGY.id:
-			samplingCount = 25
+		case 'CUSTOM_SOCKET_STRATEGY':
 			socketController.strategy = new CustomSocketStrategy()
 			break
-		case StrategyTypes.KEYBOARD_24.id:
-			samplingCount = 24
+		case 'KEYBOARD_24':
 			midiController.strategy = new KeyboardStrategy()
 			break
 		default:
-			console.log('Unkown strategy:', state.sampling.samplerType)
 			break
 		}
 
 		// Fetch playlist tracks data
 		const playlist = await fetchDeezerAPI(`playlist/${state.playlist.id}`)
-		const tracks = shuffleArray(playlist.tracks.data, samplingCount, validateTrack)
+		const tracks = shuffleArray(playlist.tracks.data, strategyType.samplingCount, validateTrack)
 		const audios = loadAudios(dispatch, tracks)
 
 		dispatch({

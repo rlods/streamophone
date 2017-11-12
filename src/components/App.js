@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 //
-import { StrategyTypes } from '../controllers/strategies'
+import StrategyDefinitions from '../controllers/strategies/StrategyDefinitions'
 import Player from '../containers/Player'
 import './App.css'
 
@@ -59,11 +59,11 @@ class App extends Component {
 					<div className="app-title">DZFONE</div>
 					<SelectField
 						name="Sampler Type"
-						items={Object.values(StrategyTypes)}
+						items={Object.entries(StrategyDefinitions)}
 						value={this.props.samplerType}
 						onChange={this.props.onChangeSamplerType}
-						getValue={strategyType => strategyType.id}
-						getText={strategyType => strategyType.label} />
+						getValue={([strategyId, strategyType]) => strategyId}
+						getText={([strategyId, strategyType]) => strategyType.label} />
 					<SelectField
 						name="Sampler Duration"
 						items={DURATIONS}

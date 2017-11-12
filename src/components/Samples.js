@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 //
 import { chunkArray } from '../tools'
 import Sample from '../containers/Sample'
-import { StrategyTypes } from '../controllers/strategies'
 import './Samples.css'
 
 // --------------------------------------------------------------
@@ -13,16 +12,16 @@ class Samples extends Component {
 		let chunks
 		switch (this.props.samplerType)
 		{
-			case StrategyTypes.BCF2000_MULTISLIDERS_8_32.id:
-			case StrategyTypes.BCF2000_MULTISLIDERS_8_64.id:
+			case 'BCF2000_MULTISLIDERS_8_32':
+			case 'BCF2000_MULTISLIDERS_8_64':
 				chunks = chunkArray(this.props.tracks, this.props.tracks.length / 8)
 				break
 
-			case StrategyTypes.LIGHTPADBLOCK_16.id:
+			case 'LIGHTPADBLOCK_16':
 				chunks = chunkArray(this.props.tracks, Math.sqrt(this.props.tracks.length))
 				break
 
-			case StrategyTypes.CUSTOM_SOCKET_STRATEGY.id:
+			case 'CUSTOM_SOCKET_STRATEGY':
 				chunks = chunkArray(this.props.tracks, this.props.tracks.length / 5)
 				break
 
