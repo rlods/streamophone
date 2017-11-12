@@ -22,42 +22,42 @@ const Config = {
 
 	STRATEGIES: {
 		KEYBOARD_AZERTY: {
-			controllerId: 'basic',
+			driver: 'basic',
 			label: 'Keyboard Azerty (26 samples)',
 			samplingCount: 26
 		},
 		BCF2000_BUTTONS: {
-			controllerId: 'midi',
+			driver: 'midi',
 			label: 'BCF2000 - Buttons (8 samples)',
 			samplingCount: 8
 		},
 		BCF2000_SINGLESLIDER: {
-			controllerId: 'midi',
+			driver: 'midi',
 			label: 'BCF2000 - 1 Slider (127 samples)',
 			samplingCount: 127
 		},
 		BCF2000_MULTISLIDERS_8_32: {
-			controllerId: 'midi',
+			driver: 'midi',
 			label: 'BCF2000 - 8 Sliders (32 samples)',
 			samplingCount: 32
 		},
 		BCF2000_MULTISLIDERS_8_64: {
-			controllerId: 'midi',
+			driver: 'midi',
 			label: 'BCF2000 - 8 Sliders (64 samples)',
 			samplingCount: 64
 		},
 		LIGHTPADBLOCK_16: {
-			controllerId: 'midi',
+			driver: 'midi',
 			label: 'ROLI LightPadBlock (16 samples)',
 			samplingCount: 16
 		},
 		KEYBOARD_24: {
-			controllerId: 'midi',
+			driver: 'midi',
 			label: 'OXYGEN25 (32 samples)',
 			samplingCount: 24
 		},
 		CUSTOM_SOCKET_STRATEGY: {
-			controllerId: 'socket',
+			driver: 'socket',
 			label: 'CUSTOM_SOCKET_STRATEGY (25 samples)',
 			samplingCount: 25
 		}
