@@ -7,7 +7,7 @@ import Samples from '../components/Samples'
 const mapStateToProps = (state, ownProps) => ({
 	audios: state.sampling.audios,
 	tracks: state.sampling.tracks,
-	samplerType: state.sampling.samplerType
+	samplingStrategy: state.sampling.strategy
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({

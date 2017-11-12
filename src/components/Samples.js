@@ -10,7 +10,7 @@ import './Samples.css'
 class Samples extends Component {
 	render() {
 		let chunks
-		switch (this.props.samplerType)
+		switch (this.props.samplingStrategy)
 		{
 			case 'BCF2000_MULTISLIDERS_8_32':
 			case 'BCF2000_MULTISLIDERS_8_64':
@@ -46,7 +46,7 @@ class Samples extends Component {
 Samples.propTypes = {
 	audios: PropTypes.array,
 	tracks: PropTypes.array,
-	samplerType: PropTypes.string
+	samplingStrategy: PropTypes.string
 }
 
 export default Samples

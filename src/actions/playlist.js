@@ -56,8 +56,8 @@ export const loadPlaylist = () => async (dispatch, getState, { midiController, s
 
 		// Create sampling midi strategy if specified
 		let samplingCount = 0
-		const strategyType = StrategyDefinitions[state.sampling.samplerType]
-		switch (state.sampling.samplerType)
+		const strategyDefinition = StrategyDefinitions[state.sampling.strategy]
+		switch (state.sampling.strategy)
 		{
 		case 'BCF2000_BUTTONS':
 			midiController.strategy = new ButtonsStrategy()
@@ -86,7 +86,7 @@ export const loadPlaylist = () => async (dispatch, getState, { midiController, s
 
 		// Fetch playlist tracks data
 		const playlist = await fetchDeezerAPI(`playlist/${state.playlist.id}`)
-		const tracks = shuffleArray(playlist.tracks.data, strategyType.samplingCount, validateTrack)
+		const tracks = shuffleArray(playlist.tracks.data, strategyDefinition.samplingCount, validateTrack)
 		const audios = loadAudios(dispatch, tracks)
 
 		dispatch({

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 //
 import StrategyDefinitions from '../controllers/strategies/StrategyDefinitions'
 import Player from '../containers/Player'
+import config from '../config'
 import './App.css'
 
 // --------------------------------------------------------------
@@ -60,10 +61,10 @@ class App extends Component {
 					<SelectField
 						name="Sampler Type"
 						items={Object.entries(StrategyDefinitions)}
-						value={this.props.samplerType}
-						onChange={this.props.onChangeSamplerType}
-						getValue={([strategyId, strategyType]) => strategyId}
-						getText={([strategyId, strategyType]) => strategyType.label} />
+						value={this.props.samplingStrategy}
+						onChange={this.props.onChangeSamplingStrategy}
+						getValue={([strategy, strategyDefinition]) => strategy}
+						getText={([strategy, strategyDefinition]) => strategyDefinition.label} />
 					<SelectField
 						name="Sampler Duration"
 						items={DURATIONS}
@@ -73,7 +74,7 @@ class App extends Component {
 						getText={duration => duration.label} />
 					<SelectField
 						name="Playlist"
-						items={this.props.curatedPlaylists}
+						items={config.CURATED_PLAYLISTS}
 						value="" onChange={this.props.onChangePlaylistId}
 						getValue={playlist => playlist.id}
 						getText={playlist => playlist.title} />
@@ -93,13 +94,12 @@ class App extends Component {
 // --------------------------------------------------------------
 
 App.propTypes = {
-	curatedPlaylists: PropTypes.array,
 	playlistId: PropTypes.number,
 	playlistData: PropTypes.object,
 	sampleDuration: PropTypes.number,
-	samplerType: PropTypes.string,
+	samplingStrategy: PropTypes.string,
 	onChangeSampleDuration: PropTypes.func,
-	onChangeSamplerType: PropTypes.func,
+	onChangeSamplingStrategy: PropTypes.func,
 	onChangePlaylistId: PropTypes.func,
 	onLoadPlaylist: PropTypes.func
 }
