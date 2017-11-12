@@ -20,7 +20,7 @@ class Samples extends Component {
 				samples = this.props.tracks.map((track, index) => <Sample key={track.id} id={track.id} info={KEY_ORDER_AZERTY[index]} />)
 				break
 
-			case 'BCF2000_MULTISLIDERS_8_32':
+			case 'BCF2000_MULTISLIDERS':
 				chunks = chunkArray(this.props.tracks, this.props.tracks.length / 8)
 				break
 
