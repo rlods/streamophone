@@ -11,7 +11,7 @@ export default (state = [], action) => {
 	case 'MESSAGE_ADD':
 		return addMessage(state, action.data)
 	case 'MESSAGE_REMOVE':
-		return removeMessage(state, actio.data)
+		return removeMessage(state, action.data)
 	default:
 		return state
 	}
