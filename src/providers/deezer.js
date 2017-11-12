@@ -23,7 +23,7 @@ export const fetchPlaylist = async playlistId => fetchAPI(`playlist/${playlistId
 
 export const fetchTrack = async trackId => fetchAPI(`track/${trackId}`)
 
-export const validateTrack = track => !!track.preview
+export const validateTrack = track => !!track.preview && track.readable // readable means the track is available in current country
 
 export const extractTrackCover = trackData => trackData.album.cover_medium
 

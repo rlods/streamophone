@@ -50,6 +50,11 @@ export const loadAudios = (dispatch, sampling, tracks) => tracks.map(track => {
 	track.volume2 = 1.0
 	audio.volume = track.volume1 * track.volume2
 
+	// console.log('XXXX - Waiting', track.id)
+	// audio.addEventListener('loadeddata', function() {
+	// 	console.log('XXXX - Received', track.id, audio.readyState)
+	// })
+
 	if (sampling.sampleDuration === 0) { // loop in full mode
 		audio.loop = true 
 	}
