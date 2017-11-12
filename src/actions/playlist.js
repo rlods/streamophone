@@ -1,5 +1,4 @@
 import { fetchDeezerAPI, shuffleArray } from '../tools'
-import StrategyDefinitions from '../controllers/strategies/StrategyDefinitions'
 import { changeSampleNormalizationVolume } from './sampling'
 //
 import ButtonsStrategy from '../controllers/strategies/midiStrategy_Buttons'
@@ -56,7 +55,7 @@ export const loadPlaylist = () => async (dispatch, getState, { midiController, s
 
 		// Create sampling midi strategy if specified
 		let samplingCount = 0
-		const strategyDefinition = StrategyDefinitions[state.sampling.strategyId]
+		const strategyDefinition = config.STRATEGIES[state.sampling.strategyId]
 		switch (state.sampling.strategyId)
 		{
 		case 'BCF2000_BUTTONS':

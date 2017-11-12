@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 //
-import StrategyDefinitions from '../controllers/strategies/StrategyDefinitions'
 import Player from '../containers/Player'
 import config from '../config'
 import './App.css'
@@ -60,7 +59,7 @@ class App extends Component {
 					<div className="app-title">DZFONE</div>
 					<SelectField
 						name="Sampler Type"
-						items={Object.entries(StrategyDefinitions)}
+						items={Object.entries(config.STRATEGIES)}
 						value={this.props.samplingStrategyId}
 						onChange={this.props.onChangeSamplingStrategy}
 						getValue={([strategy, strategyDefinition]) => strategy}

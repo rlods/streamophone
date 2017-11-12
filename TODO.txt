@@ -8,9 +8,8 @@
 
 - Add messages reducer to display information to user
 
-- Move strategies definitions in ./src/config
+- Strategy definition should be used to instanciate the strategy and sampleCount should be returned by the strategy instance
 
 - Only instantiate the needed controller (basic, midi or socket) - needs a small refacto
 
 - ...
-
