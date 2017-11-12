@@ -61,7 +61,7 @@ class App extends Component {
 					<SelectField
 						name="Sampler Type"
 						items={Object.entries(StrategyDefinitions)}
-						value={this.props.samplingStrategy}
+						value={this.props.samplingStrategyId}
 						onChange={this.props.onChangeSamplingStrategy}
 						getValue={([strategy, strategyDefinition]) => strategy}
 						getText={([strategy, strategyDefinition]) => strategyDefinition.label} />
@@ -97,7 +97,7 @@ App.propTypes = {
 	playlistId: PropTypes.number,
 	playlistData: PropTypes.object,
 	sampleDuration: PropTypes.number,
-	samplingStrategy: PropTypes.string,
+	samplingStrategyId: PropTypes.string,
 	onChangeSampleDuration: PropTypes.func,
 	onChangeSamplingStrategy: PropTypes.func,
 	onChangePlaylistId: PropTypes.func,

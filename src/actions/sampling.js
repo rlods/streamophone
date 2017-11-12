@@ -25,10 +25,10 @@ export const changeSampleVolume = (trackId, volume) => dispatch => dispatch({
 	}
 })
 
-export const changeSamplingStrategy = strategy => dispatch => dispatch({
+export const changeSamplingStrategy = strategyId => dispatch => dispatch({
 	type: 'SAMPLING_SET_STRATEGY',
 	data: {
-		strategy
+		strategyId
 	}
 })
 

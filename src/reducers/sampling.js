@@ -3,7 +3,7 @@ const INITIAL_STATE = {
 	audios: [],
 	tracks: [],
 	sampleDuration: 2000,
-	strategy: 'KEYBOARD_AZERTY'
+	strategyId: 'KEYBOARD_AZERTY'
 }
 
 const setTracks = (state, { audios, tracks }) =>
@@ -21,8 +21,8 @@ const setTrackStatus = (state, { playing, trackId }) =>
 const setSampleDuration = (state, { sampleDuration }) =>
 	({ ...state, sampleDuration })
 
-const setSamplingStrategy = (state, { strategy }) =>
-	({ ...state, strategy })
+const setSamplingStrategy = (state, { strategyId }) =>
+	({ ...state, strategyId })
 
 export default (state = INITIAL_STATE, action) => {
 	switch (action.type)

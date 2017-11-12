@@ -56,8 +56,8 @@ export const loadPlaylist = () => async (dispatch, getState, { midiController, s
 
 		// Create sampling midi strategy if specified
 		let samplingCount = 0
-		const strategyDefinition = StrategyDefinitions[state.sampling.strategy]
-		switch (state.sampling.strategy)
+		const strategyDefinition = StrategyDefinitions[state.sampling.strategyId]
+		switch (state.sampling.strategyId)
 		{
 		case 'BCF2000_BUTTONS':
 			midiController.strategy = new ButtonsStrategy()

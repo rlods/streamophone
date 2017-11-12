@@ -10,7 +10,7 @@ const mapStateToProps = (state, ownProps) => ({
 	playlistData: state.playlist.data,
 	playlistId: state.playlist.id,
 	sampleDuration: state.sampling.sampleDuration,
-	samplingStrategy: state.sampling.strategy,
+	samplingStrategyId: state.sampling.strategyId,
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
