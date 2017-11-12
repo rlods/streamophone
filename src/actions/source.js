@@ -59,8 +59,9 @@ export const loadAudios = (dispatch, sampling, tracks) => tracks.map(track => {
 		audio.loop = true 
 	}
 
-	if (config.ENABLE_VOLUME_FROM_GAIN)
+	if (config.ENABLE_VOLUME_FROM_GAIN) {
 		normalizeAudio(dispatch, track, audio)
+	}
 
 	return audio
 })

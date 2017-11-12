@@ -40,6 +40,14 @@ export const changeSamplingTracks = (audios, tracks) => dispatch => dispatch({
 	}
 })
 
+export const changeSamplingTrackStatus = (trackId, playing) => dispatch => dispatch({
+	type: 'SAMPLING_SET_TRACK_STATUS',
+	data: {
+		playing,
+		trackId
+	}
+})
+
 // --------------------------------------------------------------
 
 export const handleKeyDown = keyCode => async (dispatch, getState, { drivers }) => {
@@ -63,8 +71,8 @@ export const handleKeyUp = keyCode => (dispatch, getState, { drivers }) => {
 }
 
 export const setSampleVolume = (sampleIndex, volume) => (dispatch, getState) => {
-	const state = getState()
-	const { audios, tracks } = state.sampling
+	const { sampling } = getState()
+	const { audios, tracks } = sampling
 	if (audios.length > 0) {
 		const indexMod = Math.abs(sampleIndex) % audios.length
 		const audio = audios[indexMod]
@@ -76,32 +84,18 @@ export const setSampleVolume = (sampleIndex, volume) => (dispatch, getState) => 
 }
 
 export const startSample = sampleIndex => async (dispatch, getState) => {
-	const state = getState()
-	const { audios, tracks, sampleDuration } = state.sampling
+	const { sampling } = getState()
+	const { audios, tracks, sampleDuration } = sampling
 	if (audios.length > 0) {
 		const indexMod = Math.abs(sampleIndex) % audios.length
 		const audio = audios[indexMod]
 		const track = tracks[indexMod]
 		if (!track.playing && audio.readyState) {
-			audio.addEventListener('pause', () => {
-				dispatch({
-					type: 'SAMPLING_SET_TRACK_STATUS',
-					data: {
-						playing: false,
-						trackId: track.id
-					}
-				})
-			})
+			audio.addEventListener('pause', () => dispatch(changeSamplingTrackStatus(track.id, false)))
 			audio.currentTime = 0
 			// audio.loop = true TODO as an option
 			await audio.play()
-			dispatch({
-				type: 'SAMPLING_SET_TRACK_STATUS',
-				data: {
-					playing: true,
-					trackId: track.id
-				}
-			})
+			dispatch(changeSamplingTrackStatus(track.id, true))
 			if (sampleDuration > 0 && sampleDuration < config.SAMPLE_MAX_DURATION) {
 				setTimeout(() => dispatch(stopSample(sampleIndex)), sampleDuration)
 			}
@@ -113,8 +107,8 @@ export const startSample = sampleIndex => async (dispatch, getState) => {
 }
 
 export const stopSample = sampleIndex => async (dispatch, getState) => {
-	const state = getState()
-	const { audios, tracks } = state.sampling
+	const { sampling } = getState()
+	const { audios, tracks } = sampling
 	if (audios.length > 0) {
 		const indexMod = Math.abs(sampleIndex) % audios.length
 		const audio = audios[indexMod]
