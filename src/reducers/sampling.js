@@ -2,7 +2,7 @@
 const INITIAL_STATE = {
 	audios: [],
 	tracks: [],
-	sampleDuration: 2000,
+	sampleDuration: 0, // full by default
 	strategyId: 'KEYBOARD_AZERTY'
 }
 
