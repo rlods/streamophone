@@ -1,17 +1,42 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 //
-import { StrategyTypes } from '../controllers/strategies'
 import Player from '../containers/Player'
+import config from '../config'
 import './App.css'
 
 // --------------------------------------------------------------
 
-class Field extends Component {
+const DURATIONS = [
+	{ value: 0,     label: 'Full track duration' },
+	{ value: 1000,  label: '1 second' },
+	{ value: 2000,  label: '2 seconds' },
+	{ value: 3000,  label: '3 seconds' },
+	{ value: 10000, label: '10 seconds' },
+	{ value: 20000, label: '20 seconds' }
+]
+
+// --------------------------------------------------------------
+
+class InputField extends Component {
 	render() {
 		return (
-			<div className="app-field">
-				<input className="control" type={this.props.type} value={this.props.value} placeholder={this.props.name} onChange={this.props.onChange} />
+			<div className="app-menu-field">
+				<label className="app-menu-field-label">{this.props.name}</label>
+				<input className="app-menu-field-control" type="number" value={this.props.value} placeholder={this.props.name} onChange={this.props.onChange} />
+			</div>
+		)
+	}
+}
+
+class SelectField extends Component {
+	render() {
+		return (
+			<div className="app-menu-field">
+				<label className="app-menu-field-label">{this.props.name}</label>
+				<select className="app-menu-field-control" onChange={this.props.onChange} value={this.props.value}>
+					{this.props.items.map(item => <option key={this.props.getValue(item)} value={this.props.getValue(item)}>{this.props.getText(item)}</option>)}
+				</select>
 			</div>
 		)
 	}
@@ -21,51 +46,47 @@ class Field extends Component {
 
 class App extends Component {
 	render() {
-		let body = null
 		if (this.props.playlistData) {
-			body = <Player />
+			return (
+				<div className="app">
+					<Player />
+				</div>
+			)
 		}
 		else {
-			body = (
+			return (
 				<div className="app-menu">
 					<div className="app-title">DZFONE</div>
-					<div className="app-field">
-						<select className="control" onChange={this.props.onChangeSamplerType} value={this.props.samplerType}>
-							{Object.values(StrategyTypes).map((strategy) =>
-								<option key={strategy.id} value={strategy.id}>{strategy.label}</option>)}
-						</select>
-					</div>
-					<div className="app-field">
-						<select className="control" onChange={this.props.onChangeSampleDuration} value={this.props.sampleDuration}>
-							<option value="0">Full track duration</option>
-							<option value="1000">1 second</option>
-							<option value="2000">2 seconds</option>
-							<option value="3000">3 seconds</option>
-							<option value="10000">10 seconds</option>
-							<option value="20000">20 seconds</option>
-						</select>
-					</div>
-					<div className="app-field">
-						<select className="control" onChange={this.props.onChangePlaylistId}>
-							<option value="1083902971">Hits 2017</option>
-							<option value="791313621">The Greatest Piano Classics</option>
-							<option value="548368765">Long Playlist</option>
-							<option value="3789105302">Steve Reich</option>
-							<option value="10178447">Percus</option>
-						</select>
-					</div>
-					<Field type="number" name="Playlist ID" value={this.props.playlistId} onChange={this.props.onChangePlaylistId} />
-					<div className="app-field">
-						<button className="control" onClick={this.props.onLoadPlaylist}>Start</button>
+					<SelectField
+						name="Sampler Type"
+						items={Object.entries(config.STRATEGIES)}
+						value={this.props.samplingStrategyId}
+						onChange={this.props.onChangeSamplingStrategy}
+						getValue={([strategy, strategyDefinition]) => strategy}
+						getText={([strategy, strategyDefinition]) => strategyDefinition.label} />
+					<SelectField
+						name="Sampler Duration"
+						items={DURATIONS}
+						value={this.props.sampleDuration}
+						onChange={this.props.onChangeSampleDuration}
+						getValue={duration => duration.value}
+						getText={duration => duration.label} />
+					<SelectField
+						name="Playlist"
+						items={config.CURATED_PLAYLISTS}
+						value="" onChange={this.props.onChangePlaylistId}
+						getValue={playlist => playlist.id}
+						getText={playlist => playlist.title} />
+					<InputField
+						name="Playlist ID"
+						value={this.props.playlistId}
+						onChange={this.props.onChangePlaylistId} />
+					<div className="app-menu-field">
+						<button className="app-menu-action" onClick={this.props.onLoadPlaylist}>Start</button>
 					</div>
 				</div>
 			)
 		}
-		return (
-			<div className="App">
-				{body}
-			</div>
-		)
 	}
 }
 
@@ -75,9 +96,9 @@ App.propTypes = {
 	playlistId: PropTypes.number,
 	playlistData: PropTypes.object,
 	sampleDuration: PropTypes.number,
-	samplerType: PropTypes.string,
+	samplingStrategyId: PropTypes.string,
 	onChangeSampleDuration: PropTypes.func,
-	onChangeSamplerType: PropTypes.func,
+	onChangeSamplingStrategy: PropTypes.func,
 	onChangePlaylistId: PropTypes.func,
 	onLoadPlaylist: PropTypes.func
 }

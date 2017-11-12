@@ -4,16 +4,21 @@ import jsonp from 'jsonp'
 
 const API_BASE_URL = 'https://api.deezer.com/'
 
-export const chunkArray = (array, size, cb) => {
+export const chunkArray = (array, size) => {
 	const results = []
 	for (let i = 0, j = array.length; i < j; i += size)
-		results.push(cb(array.slice(i, i + size)))
+		results.push(array.slice(i, i + size))
 	return results
 }
 
 export const fetchDeezerAPI = url => new Promise((resolve, reject) => {
 	jsonp(API_BASE_URL + url + '?output=jsonp&strict=on', null, (err, data) => {
-		resolve(data)
+		if (err)
+			reject(err)
+		else if (data && data.error)
+			reject(data.error)
+		else
+			resolve(data)
 	})
 })
 

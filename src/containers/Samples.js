@@ -1,13 +1,13 @@
 import { connect } from 'react-redux'
 //
-import Samples from '../components/Sampling'
+import Samples from '../components/Samples'
 
 // --------------------------------------------------------------
 
 const mapStateToProps = (state, ownProps) => ({
 	audios: state.sampling.audios,
 	tracks: state.sampling.tracks,
-	samplerType: state.sampling.samplerType
+	samplingStrategyId: state.sampling.strategyId
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({

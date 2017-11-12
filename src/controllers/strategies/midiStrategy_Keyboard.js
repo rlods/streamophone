@@ -1,12 +1,13 @@
 import { startSample, stopSample, setSampleVolume } from '../../actions/sampling'
-import { Strategy } from './'
+import Strategy from './Strategy'
 
 // --------------------------------------------------------------
 
-let msgNum = 0
 const mapping = [42, 46]
 const keyDown = 159
 const keyUp = 143
+
+// --------------------------------------------------------------
 
 export default class KeyboardStrategy extends Strategy {
 	

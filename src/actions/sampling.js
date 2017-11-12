@@ -1,4 +1,4 @@
-const SAMPLE_MAX_DURATION = 30000
+import config from '../config'
 
 // --------------------------------------------------------------
 
@@ -9,26 +9,26 @@ export const changeSampleDuration = sampleDuration => dispatch => dispatch({
 	}
 })
 
-export const changeSampleNormalizationVolume = (trackId, volume1) => dispatch => dispatch({
+export const changeSampleNormalizationVolume = (trackId, volume) => dispatch => dispatch({
 	type: 'SAMPLING_SET_TRACK_NORMALIZATION_VOLUME',
 	data: {
 		trackId,
-		volume1
+		volume
 	}
 })
 
-export const changeSampleVolume = (trackId, volume2) => dispatch => dispatch({
+export const changeSampleVolume = (trackId, volume) => dispatch => dispatch({
 	type: 'SAMPLING_SET_TRACK_VOLUME',
 	data: {
 		trackId,
-		volume2
+		volume
 	}
 })
 
-export const changeSamplerType = samplerType => dispatch => dispatch({
-	type: 'SAMPLING_SET_SAMPLER_TYPE',
+export const changeSamplingStrategy = strategyId => dispatch => dispatch({
+	type: 'SAMPLING_SET_STRATEGY',
 	data: {
-		samplerType
+		strategyId
 	}
 })
 
@@ -81,7 +81,7 @@ export const startSample = sampleIndex => async (dispatch, getState) => {
 					trackId: track.id
 				}
 			})
-			if (sampleDuration > 0 && sampleDuration < SAMPLE_MAX_DURATION) {
+			if (sampleDuration > 0 && sampleDuration < config.SAMPLE_MAX_DURATION) {
 				setTimeout(() => dispatch(stopSample(sampleIndex)), sampleDuration)
 			}
 		}

@@ -1,36 +1,52 @@
-.App {
+.app {
 	display: flex;
 	flex-direction: column;
-	align-items: center;
-}
-
-.app-title {
-	font-size: 40px;
-	font-weight: bold;
+	justify-content: center;
+	flex: 1;
 }
 
 .app-menu {
+	align-self: center;
 	display: flex;
-	flex: 1;
 	flex-direction: column;
 	text-align: center;
-	background-color: #DDD;
+	background-color: #EEE;
 	border-radius: 5px;
 	padding: 20px;
 	box-shadow: 3px 3px 20px;
 }
 
-.app-field {
-	display: flex;
-	flex: 1;
-	flex-direction: row;
-	text-align: center;
-	margin-top: 5px;
+.app-title {
+	font-size: 40px;
+	font-weight: bold;
+	margin-bottom: 15px;
 }
 
-.app-field .control {
+.app-menu-field {
+	display: flex;
 	flex: 1;
-	font-size: 20px;
-	line-height: 25px;
+	flex-direction: column;
+	text-align: left;
+	margin-bottom: 10px;
+}
+
+.app-menu-field-label {
+	font-size: 15px;
+	font-weight: bold;
 	padding: 5px;
+	text-transform: uppercase;
+}
+
+.app-menu-field-control {
+	flex: 1;
+	font-size: 15px;
+	line-height: 20px;
+	padding: 5px;
+	background-color: transparent;
+	border: 0;
+	border-bottom:1px solid #CCC;
+}
+
+.app-menu-action {
+	font-size: 20px;
 }
