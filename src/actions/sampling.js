@@ -85,6 +85,7 @@ export const startSample = sampleIndex => async (dispatch, getState) => {
 				})
 			})
 			audio.currentTime = 0
+			// audio.loop = true TODO as an option
 			await audio.play()
 			dispatch({
 				type: 'SAMPLING_SET_TRACK_STATUS',
