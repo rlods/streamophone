@@ -1,8 +1,3 @@
-import jsonp from 'jsonp'
-
-// ------------------------------------------------------------------
-
-const API_BASE_URL = 'https://api.deezer.com/'
 
 export const chunkArray = (array, size) => {
 	const results = []
@@ -10,17 +5,6 @@ export const chunkArray = (array, size) => {
 		results.push(array.slice(i, i + size))
 	return results
 }
-
-export const fetchDeezerAPI = url => new Promise((resolve, reject) => {
-	jsonp(API_BASE_URL + url + '?output=jsonp&strict=on', null, (err, data) => {
-		if (err)
-			reject(err)
-		else if (data && data.error)
-			reject(data.error)
-		else
-			resolve(data)
-	})
-})
 
 export const shuffleArray = (arr, size, validateItem) => {
 	const copy = arr.slice(0), res = []

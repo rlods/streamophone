@@ -1,4 +1,5 @@
-import { fetchDeezerAPI, shuffleArray } from '../tools'
+import { fetchPlaylist, fetchTrack } from '../providers/deezer'
+import { shuffleArray } from '../tools'
 import { changeSampleNormalizationVolume } from './sampling'
 //
 import KeyboardBasicStrategy from '../strategies/KeyboardBasicStrategy'
@@ -21,7 +22,7 @@ export const changePlaylistId = id => dispatch => dispatch({
 
 export const normalizeAudio = async (dispatch, track, audio) => {
 	try {
-		const augmentedTrack = await fetchDeezerAPI(`track/${track.id}`)
+		const augmentedTrack = await fetchTrack(track.id)
 		let volume1 = !augmentedTrack.gain ? 0.5 : 0.5 * Math.pow(10, ((-12 - augmentedTrack.gain) / 20))
 		if (volume1 > 1.0) volume1 = 1.0
 		// console.log(`Normalized ${track.id}: ${track.volume1} -> ${volume1}`)
@@ -33,11 +34,15 @@ export const normalizeAudio = async (dispatch, track, audio) => {
 	}
 }
 
-export const loadAudios = (dispatch, tracks) => tracks.map(track => {
+export const loadAudios = (dispatch, state, tracks) => tracks.map(track => {
 	const audio = new Audio(track.preview)
 	track.volume1 = 0.5
 	track.volume2 = 1.0
 	audio.volume = track.volume1 * track.volume2
+
+	if (state.sampling.sampleDuration === 0) { // loop in full mode
+		audio.loop = true 
+	}
 
 	if (config.ENABLE_VOLUME_FROM_GAIN)
 		normalizeAudio(dispatch, track, audio)
@@ -88,9 +93,9 @@ export const loadPlaylist = () => async (dispatch, getState, { drivers }) => {
 		}
 
 		// Fetch playlist tracks data
-		const playlist = await fetchDeezerAPI(`playlist/${state.playlist.id}`)
+		const playlist = await fetchPlaylist(state.playlist.id)
 		const tracks = shuffleArray(playlist.tracks.data, driver.strategy.samplesCount, validateTrack)
-		const audios = loadAudios(dispatch, tracks)
+		const audios = loadAudios(dispatch, state, tracks)
 
 		dispatch({
 			type: 'PLAYLIST_SET_DATA',
