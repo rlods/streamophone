@@ -1,12 +1,13 @@
 import { fetchDeezerAPI, shuffleArray } from '../tools'
 import { changeSampleNormalizationVolume } from './sampling'
 //
-import ButtonsStrategy from '../controllers/strategies/midiStrategy_Buttons'
-import CustomSocketStrategy from '../controllers/strategies/CustomSocketStrategy'
-import MultiSlidersStrategy from '../controllers/strategies/midiStrategy_MultiSliders'
-import SingleSliderStrategy from '../controllers/strategies/midiStrategy_SingleSlider'
-import LightPadBlockStrategy from '../controllers/strategies/midiStrategy_LightPadBlock'
-import KeyboardStrategy from '../controllers/strategies/midiStrategy_Keyboard'
+import KeyboardBasicStrategy from '../strategies/KeyboardBasicStrategy'
+import ButtonsStrategy from '../strategies/midiStrategy_Buttons'
+import CustomSocketStrategy from '../strategies/CustomSocketStrategy'
+import MultiSlidersStrategy from '../strategies/midiStrategy_MultiSliders'
+import SingleSliderStrategy from '../strategies/midiStrategy_SingleSlider'
+import LightPadBlockStrategy from '../strategies/midiStrategy_LightPadBlock'
+import KeyboardStrategy from '../strategies/midiStrategy_Keyboard'
 import config from '../config'
 
 // ------------------------------------------------------------------
@@ -46,7 +47,7 @@ export const loadAudios = (dispatch, tracks) => tracks.map(track => {
 
 export const validateTrack = track => !!track.preview
 
-export const loadPlaylist = () => async (dispatch, getState, { midiController, socketController }) => { 
+export const loadPlaylist = () => async (dispatch, getState, { drivers }) => { 
 	try {
 		const state = getState()
 
@@ -54,38 +55,41 @@ export const loadPlaylist = () => async (dispatch, getState, { midiController, s
 		state.sampling.audios.forEach(audio => audio.pause())
 
 		// Create sampling midi strategy if specified
-		let samplingCount = 0
 		const strategyDefinition = config.STRATEGIES[state.sampling.strategyId]
+		const driver = drivers[strategyDefinition.driver]
+		if (!driver)
+			throw new Error(`Unknown driver "${strategyDefinition.driver}"`)
+
 		switch (state.sampling.strategyId)
 		{
+		case 'KEYBOARD_AZERTY':
+			driver.strategy = new KeyboardBasicStrategy()
+			break
 		case 'BCF2000_BUTTONS':
-			midiController.strategy = new ButtonsStrategy()
+			driver.strategy = new ButtonsStrategy()
 			break
 		case 'BCF2000_SINGLESLIDER':
-			midiController.strategy = new SingleSliderStrategy()
+			driver.strategy = new SingleSliderStrategy()
 			break
-		case 'BCF2000_MULTISLIDERS_8_32':
-			midiController.strategy = new MultiSlidersStrategy(8, 128, samplingCount)
-			break
-		case 'BCF2000_MULTISLIDERS_8_64':
-			midiController.strategy = new MultiSlidersStrategy(8, 128, samplingCount)
+		case 'BCF2000_MULTISLIDERS':
+			driver.strategy = new MultiSlidersStrategy(8, 128)
 			break
 		case 'LIGHTPADBLOCK_16':
-			midiController.strategy = new LightPadBlockStrategy()
+			driver.strategy = new LightPadBlockStrategy()
 			break
 		case 'CUSTOM_SOCKET_STRATEGY':
-			socketController.strategy = new CustomSocketStrategy()
+			driver.strategy = new CustomSocketStrategy()
 			break
 		case 'KEYBOARD_24':
-			midiController.strategy = new KeyboardStrategy()
+			driver.strategy = new KeyboardStrategy()
 			break
 		default:
-			break
+			throw new Error(`Unknown strategy "${state.sampling.strategyId}"`)
 		}
 
 		// Fetch playlist tracks data
 		const playlist = await fetchDeezerAPI(`playlist/${state.playlist.id}`)
-		const tracks = shuffleArray(playlist.tracks.data, strategyDefinition.samplingCount, validateTrack)
+		const tracks = shuffleArray(playlist.tracks.data, driver.strategy.samplesCount, validateTrack)
 		const audios = loadAudios(dispatch, tracks)
 
 		dispatch({

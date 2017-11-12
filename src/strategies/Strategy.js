@@ -1,5 +1,9 @@
 
 export default class Strategy {
+	constructor() {
+		this.samplesCount = 0
+	}
+
 	handleMIDI(dispatch, channel, key, velocity) {
 	}
 

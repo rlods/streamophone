@@ -13,7 +13,6 @@ class Samples extends Component {
 		switch (this.props.samplingStrategyId)
 		{
 			case 'BCF2000_MULTISLIDERS_8_32':
-			case 'BCF2000_MULTISLIDERS_8_64':
 				chunks = chunkArray(this.props.tracks, this.props.tracks.length / 8)
 				break
 

@@ -34,12 +34,24 @@ export const changeSamplingStrategy = strategyId => dispatch => dispatch({
 
 // --------------------------------------------------------------
 
-export const handleKeyDown = keyCode => async (dispatch, getState, { controller }) => {
-	controller.strategy.handleKeyDown(dispatch, keyCode)
+export const handleKeyDown = keyCode => async (dispatch, getState, { drivers }) => {
+	const driver = drivers['basic']
+	if (driver && driver.strategy) {
+		driver.strategy.handleKeyDown(dispatch, keyCode) // TODO what if basic driver is not registered ?
+	}
+	else {
+		// No driver or strategy configured to handle keyboard
+	}
 }
 
-export const handleKeyUp = keyCode => (dispatch, getState, { controller }) => {
-	controller.strategy.handleKeyUp(dispatch, keyCode)
+export const handleKeyUp = keyCode => (dispatch, getState, { drivers }) => {
+	const driver = drivers['basic']
+	if (driver && driver.strategy) {
+		driver.strategy.handleKeyUp(dispatch, keyCode) // TODO what if basic driver is not registered ?
+	}
+	else {
+		// No driver or strategy configured to handle keyboard
+	}
 }
 
 export const setSampleVolume = (sampleIndex, volume) => (dispatch, getState) => {
@@ -73,6 +85,7 @@ export const startSample = sampleIndex => async (dispatch, getState) => {
 				})
 			})
 			audio.currentTime = 0
+			// audio.loop = true TODO as an option
 			await audio.play()
 			dispatch({
 				type: 'SAMPLING_SET_TRACK_STATUS',

@@ -1,14 +1,14 @@
-import { startSample, stopSample } from '../../actions/sampling'
+import { startSample, stopSample } from '../actions/sampling'
 import Strategy from './Strategy'
 
 // --------------------------------------------------------------
 
 export default class MultiSlidersStrategy extends Strategy {
-	constructor(slidersCount, slidersSteps, samplesCount) {
+	constructor(slidersCount, slidersSteps) {
 		super()
 		this.slidersCount = slidersCount
 		this.slidersSteps = slidersSteps
-		this.samplesCount = samplesCount
+		this.samplesCount = 32
 		this.samplesCountPerSlider = this.samplesCount / this.slidersCount
 		this.currentSamples = []
 		this.oldSample = -1

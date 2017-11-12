@@ -8,12 +8,12 @@ import './App.css'
 // --------------------------------------------------------------
 
 const DURATIONS = [
-	{ value: 0,     label: 'Full track duration' },
 	{ value: 1000,  label: '1 second' },
 	{ value: 2000,  label: '2 seconds' },
 	{ value: 3000,  label: '3 seconds' },
 	{ value: 10000, label: '10 seconds' },
-	{ value: 20000, label: '20 seconds' }
+	{ value: 20000, label: '20 seconds' },
+	{ value: 0,     label: 'Full' }
 ]
 
 // --------------------------------------------------------------
@@ -62,8 +62,8 @@ class App extends Component {
 						items={Object.entries(config.STRATEGIES)}
 						value={this.props.samplingStrategyId}
 						onChange={this.props.onChangeSamplingStrategy}
-						getValue={([strategy, strategyDefinition]) => strategy}
-						getText={([strategy, strategyDefinition]) => strategyDefinition.label} />
+						getValue={([strategyId, strategyDefinition]) => strategyId}
+						getText={([strategyId, strategyDefinition]) => strategyDefinition.label} />
 					<SelectField
 						name="Sampler Duration"
 						items={DURATIONS}
