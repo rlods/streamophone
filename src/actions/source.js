@@ -1,5 +1,5 @@
 import { fetchSourceData, fetchTrack } from '../providers/deezer'
-import { shuffleArray } from '../tools'
+import { transformArray } from '../tools'
 import { changeSampleNormalizationVolume, changeSamplingTracks } from './sampling'
 //
 import config from '../config'
@@ -79,7 +79,7 @@ export const loadSource = () => async (dispatch, getState, { drivers }) => {
 
 		// Fetch source data (tracks)
 		const sourceData = await fetchSourceData(source.type, source.id)
-		const tracks = shuffleArray(sourceData, driver.strategy.samplesCount, validateTrack)
+		const tracks = transformArray(sourceData, driver.strategy.samplesCount, sampling.transformation, validateTrack)
 		const audios = loadAudios(dispatch, sampling, tracks)
 		dispatch(changeSourceData(sourceData))
 		dispatch(changeSamplingTracks(audios, tracks))

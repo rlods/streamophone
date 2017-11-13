@@ -6,19 +6,27 @@ export const chunkArray = (array, size) => {
 	return results
 }
 
-export const shuffleArray = (arr, size, validateItem) => {
-	const copy = arr.slice(0), res = []
+export const shuffleArray = (arr, size) => {
+	const res = []
 	let index, item
-	while (size > 0 && copy.length > 0) {
-		index = Math.floor(copy.length * Math.random())
-		item = copy.splice(index, 1)[0]
-		if (validateItem(item)) {
-			res.push(item)
-			size--
-		}
-		else {
-			// console.log('Skipping', index, copy.length)
-		}
+	while (size > 0 && arr.length > 0) {
+		index = Math.floor(arr.length * Math.random())
+		item = arr.splice(index, 1)[0]
+		res.push(item)
+		size--
 	}
 	return res
+}
+
+export const transformArray = (arr, size, transformationType, validationCB) => {
+	const copy = arr.filter(item => validationCB(item))
+	switch (transformationType)
+	{
+	case 'none':
+		return copy.slice(0, size)
+	case 'shuffle':
+		return shuffleArray(copy, size)
+	default:
+		throw new Error(`Unknown transformation type "${transformationType}"`)
+	}
 }
