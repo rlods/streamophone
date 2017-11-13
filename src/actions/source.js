@@ -1,4 +1,4 @@
-import { extractTracksData, fetchAlbum, fetchArtistTracks, fetchPlaylist, fetchTrack, validateTrack } from '../providers/deezer'
+import { fetchSourceData, fetchTrack, validateTrack } from '../providers/deezer'
 import { shuffleArray } from '../tools'
 import { changeSampleNormalizationVolume, changeSamplingTracks } from './sampling'
 //
@@ -9,23 +9,17 @@ import { createStrategy } from '../strategies'
 
 export const changeSourceData = data => dispatch => dispatch({
 	type: 'SOURCE_SET_DATA',
-	data: {
-		data
-	}
+	data: { data }
 })
 
 export const changeSourceId = id => dispatch => dispatch({
 	type: 'SOURCE_SET_ID',
-	data: {
-		id
-	}
+	data: { id }
 })
 
 export const changeSourceType = type => dispatch => dispatch({
 	type: 'SOURCE_SET_TYPE',
-	data: {
-		type
-	}
+	data: { type }
 })
 
 // ------------------------------------------------------------------
@@ -68,21 +62,6 @@ export const loadAudios = (dispatch, sampling, tracks) => tracks.map(track => {
 
 // ------------------------------------------------------------------
 
-const loadSourceData = (sourceType, sourceId) => {
-	switch (sourceType)
-	{
-		case 'album':
-			return fetchAlbum(sourceId)
-		case 'artist':
-			return fetchArtistTracks(sourceId)
-		case 'playlist':
-			return fetchPlaylist(sourceId)
-		default:
-			return fetchPlaylist(sourceId)
-	}
-	
-}
-
 export const loadSource = () => async (dispatch, getState, { drivers }) => {
 	try {
 		const { sampling, source } = getState()
@@ -99,9 +78,8 @@ export const loadSource = () => async (dispatch, getState, { drivers }) => {
 		driver.strategy = createStrategy(sampling.strategyId)
 
 		// Fetch source data (tracks)
-		const sourceData = await loadSourceData(source.type, source.id)
-		const tracksData = await extractTracksData(source.type, sourceData)
-		const tracks = shuffleArray(tracksData, driver.strategy.samplesCount, validateTrack)
+		const sourceData = await fetchSourceData(source.type, source.id)
+		const tracks = shuffleArray(sourceData, driver.strategy.samplesCount, validateTrack)
 		const audios = loadAudios(dispatch, sampling, tracks)
 		dispatch(changeSourceData(sourceData))
 		dispatch(changeSamplingTracks(audios, tracks))

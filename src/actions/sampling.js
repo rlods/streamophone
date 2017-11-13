@@ -4,69 +4,47 @@ import config from '../config'
 
 export const changeSampleDuration = sampleDuration => dispatch => dispatch({
 	type: 'SAMPLING_SET_SAMPLE_DURATION',
-	data: {
-		sampleDuration
-	}
+	data: { sampleDuration }
 })
 
 export const changeSampleNormalizationVolume = (trackId, volume) => dispatch => dispatch({
 	type: 'SAMPLING_SET_TRACK_NORMALIZATION_VOLUME',
-	data: {
-		trackId,
-		volume
-	}
+	data: { trackId, volume }
 })
 
 export const changeSampleVolume = (trackId, volume) => dispatch => dispatch({
 	type: 'SAMPLING_SET_TRACK_VOLUME',
-	data: {
-		trackId,
-		volume
-	}
+	data: { trackId, volume }
 })
 
 export const changeSamplingStrategy = strategyId => dispatch => dispatch({
 	type: 'SAMPLING_SET_STRATEGY',
-	data: {
-		strategyId
-	}
+	data: { strategyId }
 })
 
 export const changeSamplingTracks = (audios, tracks) => dispatch => dispatch({
 	type: 'SAMPLING_SET_TRACKS',
-	data: {
-		audios,
-		tracks
-	}
+	data: { audios, tracks }
 })
 
 export const changeSamplingTrackStatus = (trackId, playing) => dispatch => dispatch({
 	type: 'SAMPLING_SET_TRACK_STATUS',
-	data: {
-		playing,
-		trackId
-	}
+	data: { playing, trackId }
 })
 
 // --------------------------------------------------------------
 
 export const handleKeyDown = keyCode => async (dispatch, getState, { drivers }) => {
-	const driver = drivers['basic']
+	const driver = drivers['basic'] // TODO what if basic driver is not registered ?
 	if (driver && driver.strategy) {
-		driver.strategy.handleKeyDown(dispatch, keyCode) // TODO what if basic driver is not registered ?
-	}
-	else {
-		// No driver or strategy configured to handle keyboard
+		driver.strategy.handleKeyDown(dispatch, keyCode)
 	}
 }
 
 export const handleKeyUp = keyCode => (dispatch, getState, { drivers }) => {
-	const driver = drivers['basic']
+	const driver = drivers['basic'] // TODO what if basic driver is not registered ?
 	if (driver && driver.strategy) {
-		driver.strategy.handleKeyUp(dispatch, keyCode) // TODO what if basic driver is not registered ?
-	}
-	else {
-		// No driver or strategy configured to handle keyboard
+		driver.strategy.handleKeyUp(dispatch, keyCode)
 	}
 }
 

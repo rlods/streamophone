@@ -108,7 +108,7 @@ class App extends Component {
 App.propTypes = {
 	sampleDuration: PropTypes.number,
 	samplingStrategyId: PropTypes.string,
-	sourceData: PropTypes.object,
+	sourceData: PropTypes.array,
 	sourceId: PropTypes.string,
 	sourceType: PropTypes.string,
 	onChangeCurated: PropTypes.func,
