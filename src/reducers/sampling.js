@@ -13,11 +13,11 @@ const setTracks = (state, { audios, tracks }) =>
 const setTrackNormalizationVolume = (state, { trackId, volume }) =>
 	({ ...state, tracks: state.tracks.map(other => other.id !== trackId ? other : { ...other, volume1: volume }) })
 
-const setTrackVolume = (state, { trackId, volume }) =>
-	({ ...state, tracks: state.tracks.map(other => other.id !== trackId ? other : { ...other, volume2: volume }) })
+const setSampleVolume = (state, { sampleIndex, volume }) => // TODO
+	({ ...state, tracks: state.tracks.map((other, otherIndex) => otherIndex !== sampleIndex ? other : { ...other, volume2: volume }) })
 
-const setTrackStatus = (state, { playing, trackId }) =>
-	({ ...state, tracks: state.tracks.map(other => other.id !== trackId ? other : { ...other, playing }) })
+const setSampleStatus = (state, { playing, sampleIndex }) => // TODO
+	({ ...state, tracks: state.tracks.map((other, otherIndex) => otherIndex !== sampleIndex ? other : { ...other, playing }) })
 
 const setSampleDuration = (state, { sampleDuration }) =>
 	({ ...state, sampleDuration })
@@ -41,10 +41,10 @@ export default (state = INITIAL_STATE, action) => {
 		return setTracks(state, action.data)
 	case 'SAMPLING_SET_TRACK_NORMALIZATION_VOLUME':
 		return setTrackNormalizationVolume(state, action.data)
-	case 'SAMPLING_SET_TRACK_STATUS':
-		return setTrackStatus(state, action.data)
-	case 'SAMPLING_SET_TRACK_VOLUME':
-		return setTrackVolume(state, action.data)
+	case 'SAMPLING_SET_SAMPLE_STATUS':
+		return setSampleStatus(state, action.data)
+	case 'SAMPLING_SET_SAMPLE_VOLUME':
+		return setSampleVolume(state, action.data)
 	default:
 		return state
 	}

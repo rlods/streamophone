@@ -12,9 +12,9 @@ export const changeSampleNormalizationVolume = (trackId, volume) => dispatch => 
 	data: { trackId, volume }
 })
 
-export const changeSampleVolume = (trackId, volume) => dispatch => dispatch({
-	type: 'SAMPLING_SET_TRACK_VOLUME',
-	data: { trackId, volume }
+export const changeSampleVolume = (sampleIndex, volume) => dispatch => dispatch({
+	type: 'SAMPLING_SET_SAMPLE_VOLUME',
+	data: { sampleIndex, volume }
 })
 
 export const changeSamplingStrategy = strategyId => dispatch => dispatch({
@@ -32,9 +32,9 @@ export const changeSamplingTracks = (audios, tracks) => dispatch => dispatch({
 	data: { audios, tracks }
 })
 
-export const changeSamplingTrackStatus = (trackId, playing) => dispatch => dispatch({
-	type: 'SAMPLING_SET_TRACK_STATUS',
-	data: { playing, trackId }
+export const changeSampleStatus = (sampleIndex, playing) => dispatch => dispatch({
+	type: 'SAMPLING_SET_SAMPLE_STATUS',
+	data: { playing, sampleIndex }
 })
 
 // --------------------------------------------------------------
@@ -62,7 +62,7 @@ export const setSampleVolume = (sampleIndex, volume) => (dispatch, getState) => 
 		const track = tracks[indexMod]
 		const volume2 = volume < 0 ? 0 : volume > 1 ? 1 : volume
 		audio.volume = track.volume1 * volume2
-		changeSampleVolume(track.id, volume2)
+		changeSampleVolume(sampleIndex, volume2)
 	}
 }
 
@@ -74,11 +74,11 @@ export const startSample = sampleIndex => async (dispatch, getState) => {
 		const audio = audios[indexMod]
 		const track = tracks[indexMod]
 		if (!track.playing && audio.readyState) {
-			audio.addEventListener('pause', () => dispatch(changeSamplingTrackStatus(track.id, false)))
+			audio.addEventListener('pause', () => dispatch(changeSampleStatus(sampleIndex, false)))
 			audio.currentTime = 0
 			// audio.loop = true TODO as an option
 			await audio.play()
-			dispatch(changeSamplingTrackStatus(track.id, true))
+			dispatch(changeSampleStatus(sampleIndex, true))
 			if (sampleDuration > 0 && sampleDuration < config.SAMPLE_MAX_DURATION) {
 				setTimeout(() => dispatch(stopSample(sampleIndex)), sampleDuration)
 			}

@@ -21,13 +21,11 @@ export const shuffleArray = (arr, size) => {
 export const transformArray = (arr, size, transformationType, validationCB) => {
 	const copy = arr.filter(item => validationCB(item))
 
-	// Fill by looping if not enough items (TODO)
-	if (false) {
-		if (copy.length > 0 && copy.length < size) {
-			console.log('Enrichment', copy.length, size - copy.length)
-			for (let i = 0; copy.length < size; ++i) {
-				copy.push(copy[i])
-			}
+	// Fill by looping if not enough items
+	if (copy.length > 0 && copy.length < size) {
+		// console.log('Enrichment', copy.length, size - copy.length)
+		for (let i = 0; copy.length < size; ++i) {
+			copy.push(copy[i])
 		}
 	}
 

@@ -17,7 +17,7 @@ class Samples extends Component {
 		switch (this.props.samplingStrategyId)
 		{
 			case 'KEYBOARD_AZERTY':
-				samples = this.props.tracks.map((track, index) => <Sample key={track.id} id={track.id} info={KEY_ORDER_AZERTY[index]} />)
+				samples = this.props.tracks.map((sample, sampleIndex) => <Sample key={sampleIndex} index={sampleIndex} info={KEY_ORDER_AZERTY[sampleIndex]} />)
 				break
 
 			case 'BCF2000_MULTISLIDERS':
@@ -41,8 +41,8 @@ class Samples extends Component {
 				{
 					samples
 					? samples : chunks
-					? chunks.map((tracks, index) => <div key={index}>{tracks.map(track => <Sample key={track.id} id={track.id} />)}</div>)
-					: this.props.tracks.map(track => <Sample key={track.id} id={track.id} />)
+					? chunks.map((chunk, chunkIndex) => <div key={chunkIndex}>{chunk.map((sample, sampleIndex) => <Sample key={sampleIndex} index={sampleIndex} />)}</div>)
+					: this.props.tracks.map((sample, sampleIndex) => <Sample key={sampleIndex} index={sampleIndex} />)
 				}
 			</div>
 		)
