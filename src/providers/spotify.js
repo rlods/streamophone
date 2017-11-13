@@ -4,23 +4,52 @@ import axios from 'axios'
 
 const API_BASE_URL = 'https://api.spotify.com/v1/'
 
-const Fetcher = axios.create({
-    baseURL: API_BASE_URL
-})
+const CLIENT_ID = '' // TODO: to remove of course
+const CLIENT_SECRET = '' // TODO: to remove of course
+const AUTHORIZATION1 = btoa(`${CLIENT_ID}:${CLIENT_SECRET}`)
+const AUTHORIZATION2 = null
 
 // https://developer.spotify.com/web-api/authorization-guide/#client_credentials_flow
 // curl -X POST https://accounts.spotify.com/api/token -d grant_type=client_credentials --header "Authorization: Basic YmUxNTZlMWUxMGRlNDNiMmI0ZTNmNzNiMmY0MGQxZGM6ODMzOTJmMjkxYjBjNDYyMTk2OTgyYWY5NzUwMTQ0YTg="
+// Test Album ID: 5rOHrnrRomvSJhQLGVtfJ8
 
-const fetchAPI = url => new Promise((resolve, reject) => { // TODO
-	Fetcher.post(API_BASE_URL + url, null, (err, data) => {
+axios({
+	method: 'post',
+	url: 'https://accounts.spotify.com/api/token',
+	headers: {
+		'Authorization': `Authorization: Basic ${AUTHORIZATION1}`
+	}
+}).then(x => {
+	console.log(x)
+})
+
+const Fetcher = axios.create({
+	baseURL: API_BASE_URL,
+	headers: {
+		'Authorization': 'Bearer ${AUTHORIZATION2}'
+	}
+})
+
+const fetchAPI = async url => { // TODO
+	try {
+		console.log(API_BASE_URL + url)
+		const response = await Fetcher.get(API_BASE_URL + url, {})
+		console.log('fetchAPI response:', response)
+		/*
 		if (err)
 			reject(err)
 		else if (data && data.error)
 			reject(data.error)
 		else
 			resolve(data)
-	})
-})
+		*/
+		return response.data
+	}
+	catch (error) {
+		console.log('fetchAPI error:', error)
+		throw error
+	}
+}
 
 const fetchAlbum = async albumId => fetchAPI(`albums/${albumId}`)
 
