@@ -1,4 +1,4 @@
-import { fetchSourceData, fetchTrack, validateTrack } from '../providers/deezer'
+import { fetchSourceData, fetchTrack } from '../providers/deezer'
 import { shuffleArray } from '../tools'
 import { changeSampleNormalizationVolume, changeSamplingTracks } from './sampling'
 //
@@ -40,8 +40,6 @@ export const normalizeAudio = async (dispatch, track, audio) => {
 
 export const loadAudios = (dispatch, sampling, tracks) => tracks.map(track => {
 	const audio = new Audio(track.preview)
-	track.volume1 = 0.5
-	track.volume2 = 1.0
 	audio.volume = track.volume1 * track.volume2
 
 	// console.log('XXXX - Waiting', track.id)
@@ -61,6 +59,8 @@ export const loadAudios = (dispatch, sampling, tracks) => tracks.map(track => {
 })
 
 // ------------------------------------------------------------------
+
+const validateTrack = track => !!track.preview && track.readable // readable means the track is available in current country
 
 export const loadSource = () => async (dispatch, getState, { drivers }) => {
 	try {

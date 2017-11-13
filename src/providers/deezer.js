@@ -22,6 +22,7 @@ const fetchArtistTracks = async artistId => fetchAPI(`artist/${artistId}/radio`)
 const fetchPlaylist = async playlistId => fetchAPI(`playlist/${playlistId}`)
 
 export const fetchSourceData = async (sourceType, sourceId) => {
+	let sourceData
 	switch (sourceType)
 	{
 		case 'album':
@@ -29,28 +30,50 @@ export const fetchSourceData = async (sourceType, sourceId) => {
 			// In that case we have to enrich each track data with the cover which is available in the album data
 			const albumData = await fetchAlbum(sourceId)
 			albumData.tracks.data.forEach(track => track.album = { cover_medium: albumData.cover_medium })
-			return albumData.tracks.data
+			sourceData = albumData.tracks.data
+			break
 		}
 		case 'artist':
 		{
 			const artistTracksData = await fetchArtistTracks(sourceId)
-			return artistTracksData.data
+			sourceData = artistTracksData.data
+			break
 		}
 		case 'playlist':
 		{
 			const playlistData = await fetchPlaylist(sourceId)
-			return playlistData.tracks.data
+			sourceData = playlistData.tracks.data
+			break
 		}
 		default:
 		{
 			throw new Error(`Unknown source type "${sourceType}"`)
 		}
 	}
-	
+	return sourceData.map(trackData => ({
+		cover: trackData.album.cover_medium,
+		id: trackData.id,
+		playing: false,
+		preview: trackData.preview,
+		readable: trackData.readable,
+		title: trackData.title,
+		volume1: 0.5,
+		volume2: 1.0
+	}))
 }
 
-export const fetchTrack = async trackId => fetchAPI(`track/${trackId}`)
-
-export const validateTrack = track => !!track.preview && track.readable // readable means the track is available in current country
+export const fetchTrack = async trackId => {
+	const trackData = await fetchAPI(`track/${trackId}`)
+	return {
+		cover: trackData.album.cover_medium,
+		id: trackData.id,
+		playing: false,
+		preview: trackData.preview,
+		readable: trackData.readable,
+		title: trackData.title,
+		volume1: 0.5,
+		volume2: 1.0
+	}
+}
 
 export const extractTrackCover = trackData => trackData.album.cover_medium

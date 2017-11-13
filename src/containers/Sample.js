@@ -1,6 +1,5 @@
 import { connect } from 'react-redux'
 //
-import { extractTrackCover } from '../providers/deezer'
 import Sample from '../components/Sample'
 
 // --------------------------------------------------------------
@@ -8,7 +7,7 @@ import Sample from '../components/Sample'
 const mapStateToProps = (state, ownProps) => {
 	const track = state.sampling.tracks.find(other => other.id === ownProps.id)
 	return {
-		cover: extractTrackCover(track),
+		cover: track.cover,
 		playing: track.playing,
 		title: track.title
 	}
