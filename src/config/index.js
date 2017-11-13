@@ -61,6 +61,10 @@ const Config = {
 			driver: 'midi',
 			label: 'OXYGEN25'
 		},
+		KORG_NANOKEY2: {
+			driver: 'midi',
+			label: 'KORG NanoKey2'
+		},
 		// CUSTOM_SOCKET: {
 		//	driver: 'socket',
 		//	label: 'CUSTOM_SOCKET (25 samples)'
