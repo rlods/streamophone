@@ -13,7 +13,7 @@ const AUTHORIZATION2 = null
 // curl -X POST https://accounts.spotify.com/api/token -d grant_type=client_credentials --header "Authorization: Basic YmUxNTZlMWUxMGRlNDNiMmI0ZTNmNzNiMmY0MGQxZGM6ODMzOTJmMjkxYjBjNDYyMTk2OTgyYWY5NzUwMTQ0YTg="
 // Test Album ID: 5rOHrnrRomvSJhQLGVtfJ8
 
-axios({
+axios({ // Cannot be executed on client side because spotify restricted the call to server only
 	method: 'post',
 	url: 'https://accounts.spotify.com/api/token',
 	headers: {
