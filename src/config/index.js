@@ -12,6 +12,7 @@ const Config = {
 		{ sourceType: 'playlist', sourceId: 771276181,  title: 'Musique concrète et électronique' },
 		{ sourceType: 'playlist', sourceId: 3510240466, title: 'Soul to Funk' },
 		{ sourceType: 'playlist', sourceId: 23804156,   title: 'Minimal electro house' },
+		{ sourceType: 'playlist', sourceId: 2762818384, title: 'Musique concrète' },
 		{ sourceType: 'album',    sourceId: 43825781,   title: 'Jul - Je ne me vois pas briller' },
 		{ sourceType: 'artist',   sourceId: 27,         title: 'Daft Punk' }
 	],
