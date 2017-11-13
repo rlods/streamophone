@@ -49,7 +49,7 @@ export const fetchSourceData = async (sourceType, sourceId) => {
 		}
 		default:
 		{
-			throw new Error(`Unknown source type "${sourceType}"`)
+			throw new Error(`Unknown deezer source type "${sourceType}"`)
 		}
 	}
 	return sourceData.map(trackData => ({
@@ -77,5 +77,3 @@ export const fetchTrack = async trackId => {
 		volume2: 1.0
 	}
 }
-
-export const extractTrackCover = trackData => trackData.album.cover_medium
