@@ -16,6 +16,17 @@ const DURATIONS = [
 	{ value: 0,     label: 'Full' }
 ]
 
+const SOURCE_TYPES = {
+	album: 'Album',
+	artist: 'Artist',
+	playlist: 'Playlist'
+}
+
+const TRANSFORMATIONS = {
+	none: 'None',
+	shuffle: 'Shuffle'
+}
+
 // --------------------------------------------------------------
 
 class TextField extends Component {
@@ -44,12 +55,6 @@ class SelectField extends Component {
 
 // --------------------------------------------------------------
 
-const SOURCE_TYPES = {
-	album: 'Album',
-	artist: 'Artist',
-	playlist: 'Playlist'
-}
-
 class App extends Component {
 	render() {
 		if (this.props.sourceData) {
@@ -64,7 +69,7 @@ class App extends Component {
 				<div className="app-menu">
 					<div className="app-title">The Streamophone</div>
 					<SelectField
-						name="Controller"
+						name="Sample Controller"
 						items={Object.entries(config.STRATEGIES)}
 						value={this.props.samplingStrategyId}
 						onChange={this.props.onChangeSamplingStrategy}
@@ -78,7 +83,14 @@ class App extends Component {
 						getValue={duration => duration.value}
 						getText={duration => duration.label} />
 					<SelectField
-						name="Curated"
+						name="Sample Transformation"
+						items={Object.entries(TRANSFORMATIONS)}
+						value={this.props.samplingTransformation}
+						onChange={this.props.onChangeSamplingTransformation}
+						getValue={([transformationType, transformationLabel]) => transformationType}
+						getText={([transformationType, transformationLabel]) => transformationLabel} />
+					<SelectField
+						name="Curated Sources"
 						items={config.CURATED_SOURCES}
 						value={`${this.props.sourceType}:${this.props.sourceId}`} onChange={this.props.onChangeCurated}
 						getValue={curated => `${curated.sourceType}:${curated.sourceId}`}
@@ -108,12 +120,14 @@ class App extends Component {
 App.propTypes = {
 	sampleDuration: PropTypes.number,
 	samplingStrategyId: PropTypes.string,
+	samplingTransformation: PropTypes.string,
 	sourceData: PropTypes.array,
 	sourceId: PropTypes.string,
 	sourceType: PropTypes.string,
 	onChangeCurated: PropTypes.func,
 	onChangeSampleDuration: PropTypes.func,
 	onChangeSamplingStrategy: PropTypes.func,
+	onChangeSamplingTransformation: PropTypes.func,
 	onChangeSourceId: PropTypes.func,
 	onChangeSourceType: PropTypes.func,
 	onLoadPlaylist: PropTypes.func

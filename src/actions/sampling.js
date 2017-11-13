@@ -22,6 +22,11 @@ export const changeSamplingStrategy = strategyId => dispatch => dispatch({
 	data: { strategyId }
 })
 
+export const changeSamplingTransformation = transformation => dispatch => dispatch({
+	type: 'SAMPLING_SET_TRANSFORMATION',
+	data: { transformation }
+})
+
 export const changeSamplingTracks = (audios, tracks) => dispatch => dispatch({
 	type: 'SAMPLING_SET_TRACKS',
 	data: { audios, tracks }

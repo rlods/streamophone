@@ -3,7 +3,8 @@ const INITIAL_STATE = {
 	audios: [],
 	tracks: [],
 	sampleDuration: 0, // full by default
-	strategyId: 'KEYBOARD_AZERTY'
+	strategyId: 'KEYBOARD_AZERTY',
+	transformation: 'shuffle'
 }
 
 const setTracks = (state, { audios, tracks }) =>
@@ -24,6 +25,9 @@ const setSampleDuration = (state, { sampleDuration }) =>
 const setSamplingStrategy = (state, { strategyId }) =>
 	({ ...state, strategyId })
 
+const setSamplingTransformation = (state, { transformation }) =>
+	({ ...state, transformation })
+
 export default (state = INITIAL_STATE, action) => {
 	switch (action.type)
 	{
@@ -31,6 +35,8 @@ export default (state = INITIAL_STATE, action) => {
 		return setSampleDuration(state, action.data)
 	case 'SAMPLING_SET_STRATEGY':
 		return setSamplingStrategy(state, action.data)
+	case 'SAMPLING_SET_TRANSFORMATION':
+		return setSamplingTransformation(state, action.data)
 	case 'SAMPLING_SET_TRACKS':
 		return setTracks(state, action.data)
 	case 'SAMPLING_SET_TRACK_NORMALIZATION_VOLUME':
