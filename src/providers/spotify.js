@@ -4,8 +4,8 @@ import axios from 'axios'
 
 const API_BASE_URL = 'https://api.spotify.com/v1/'
 
-const CLIENT_ID = '' // TODO: to remove of course
-const CLIENT_SECRET = '' // TODO: to remove of course
+const CLIENT_ID = 'be156e1e10de43b2b4e3f73b2f40d1dc' // TODO: to remove of course
+const CLIENT_SECRET = '83392f291b0c462196982af9750144a8' // TODO: to remove of course
 const AUTHORIZATION1 = btoa(`${CLIENT_ID}:${CLIENT_SECRET}`)
 const AUTHORIZATION2 = null
 
@@ -13,41 +13,47 @@ const AUTHORIZATION2 = null
 // curl -X POST https://accounts.spotify.com/api/token -d grant_type=client_credentials --header "Authorization: Basic YmUxNTZlMWUxMGRlNDNiMmI0ZTNmNzNiMmY0MGQxZGM6ODMzOTJmMjkxYjBjNDYyMTk2OTgyYWY5NzUwMTQ0YTg="
 // Test Album ID: 5rOHrnrRomvSJhQLGVtfJ8
 
-axios({ // Cannot be executed on client side because spotify restricted the call to server only
-	method: 'post',
-	url: 'https://accounts.spotify.com/api/token',
-	headers: {
-		'Authorization': `Authorization: Basic ${AUTHORIZATION1}`
-	}
-}).then(x => {
-	console.log(x)
-})
-
 const Fetcher = axios.create({
-	baseURL: API_BASE_URL,
-	headers: {
-		'Authorization': 'Bearer ${AUTHORIZATION2}'
-	}
+	baseURL: API_BASE_URL
 })
 
-const fetchAPI = async url => { // TODO
-	try {
-		console.log(API_BASE_URL + url)
-		const response = await Fetcher.get(API_BASE_URL + url, {})
-		console.log('fetchAPI response:', response)
-		/*
-		if (err)
-			reject(err)
-		else if (data && data.error)
-			reject(data.error)
-		else
-			resolve(data)
-		*/
-		return response.data
-	}
-	catch (error) {
-		console.log('fetchAPI error:', error)
-		throw error
+const refreshAuthentication() { // TODO: process AUTHORIZATION2
+	axios({ // Cannot be executed on client side because spotify restricted the call to server only
+		method: 'post',
+		url: 'https://accounts.spotify.com/api/token',
+		headers: {
+			Authorization: `Authorization: Basic ${AUTHORIZATION1}`
+		}
+	}).then(x => {
+		console.log(x)
+	})
+}
+
+const fetchAPI = async url => {
+	console.log(API_BASE_URL + url)
+	let execute = true
+	while (execute) {
+		try {
+			execute = false
+			const response = await Fetcher.get(API_BASE_URL + url, {
+				Authorization: `Bearer ${AUTHORIZATION2}`
+			})
+			return response.data
+		}
+		catch (error) {
+			if (error.response) {
+				if (error.response.status === 403) {
+					await refreshAuthentication()
+					execute = true // Refresh succeeded, we'll retry the API call
+				}
+				else {
+					throw new Error(error.response.data.message)
+				}
+			}
+			else {
+				throw error
+			}
+		}
 	}
 }
 
