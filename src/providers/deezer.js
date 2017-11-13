@@ -59,6 +59,7 @@ export const fetchSourceData = async (sourceType, sourceId) => {
 		preview: trackData.preview,
 		readable: trackData.readable,
 		title: trackData.title,
+		url: trackData.link,
 		volume1: 0.5,
 		volume2: 1.0
 	}))
@@ -73,6 +74,7 @@ export const fetchTrack = async trackId => {
 		preview: trackData.preview,
 		readable: trackData.readable,
 		title: trackData.title,
+		url: trackData.link,
 		volume1: 0.5,
 		volume2: 1.0
 	}

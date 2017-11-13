@@ -9,7 +9,8 @@ const mapStateToProps = (state, ownProps) => {
 	return {
 		cover: track.cover,
 		playing: track.playing,
-		title: track.title
+		title: track.title,
+		url: track.url
 	}
 }
 

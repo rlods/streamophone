@@ -12,7 +12,7 @@ class Sample extends Component {
 			<div className={classNames('sample', { playing: this.props.playing })}>
 				<img className="sample-cover" src={this.props.cover} alt={this.props.title} />
 				{info}
-				<div className="sample-title">{this.props.title}</div>
+				<a href={this.props.url} target="_blank" className="sample-title">{this.props.title}</a>
 			</div>
 		)
 	}
@@ -23,7 +23,8 @@ class Sample extends Component {
 Sample.propTypes = {
 	cover: PropTypes.string,
 	playing: PropTypes.bool,
-	title: PropTypes.string
+	title: PropTypes.string,
+	url: PropTypes.string
 }
 
 export default Sample

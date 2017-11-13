@@ -24,6 +24,18 @@
 
 .sample-title {
 	display: none;
+	position: absolute;
+	top: -30px;
+	background-color: #000;
+	color: #FFF;
+	padding: 5px;
+	line-height: 20px;
+	white-space: nowrap;
+	text-decoration: none;
+}
+
+.sample-title:hover {
+	text-decoration: underline;
 }
 
 .sample.playing .sample-cover {
@@ -32,12 +44,6 @@
 
 .sample:hover .sample-title {
 	display: block;
-	position: absolute;
-	top: -35px;
-	background-color: #000;
-	color: #FFF;
-	padding: 5px;
-	white-space: nowrap;
 }
 
 .sample-info {

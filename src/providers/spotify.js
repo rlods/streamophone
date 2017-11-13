@@ -50,6 +50,7 @@ export const fetchSourceData = async (sourceType, sourceId) => {
 		preview: trackData.preview_url,
 		readable: true, // TODO
 		title: trackData.name,
+		url: trackData.external_urls.spotify,
 		volume1: 0.5,
 		volume2: 1.0
 	}))
@@ -64,6 +65,7 @@ export const fetchTrack = async trackId => {
 		preview: trackData.preview_url,
 		readable: true, // TODO
 		title: trackData.name,
+		url: trackData.external_urls.spotify,
 		volume1: 0.5,
 		volume2: 1.0
 	}
