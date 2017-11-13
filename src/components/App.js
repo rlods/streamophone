@@ -62,7 +62,7 @@ class App extends Component {
 		else {
 			return (
 				<div className="app-menu">
-					<div className="app-title">DZFONE</div>
+					<div className="app-title">The Streamophone</div>
 					<SelectField
 						name="Controller"
 						items={Object.entries(config.STRATEGIES)}
