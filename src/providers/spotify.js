@@ -5,54 +5,56 @@ import axios from 'axios'
 const API_BASE_URL = 'https://api.spotify.com/v1/'
 
 const CLIENT_ID = 'be156e1e10de43b2b4e3f73b2f40d1dc' // TODO: to remove of course
-const CLIENT_SECRET = '83392f291b0c462196982af9750144a8' // TODO: to remove of course
-const AUTHORIZATION1 = btoa(`${CLIENT_ID}:${CLIENT_SECRET}`)
-const AUTHORIZATION2 = null
+let AUTHORIZATION_CODE = sessionStorage.getItem('SPOTIFY_AT')
 
 // https://developer.spotify.com/web-api/authorization-guide/#client_credentials_flow
 // curl -X POST https://accounts.spotify.com/api/token -d grant_type=client_credentials --header "Authorization: Basic YmUxNTZlMWUxMGRlNDNiMmI0ZTNmNzNiMmY0MGQxZGM6ODMzOTJmMjkxYjBjNDYyMTk2OTgyYWY5NzUwMTQ0YTg="
 // Test Album ID: 5rOHrnrRomvSJhQLGVtfJ8
 
-const Fetcher = axios.create({
-	baseURL: API_BASE_URL
-})
+if (!AUTHORIZATION_CODE && document.location.hash) {
+	const hashParams = document.location.hash.slice(1)
 
-const refreshAuthentication() { // TODO: process AUTHORIZATION2
-	axios({ // Cannot be executed on client side because spotify restricted the call to server only
-		method: 'post',
-		url: 'https://accounts.spotify.com/api/token',
-		headers: {
-			Authorization: `Authorization: Basic ${AUTHORIZATION1}`
-		}
-	}).then(x => {
-		console.log(x)
-	})
+	function getParameterByName(name) {
+		name = name.replace(/[[]]/g, "\\$&")
+		const regex = new RegExp(name + "(=([^&#]*)|&|#|$)")
+		const results = regex.exec(hashParams)
+		if (!results) return null
+		if (!results[2]) return ''
+		return decodeURIComponent(results[2].replace(/\+/g, " "))
+	}
+
+	if ('spotify' === getParameterByName('state')) {
+		AUTHORIZATION_CODE = getParameterByName('access_token')
+		sessionStorage.setItem('SPOTIFY_AT', AUTHORIZATION_CODE)
+	}
 }
 
+const Fetcher = axios.create({
+	baseURL: API_BASE_URL,
+	headers: {
+		Authorization: `Bearer ${AUTHORIZATION_CODE}`
+	}
+})
+
+const refreshAuthentication = () => document.location = `https://accounts.spotify.com/authorize?client_id=${CLIENT_ID}&response_type=token&state=spotify&redirect_uri=http://localhost:8080`
+
 const fetchAPI = async url => {
-	console.log(API_BASE_URL + url)
-	let execute = true
-	while (execute) {
-		try {
-			execute = false
-			const response = await Fetcher.get(API_BASE_URL + url, {
-				Authorization: `Bearer ${AUTHORIZATION2}`
-			})
-			return response.data
-		}
-		catch (error) {
-			if (error.response) {
-				if (error.response.status === 403) {
-					await refreshAuthentication()
-					execute = true // Refresh succeeded, we'll retry the API call
-				}
-				else {
-					throw new Error(error.response.data.message)
-				}
+	console.log(API_BASE_URL + url, `Bearer ${AUTHORIZATION_CODE}`)
+	try {
+		const response = await Fetcher.get(API_BASE_URL + url)
+		return response.data
+	}
+	catch (error) {
+		if (error.response) {
+			if (error.response.status === 401) {
+				refreshAuthentication()
 			}
 			else {
-				throw error
+				throw new Error(error.response.data.message)
 			}
+		}
+		else {
+			throw error
 		}
 	}
 }
