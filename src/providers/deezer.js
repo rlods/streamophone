@@ -27,10 +27,12 @@ export const fetchSourceData = async (sourceType, sourceId) => {
 	{
 		case 'album':
 		{
-			// In that case we have to enrich each track data with the cover which is available in the album data
 			const albumData = await fetchAlbum(sourceId)
-			albumData.tracks.data.forEach(track => track.album = { cover_medium: albumData.cover_medium })
-			sourceData = albumData.tracks.data
+			sourceData = albumData.tracks.data.map(track => {
+				// In that case we have to enrich each track data with the cover which is available in the album data
+				track.album = { cover_medium: albumData.cover_medium }
+				return track
+			})
 			break
 		}
 		case 'artist':
