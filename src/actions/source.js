@@ -77,11 +77,14 @@ export const loadSource = () => async (dispatch, getState, { drivers }) => {
 
 		driver.strategy = createStrategy(sampling.strategyId)
 
-		// Fetch source data (tracks)
-		const sourceData = await fetchSourceData(source.type, source.id)
-		const tracks = transformArray(sourceData, driver.strategy.samplesCount, sampling.transformation, validateTrack)
+		// Fetch tracks
+		let tracks = await fetchSourceData(source.type, source.id)
+		tracks = transformArray(tracks, driver.strategy.samplesCount, sampling.transformation, validateTrack)
+
+		// Load audios
 		const audios = loadAudios(dispatch, sampling, tracks)
-		dispatch(changeSourceData(sourceData))
+		
+		dispatch(changeSourceData(tracks))
 		dispatch(changeSamplingTracks(audios, tracks))
 	}
 	catch (error) {
