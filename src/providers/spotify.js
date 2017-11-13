@@ -39,7 +39,6 @@ const Fetcher = axios.create({
 const refreshAuthentication = () => document.location = `https://accounts.spotify.com/authorize?client_id=${CLIENT_ID}&response_type=token&state=spotify&redirect_uri=http://localhost:8080`
 
 const fetchAPI = async url => {
-	console.log(API_BASE_URL + url, `Bearer ${AUTHORIZATION_CODE}`)
 	try {
 		const response = await Fetcher.get(API_BASE_URL + url)
 		return response.data

@@ -19,3 +19,8 @@
 - Inciter la communauté est  à alimenter elle-même de nouvelles sortes de configuration qu’on aurait pas imaginé : ça nécessite de perfectionner le système de stratégie configurable et dynamique
 
 - On a créé l'équivalent d'un Google Cardboard : un outil complètement original pour consommer de la musique de manière multi-device, interactive et physique
+
+
+
+
+- Rename everywhere "sourceData" by "tracks" because that's what it is in our case !
