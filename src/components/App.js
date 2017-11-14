@@ -20,7 +20,8 @@ const SOURCE_TYPES = {
 	album: 'Album',
 	artist: 'Artist',
 	playlist: 'Playlist',
-	freesound_pack: 'Freesound Pack'
+	freesound_pack: 'Freesound Pack',
+	spotify_album: 'Spotify Album'
 }
 
 const TRANSFORMATIONS = {

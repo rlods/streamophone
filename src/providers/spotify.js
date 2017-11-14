@@ -71,7 +71,7 @@ export const fetchTracks = async (sourceType, sourceId) => {
 	let tracks
 	switch (sourceType)
 	{
-		case 'album':
+		case 'spotify_album':
 		{
 			const albumData = await fetchAlbum(sourceId)
 			tracks = albumData.tracks.items.map(track => {

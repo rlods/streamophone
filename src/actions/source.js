@@ -1,5 +1,6 @@
 import { fetchTracks as deezer_fetchTracks, fetchTrack as deezer_fetchTrack } from '../providers/deezer'
 import { fetchTracks as freesound_fetchTracks } from '../providers/freesound'
+import { fetchTracks as spotify_fetchTracks } from '../providers/spotify'
 import { transformArray } from '../tools'
 import { changeSampleNormalizationVolume, changeSamplingTracks } from './sampling'
 //
@@ -76,6 +77,7 @@ export const loadSource = () => async (dispatch, getState, { drivers }) => {
 		// Fetch tracks
 		let tracks = 
 			source.type.startsWith('freesound_') ? freesound_fetchTracks(source.type, source.id) :
+			source.type.startsWith('spotify_') ? spotify_fetchTracks(source.type, source.id) :
 			deezer_fetchTracks(source.type, source.id)
 		tracks = transformArray(await tracks, driver.strategy.samplesCount, sampling.transformation, validateTrack)
 
