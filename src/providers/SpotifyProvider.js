@@ -1,6 +1,7 @@
 import axios from 'axios'
 //
 import config from '../config'
+import { getHashParam } from '../tools'
 import Provider from './Provider'
 
 // ------------------------------------------------------------------
@@ -9,6 +10,7 @@ const API_BASE_URL = 'https://api.spotify.com/v1/'
 
 // ------------------------------------------------------------------
 
+// https://developer.spotify.com/my-applications/
 // https://developer.spotify.com/web-api/authorization-guide/#client_credentials_flow
 // curl -X POST https://accounts.spotify.com/api/token -d grant_type=client_credentials --header "Authorization: Basic YmUxNTZlMWUxMGRlNDNiMmI0ZTNmNzNiMmY0MGQxZGM6ODMzOTJmMjkxYjBjNDYyMTk2OTgyYWY5NzUwMTQ0YTg="
 // Test Album ID: 5rOHrnrRomvSJhQLGVtfJ8
@@ -20,19 +22,8 @@ export default class SpotifyProvider extends Provider
 		let AUTHORIZATION_CODE = sessionStorage.getItem('SPOTIFY_AT')
 
 		if (!AUTHORIZATION_CODE && document.location.hash) {
-			const params = document.location.hash.slice(1)
-
-			function getParameterByName(name) {
-				name = name.replace(/[[]]/g, "\\$&")
-				const regex = new RegExp(name + "(=([^&#]*)|&|#|$)")
-				const results = regex.exec(params)
-				if (!results) return null
-				if (!results[2]) return ''
-				return decodeURIComponent(results[2].replace(/\+/g, " "))
-			}
-
-			if ('spotify' === getParameterByName('state')) {
-				AUTHORIZATION_CODE = getParameterByName('access_token')
+			if ('spotify' === getHashParam('state')) {
+				AUTHORIZATION_CODE = getHashParam('access_token')
 				sessionStorage.setItem('SPOTIFY_AT', AUTHORIZATION_CODE)
 			}
 		}
@@ -93,7 +84,7 @@ export default class SpotifyProvider extends Provider
 	}
 
 	refreshAuthentication() {
-		document.location = `https://accounts.spotify.com/authorize?client_id=${config.TMP.SPOTIFY}&response_type=token&state=spotify&redirect_uri=http://localhost:8080`
+		document.location = `https://accounts.spotify.com/authorize?client_id=${config.TMP.SPOTIFY}&response_type=token&state=spotify&redirect_uri=http://localhost:8080/#/play`
 	}
 
 	async fetchAPI(url) {

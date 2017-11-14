@@ -39,3 +39,25 @@ export const transformArray = (arr, size, transformationType, validationCB) => {
 		throw new Error(`Unknown transformation type "${transformationType}"`)
 	}
 }
+
+// ------------------------------------------------------------------
+
+const HASH_PARAMS = document.location.hash.slice(1)
+
+const SEARCH_PARAMS = document.location.search.slice(1)
+
+export const getHashParam = name => {
+	const regex = new RegExp(name.replace(/[[]]/g, "\\$&") + "(=([^&#]*)|&|#|$)")
+	const results = regex.exec(HASH_PARAMS)
+	if (!results) return null
+	if (!results[2]) return ''
+	return decodeURIComponent(results[2].replace(/\+/g, " "))
+}
+
+export const getSearchParam = name => {
+	const regex = new RegExp(name.replace(/[[]]/g, "\\$&") + "(=([^&#]*)|&|#|$)")
+	const results = regex.exec(SEARCH_PARAMS)
+	if (!results) return null
+	if (!results[2]) return ''
+	return decodeURIComponent(results[2].replace(/\+/g, " "))
+}

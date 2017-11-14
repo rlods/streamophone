@@ -1,11 +1,17 @@
 
+const INITIAL_STATE = []
+
+// ------------------------------------------------------------------
+
 const addMessage = (state, { message }) => 
 	[ message, ...state ] // we add the new message at the beginning
 
 const removeMessage = (state, { id }) =>
 	state.filter(message => message.id !== id)
 
-export default (state = [], action) => {
+// ------------------------------------------------------------------
+
+export default (state = INITIAL_STATE, action) => {
 	switch (action.type)
 	{
 	case 'MESSAGE_ADD':

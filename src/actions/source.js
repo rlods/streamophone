@@ -63,9 +63,11 @@ export const loadAudios = (dispatch, sampling, tracks) => tracks.map(track => {
 
 const validateTrack = track => !!track.preview && track.readable // readable means the track is available in current country
 
-export const loadSource = () => async (dispatch, getState, { drivers }) => {
+export const play = history => async (dispatch, getState, { drivers }) => {
 	try {
 		const { sampling, source } = getState()
+
+		history.replace(`/play?sampling_duration=${sampling.sampleDuration}&sampling_strategy=${sampling.strategyId}&sampling_transformation=${sampling.transformation}&source_id=${source.id}&source_type=${source.type}`)
 
 		if (sampling.audios) {
 			// Stop all previously loaded audios

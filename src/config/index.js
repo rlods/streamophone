@@ -20,11 +20,11 @@ const Config = {
 	],
 
 	DEFAULT: {
-		SAMPLING_DURATION: sessionStorage.getItem('DEFAULT_SAMPLING_DURATION') || 0,
-		SAMPLING_STRATEGY: sessionStorage.getItem('DEFAULT_SAMPLING_STRATEGY') || 'KEYBOARD_AZERTY',
-		SAMPLING_TRANSFORMATION: sessionStorage.getItem('DEFAULT_SAMPLING_TRANSFORMATION') || 'shuffle',
-		SOURCE_ID: sessionStorage.getItem('DEFAULT_SOURCE_ID') || '1083902971',
-		SOURCE_TYPE: sessionStorage.getItem('DEFAULT_SOURCE_TYPE') || 'deezer_playlist'
+		SAMPLING_DURATION: 0,
+		SAMPLING_STRATEGY: 'KEYBOARD_AZERTY',
+		SAMPLING_TRANSFORMATION: 'shuffle',
+		SOURCE_ID: '1083902971',
+		SOURCE_TYPE: 'deezer_playlist'
 	},
 
 	ENABLE_LOGGER: false, // process.env.NODE_ENV !== 'production'

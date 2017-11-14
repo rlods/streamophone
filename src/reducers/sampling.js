@@ -1,12 +1,17 @@
 import config from '../config'
+import { getSearchParam } from '../tools'
+
+// ------------------------------------------------------------------
 
 const INITIAL_STATE = {
 	audios: null,
 	tracks: null,
-	sampleDuration: config.DEFAULT.SAMPLING_DURATION,
-	strategyId: config.DEFAULT.SAMPLING_STRATEGY,
-	transformation: config.DEFAULT.SAMPLING_TRANSFORMATION
+	sampleDuration: getSearchParam('sampling_duration') || sessionStorage.getItem('DEFAULT_SAMPLING_DURATION') || config.DEFAULT.SAMPLING_DURATION,
+	strategyId: getSearchParam('sampling_strategy') || sessionStorage.getItem('DEFAULT_SAMPLING_STRATEGY') || config.DEFAULT.SAMPLING_STRATEGY,
+	transformation: getSearchParam('sampling_transformation') || sessionStorage.getItem('DEFAULT_SAMPLING_TRANSFORMATION') || config.DEFAULT.SAMPLING_TRANSFORMATION
 }
+
+// ------------------------------------------------------------------
 
 const setTracks = (state, { audios, tracks }) =>
 	({ ...state, audios, tracks })
@@ -28,6 +33,8 @@ const setSamplingStrategy = (state, { strategyId }) =>
 
 const setSamplingTransformation = (state, { transformation }) =>
 	({ ...state, transformation })
+
+// ------------------------------------------------------------------
 
 export default (state = INITIAL_STATE, action) => {
 	switch (action.type)

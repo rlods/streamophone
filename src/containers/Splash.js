@@ -1,17 +1,17 @@
 import { connect } from 'react-redux'
 //
 import { changeSampleDuration, changeSamplingStrategy, changeSamplingTransformation } from '../actions/sampling'
-import { changeSourceId, changeSourceType, loadSource } from '../actions/source'
+import { changeSourceId, changeSourceType, play } from '../actions/source'
 import Splash from '../components/Splash'
 
 // --------------------------------------------------------------
 
 const mapStateToProps = (state, ownProps) => ({
-	sourceId: state.source.id,
-	sourceType: state.source.type,
 	sampleDuration: state.sampling.sampleDuration,
 	samplingStrategyId: state.sampling.strategyId,
-	samplingTransformation: state.sampling.transformation
+	samplingTransformation: state.sampling.transformation,
+	sourceId: state.source.id,
+	sourceType: state.source.type
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
@@ -27,8 +27,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 	onChangeSourceType: e             => dispatch(changeSourceType(e.target.value)),
 	onPlay: e                         => {
 		e.preventDefault()
-		dispatch(loadSource())
-		ownProps.history.push('/play')
+		dispatch(play(ownProps.history))
 	},
 })
 
