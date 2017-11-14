@@ -1,7 +1,7 @@
 
 const INITIAL_STATE = {
 	id: '1083902971',
-	type: 'playlist'
+	type: 'deezer_playlist'
 }
 
 const setSourceId = (state, { id }) =>

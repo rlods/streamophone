@@ -1,4 +1,6 @@
 import jsonp from 'jsonp'
+//
+import Provider from './Provider'
 
 // ------------------------------------------------------------------
 
@@ -6,10 +8,11 @@ const API_BASE_URL = 'https://api.deezer.com/'
 
 // ------------------------------------------------------------------
 
-export default class DeezerProvider
+export default class DeezerProvider extends Provider
 {
-	// constructor() {
-	// }
+	//constructor() {
+	//	super()
+	//}
 
 	fetchAPI(url) {
 		return new Promise((resolve, reject) => {
@@ -28,7 +31,7 @@ export default class DeezerProvider
 		let tracks
 		switch (sourceType)
 		{
-			case 'album':
+			case 'deezer_album':
 			{
 				const albumData = await this.fetchAlbum(sourceId)
 				tracks = albumData.tracks.data.map(track => {
@@ -38,13 +41,13 @@ export default class DeezerProvider
 				})
 				break
 			}
-			case 'artist':
+			case 'deezer_artist':
 			{
 				const artistTracksData = await this.fetchArtistTracks(sourceId)
 				tracks = artistTracksData.data
 				break
 			}
-			case 'playlist':
+			case 'deezer_playlist':
 			{
 				const playlistData = await this.fetchPlaylist(sourceId)
 				tracks = playlistData.tracks.data

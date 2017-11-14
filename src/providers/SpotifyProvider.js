@@ -1,38 +1,42 @@
 import axios from 'axios'
 //
 import config from '../config'
+import Provider from './Provider'
 
 // ------------------------------------------------------------------
 
 const API_BASE_URL = 'https://api.spotify.com/v1/'
-let AUTHORIZATION_CODE = sessionStorage.getItem('SPOTIFY_AT')
-
-if (!AUTHORIZATION_CODE && document.location.hash) {
-	const params = document.location.hash.slice(1)
-
-	function getParameterByName(name) {
-		name = name.replace(/[[]]/g, "\\$&")
-		const regex = new RegExp(name + "(=([^&#]*)|&|#|$)")
-		const results = regex.exec(params)
-		if (!results) return null
-		if (!results[2]) return ''
-		return decodeURIComponent(results[2].replace(/\+/g, " "))
-	}
-
-	if ('spotify' === getParameterByName('state')) {
-		AUTHORIZATION_CODE = getParameterByName('access_token')
-		sessionStorage.setItem('SPOTIFY_AT', AUTHORIZATION_CODE)
-	}
-}
 
 // ------------------------------------------------------------------
 
 // https://developer.spotify.com/web-api/authorization-guide/#client_credentials_flow
 // curl -X POST https://accounts.spotify.com/api/token -d grant_type=client_credentials --header "Authorization: Basic YmUxNTZlMWUxMGRlNDNiMmI0ZTNmNzNiMmY0MGQxZGM6ODMzOTJmMjkxYjBjNDYyMTk2OTgyYWY5NzUwMTQ0YTg="
 // Test Album ID: 5rOHrnrRomvSJhQLGVtfJ8
-export default class SpotifyProvider
+export default class SpotifyProvider extends Provider
 {
 	constructor() {
+		super()
+
+		let AUTHORIZATION_CODE = sessionStorage.getItem('SPOTIFY_AT')
+
+		if (!AUTHORIZATION_CODE && document.location.hash) {
+			const params = document.location.hash.slice(1)
+
+			function getParameterByName(name) {
+				name = name.replace(/[[]]/g, "\\$&")
+				const regex = new RegExp(name + "(=([^&#]*)|&|#|$)")
+				const results = regex.exec(params)
+				if (!results) return null
+				if (!results[2]) return ''
+				return decodeURIComponent(results[2].replace(/\+/g, " "))
+			}
+
+			if ('spotify' === getParameterByName('state')) {
+				AUTHORIZATION_CODE = getParameterByName('access_token')
+				sessionStorage.setItem('SPOTIFY_AT', AUTHORIZATION_CODE)
+			}
+		}
+		
 		this.fetcher = axios.create({
 			baseURL: API_BASE_URL,
 			headers: {

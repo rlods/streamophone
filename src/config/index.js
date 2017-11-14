@@ -2,19 +2,19 @@
 const Config = {
 
 	CURATED_SOURCES: [
-		{ sourceType: 'playlist', sourceId: 1083902971, title: 'Hits 2017' },
-		{ sourceType: 'playlist', sourceId: 791313621,  title: 'The Greatest Piano Classics' },
-		{ sourceType: 'playlist', sourceId: 548368765,  title: 'Long Playlist' },
-		{ sourceType: 'playlist', sourceId: 3789105302, title: 'Steve Reich' },
-		{ sourceType: 'playlist', sourceId: 10178447,   title: 'Percus' },
-		{ sourceType: 'playlist', sourceId: 3791846562, title: 'Speeches' },
-		{ sourceType: 'playlist', sourceId: 1194890603, title: 'Best of Daft Punk' },
-		{ sourceType: 'playlist', sourceId: 771276181,  title: 'Musique concrète et électronique' },
-		{ sourceType: 'playlist', sourceId: 3510240466, title: 'Soul to Funk' },
-		{ sourceType: 'playlist', sourceId: 23804156,   title: 'Minimal electro house' },
-		{ sourceType: 'playlist', sourceId: 2762818384, title: 'Musique concrète' },
-		{ sourceType: 'album',    sourceId: 43825781,   title: 'Jul - Je ne me vois pas briller' },
-		{ sourceType: 'artist',   sourceId: 27,         title: 'Daft Punk' }
+		{ sourceType: 'deezer_playlist', sourceId: 1083902971, title: 'Hits 2017' },
+		{ sourceType: 'deezer_playlist', sourceId: 791313621,  title: 'The Greatest Piano Classics' },
+		{ sourceType: 'deezer_playlist', sourceId: 548368765,  title: 'Long Playlist' },
+		{ sourceType: 'deezer_playlist', sourceId: 3789105302, title: 'Steve Reich' },
+		{ sourceType: 'deezer_playlist', sourceId: 10178447,   title: 'Percus' },
+		{ sourceType: 'deezer_playlist', sourceId: 3791846562, title: 'Speeches' },
+		{ sourceType: 'deezer_playlist', sourceId: 1194890603, title: 'Best of Daft Punk' },
+		{ sourceType: 'deezer_playlist', sourceId: 771276181,  title: 'Musique concrète et électronique' },
+		{ sourceType: 'deezer_playlist', sourceId: 3510240466, title: 'Soul to Funk' },
+		{ sourceType: 'deezer_playlist', sourceId: 23804156,   title: 'Minimal electro house' },
+		{ sourceType: 'deezer_playlist', sourceId: 2762818384, title: 'Musique concrète' },
+		{ sourceType: 'deezer_album',    sourceId: 43825781,   title: 'Jul - Je ne me vois pas briller' },
+		{ sourceType: 'deezer_artist',   sourceId: 27,         title: 'Daft Punk' }
 	],
 
 	ENABLE_LOGGER: false, // process.env.NODE_ENV !== 'production'

@@ -1,6 +1,7 @@
 import jsonp from 'jsonp'
 //
 import config from '../config'
+import Provider from './Provider'
 
 // ------------------------------------------------------------------
 
@@ -11,10 +12,11 @@ const API_BASE_URL = 'https://freesound.org/apiv2/'
 
 // ------------------------------------------------------------------
 
-export default class FreesoundProvider
+export default class FreesoundProvider extends Provider
 {
-	// constructor() {
-	// }
+	//constructor() {
+	//	super()
+	//}
 
 	fetchAPI(url) {
 		return new Promise((resolve, reject) => {

@@ -17,9 +17,9 @@ const DURATIONS = [
 ]
 
 const SOURCE_TYPES = {
-	album: 'Album',
-	artist: 'Artist',
-	playlist: 'Playlist',
+	deezer_album: 'Deezer Album',
+	deezer_artist: 'Deezer Artist',
+	deezer_playlist: 'Deezer Playlist',
 	freesound_pack: 'Freesound Pack',
 	spotify_album: 'Spotify Album'
 }
