@@ -2,10 +2,13 @@ import config from '../config'
 
 // --------------------------------------------------------------
 
-export const changeSampleDuration = sampleDuration => dispatch => dispatch({
-	type: 'SAMPLING_SET_SAMPLE_DURATION',
-	data: { sampleDuration }
-})
+export const changeSampleDuration = sampleDuration => dispatch => {
+	sessionStorage.setItem('DEFAULT_SAMPLING_DURATION', sampleDuration)
+	return dispatch({
+		type: 'SAMPLING_SET_SAMPLE_DURATION',
+		data: { sampleDuration }
+	})
+}
 
 export const changeSampleNormalizationVolume = (trackId, volume) => dispatch => dispatch({
 	type: 'SAMPLING_SET_TRACK_NORMALIZATION_VOLUME',
@@ -17,15 +20,21 @@ export const changeSampleVolume = (sampleIndex, volume) => dispatch => dispatch(
 	data: { sampleIndex, volume }
 })
 
-export const changeSamplingStrategy = strategyId => dispatch => dispatch({
-	type: 'SAMPLING_SET_STRATEGY',
-	data: { strategyId }
-})
+export const changeSamplingStrategy = strategyId => dispatch => {
+	sessionStorage.setItem('DEFAULT_SAMPLING_STRATEGY', strategyId)
+	return dispatch({
+		type: 'SAMPLING_SET_STRATEGY',
+		data: { strategyId }
+	})
+}
 
-export const changeSamplingTransformation = transformation => dispatch => dispatch({
-	type: 'SAMPLING_SET_TRANSFORMATION',
-	data: { transformation }
-})
+export const changeSamplingTransformation = transformation => dispatch => {
+	sessionStorage.setItem('DEFAULT_SAMPLING_TRANSFORMATION', transformation)
+	dispatch({
+		type: 'SAMPLING_SET_TRANSFORMATION',
+		data: { transformation }
+	})
+}
 
 export const changeSamplingTracks = (audios, tracks) => dispatch => dispatch({
 	type: 'SAMPLING_SET_TRACKS',
@@ -69,7 +78,7 @@ export const setSampleVolume = (sampleIndex, volume) => (dispatch, getState) => 
 export const startSample = sampleIndex => async (dispatch, getState) => {
 	const { sampling } = getState()
 	const { audios, tracks, sampleDuration } = sampling
-	if (audios.length > 0) {
+	if (audios && audios.length > 0) {
 		const indexMod = Math.abs(sampleIndex) % audios.length
 		const audio = audios[indexMod]
 		const track = tracks[indexMod]
@@ -92,7 +101,7 @@ export const startSample = sampleIndex => async (dispatch, getState) => {
 export const stopSample = sampleIndex => async (dispatch, getState) => {
 	const { sampling } = getState()
 	const { audios, tracks } = sampling
-	if (audios.length > 0) {
+	if (audios && audios.length > 0) {
 		const indexMod = Math.abs(sampleIndex) % audios.length
 		const audio = audios[indexMod]
 		const track = tracks[indexMod]

@@ -7,15 +7,21 @@ import { createStrategy } from '../strategies'
 
 // ------------------------------------------------------------------
 
-export const changeSourceId = id => dispatch => dispatch({
-	type: 'SOURCE_SET_ID',
-	data: { id }
-})
+export const changeSourceId = id => dispatch => {
+	sessionStorage.setItem('DEFAULT_SOURCE_ID', id)
+	return dispatch({
+		type: 'SOURCE_SET_ID',
+		data: { id }
+	})
+}
 
-export const changeSourceType = type => dispatch => dispatch({
-	type: 'SOURCE_SET_TYPE',
-	data: { type }
-})
+export const changeSourceType = type => dispatch => {
+	sessionStorage.setItem('DEFAULT_SOURCE_TYPE', type)
+	return dispatch({
+		type: 'SOURCE_SET_TYPE',
+		data: { type }
+	})
+}
 
 // ------------------------------------------------------------------
 
