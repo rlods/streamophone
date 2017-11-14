@@ -54,7 +54,7 @@ export const fetchTracks = async (sourceType, sourceId) => {
 			tracks = (await fetchPackSounds(sourceId)).results.map(trackData => fetchTrack(trackData.id))
 			break
 		default:
-			throw new Error(`Unknown spotify source type "${sourceType}"`)
+			throw new Error(`Unknown freesound source type "${sourceType}"`)
 	}
 	return await Promise.all(tracks)
 }
