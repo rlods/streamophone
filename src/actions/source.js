@@ -61,9 +61,11 @@ export const loadSource = () => async (dispatch, getState, { drivers }) => {
 	try {
 		const { sampling, source } = getState()
 
-		// Stop all previously loaded audios
-		sampling.audios.forEach(audio => audio.pause())
-
+		if (sampling.audios) {
+			// Stop all previously loaded audios
+			sampling.audios.forEach(audio => audio.pause())
+		}
+		
 		// Create sampling midi strategy if specified
 		const strategyDefinition = config.STRATEGIES[sampling.strategyId]
 		const driver = drivers[strategyDefinition.driver]

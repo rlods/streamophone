@@ -5,7 +5,7 @@ import App from '../components/App'
 // --------------------------------------------------------------
 
 const mapStateToProps = (state, ownProps) => ({
-	samplingTracks: state.sampling.tracks
+	ready: !!state.sampling.tracks // So that the App component is re-evaluated when needed
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({

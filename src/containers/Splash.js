@@ -15,7 +15,7 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-	onChangeCurated: e          => {
+	onChangeCurated: e => {
 		const [ sourceType, sourceId ] = e.target.value.split(':')
 		dispatch(changeSourceId(sourceId))
 		dispatch(changeSourceType(sourceType))
@@ -25,9 +25,10 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 	onChangeSamplingTransformation: e => dispatch(changeSamplingTransformation(e.target.value)),
 	onChangeSourceId: e               => dispatch(changeSourceId(e.target.value)),
 	onChangeSourceType: e             => dispatch(changeSourceType(e.target.value)),
-	onStart: e                       => {
-		dispatch(loadSource())
+	onStart: e                        => {
 		e.preventDefault()
+		dispatch(loadSource())
+		ownProps.history.push('/play')
 	},
 })
 

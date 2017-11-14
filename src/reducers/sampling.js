@@ -1,7 +1,7 @@
 
 const INITIAL_STATE = {
-	audios: [],
-	tracks: [],
+	audios: null,
+	tracks: null,
 	sampleDuration: 0, // full by default
 	strategyId: 'KEYBOARD_AZERTY',
 	transformation: 'shuffle'
