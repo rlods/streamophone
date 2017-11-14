@@ -25,7 +25,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 	onChangeSamplingTransformation: e => dispatch(changeSamplingTransformation(e.target.value)),
 	onChangeSourceId: e               => dispatch(changeSourceId(e.target.value)),
 	onChangeSourceType: e             => dispatch(changeSourceType(e.target.value)),
-	onStart: e                        => {
+	onPlay: e                         => {
 		e.preventDefault()
 		dispatch(loadSource())
 		ownProps.history.push('/play')

@@ -59,7 +59,7 @@ class SelectField extends Component {
 class Splash extends Component {
 	render() {
 		return (
-			<form className="app-menu" onSubmit={this.props.onStart}>
+			<form className="app-menu" onSubmit={this.props.onPlay}>
 				<div className="app-title">The Streamophone</div>
 				<SelectField
 					name="Sample Controller"
@@ -100,7 +100,7 @@ class Splash extends Component {
 					value={this.props.sourceId}
 					onChange={this.props.onChangeSourceId} />
 				<div className="app-menu-field">
-					<button className="app-menu-action" onClick={this.props.onStart}>Start</button>
+					<button className="app-menu-action" onClick={this.props.onPlay}>Play</button>
 				</div>
 			</form>
 		)
@@ -121,7 +121,7 @@ Splash.propTypes = {
 	onChangeSamplingTransformation: PropTypes.func,
 	onChangeSourceId: PropTypes.func,
 	onChangeSourceType: PropTypes.func,
-	onStart: PropTypes.func
+	onPlay: PropTypes.func
 }
 
 export default Splash
