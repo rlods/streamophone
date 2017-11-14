@@ -21,14 +21,14 @@ const fetchArtistTracks = async artistId => fetchAPI(`artist/${artistId}/radio`)
 
 const fetchPlaylist = async playlistId => fetchAPI(`playlist/${playlistId}`)
 
-export const fetchSourceData = async (sourceType, sourceId) => {
-	let sourceData
+export const fetchTracks = async (sourceType, sourceId) => {
+	let tracks
 	switch (sourceType)
 	{
 		case 'album':
 		{
 			const albumData = await fetchAlbum(sourceId)
-			sourceData = albumData.tracks.data.map(trackData => {
+			tracks = albumData.tracks.data.map(trackData => {
 				// In that case we have to enrich each track data with the cover which is available in the album data
 				trackData.album = { cover_medium: albumData.cover_medium }
 				return trackData
@@ -38,13 +38,13 @@ export const fetchSourceData = async (sourceType, sourceId) => {
 		case 'artist':
 		{
 			const artistTracksData = await fetchArtistTracks(sourceId)
-			sourceData = artistTracksData.data
+			tracks = artistTracksData.data
 			break
 		}
 		case 'playlist':
 		{
 			const playlistData = await fetchPlaylist(sourceId)
-			sourceData = playlistData.tracks.data
+			tracks = playlistData.tracks.data
 			break
 		}
 		default:
@@ -52,14 +52,14 @@ export const fetchSourceData = async (sourceType, sourceId) => {
 			throw new Error(`Unknown deezer source type "${sourceType}"`)
 		}
 	}
-	return sourceData.map(trackData => ({
-		cover: trackData.album.cover_medium,
-		id: trackData.id,
+	return tracks.map(track => ({
+		cover: track.album.cover_medium,
+		id: track.id,
 		playing: false,
-		preview: trackData.preview,
-		readable: trackData.readable,
-		title: trackData.title,
-		url: trackData.link,
+		preview: track.preview,
+		readable: track.readable,
+		title: track.title,
+		url: track.link,
 		volume1: 0.5,
 		volume2: 1.0
 	}))

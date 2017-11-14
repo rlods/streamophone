@@ -1,4 +1,4 @@
-import { fetchSourceData, fetchTrack } from '../providers/deezer'
+import { fetchTracks, fetchTrack } from '../providers/deezer'
 import { transformArray } from '../tools'
 import { changeSampleNormalizationVolume, changeSamplingTracks } from './sampling'
 //
@@ -6,11 +6,6 @@ import config from '../config'
 import { createStrategy } from '../strategies'
 
 // ------------------------------------------------------------------
-
-export const changeSourceData = data => dispatch => dispatch({
-	type: 'SOURCE_SET_DATA',
-	data: { data }
-})
 
 export const changeSourceId = id => dispatch => dispatch({
 	type: 'SOURCE_SET_ID',
@@ -78,13 +73,12 @@ export const loadSource = () => async (dispatch, getState, { drivers }) => {
 		driver.strategy = createStrategy(sampling.strategyId)
 
 		// Fetch tracks
-		let tracks = await fetchSourceData(source.type, source.id)
+		let tracks = await fetchTracks(source.type, source.id)
 		tracks = transformArray(tracks, driver.strategy.samplesCount, sampling.transformation, validateTrack)
 
 		// Load audios
 		const audios = loadAudios(dispatch, sampling, tracks)
 		
-		dispatch(changeSourceData(tracks))
 		dispatch(changeSamplingTracks(audios, tracks))
 	}
 	catch (error) {

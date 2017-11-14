@@ -57,7 +57,7 @@ class SelectField extends Component {
 
 class App extends Component {
 	render() {
-		if (this.props.sourceData) {
+		if (this.props.samplingTracks && this.props.samplingTracks.length > 0) {
 			return (
 				<div className="app">
 					<Player />
@@ -120,8 +120,8 @@ class App extends Component {
 App.propTypes = {
 	sampleDuration: PropTypes.number,
 	samplingStrategyId: PropTypes.string,
+	samplingTracks: PropTypes.array,
 	samplingTransformation: PropTypes.string,
-	sourceData: PropTypes.array,
 	sourceId: PropTypes.string,
 	sourceType: PropTypes.string,
 	onChangeCurated: PropTypes.func,

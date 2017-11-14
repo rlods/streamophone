@@ -13,7 +13,7 @@ const KEY_ORDER_AZERTY = 'AZERTYUIOPQSDFGHJKLMWXCVBN'
 
 class Samples extends Component {
 	render() {
-		let chunks, samples
+		let chunks, chunkSize, samples
 		switch (this.props.samplingStrategyId)
 		{
 			case 'KEYBOARD_AZERTY':
@@ -21,15 +21,18 @@ class Samples extends Component {
 				break
 
 			case 'BCF2000_MULTISLIDERS':
-				chunks = chunkArray(this.props.tracks, this.props.tracks.length / 8)
+				chunkSize = this.props.tracks.length / 8
+				chunks = chunkArray(this.props.tracks, chunkSize)
 				break
 
 			case 'LIGHTPADBLOCK_16':
-				chunks = chunkArray(this.props.tracks, Math.sqrt(this.props.tracks.length))
+				chunkSize = Math.sqrt(this.props.tracks.length)
+				chunks = chunkArray(this.props.tracks, chunkSize)
 				break
 
 			case 'CUSTOM_SOCKET_STRATEGY':
-				chunks = chunkArray(this.props.tracks, this.props.tracks.length / 5)
+				chunkSize = this.props.tracks.length / 5
+				chunks = chunkArray(this.props.tracks, chunkSize)
 				break
 
 			default:
@@ -41,7 +44,7 @@ class Samples extends Component {
 				{
 					samples
 					? samples : chunks
-					? chunks.map((chunk, chunkIndex) => <div key={chunkIndex}>{chunk.map((sample, sampleIndex) => <Sample key={sampleIndex} index={sampleIndex} />)}</div>)
+					? chunks.map((chunk, chunkIndex) => <div key={chunkIndex}>{chunk.map((sample, sampleIndex) => <Sample key={sampleIndex} index={chunkIndex * chunkSize + sampleIndex} />)}</div>)
 					: this.props.tracks.map((sample, sampleIndex) => <Sample key={sampleIndex} index={sampleIndex} />)
 				}
 			</div>

@@ -39,7 +39,7 @@ export const fetchTrack = async trackId => {
 	}
 }
 
-export const fetchSourceData = async (sourceType, sourceId) => {
+export const fetchTracks = async (sourceType, sourceId) => {
 	let tracks
 	switch (sourceType)
 	{

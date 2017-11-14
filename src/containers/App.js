@@ -8,10 +8,10 @@ import App from '../components/App'
 
 const mapStateToProps = (state, ownProps) => ({
 	sourceId: state.source.id,
-	sourceData: state.source.data,
 	sourceType: state.source.type,
 	sampleDuration: state.sampling.sampleDuration,
 	samplingStrategyId: state.sampling.strategyId,
+	samplingTracks: state.sampling.tracks,
 	samplingTransformation: state.sampling.transformation
 })
 

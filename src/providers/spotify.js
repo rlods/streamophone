@@ -60,17 +60,17 @@ const fetchAPI = async url => {
 
 const fetchAlbum = async albumId => fetchAPI(`albums/${albumId}`)
 
-export const fetchSourceData = async (sourceType, sourceId) => {
-	let sourceData
+export const fetchTracks = async (sourceType, sourceId) => {
+	let tracks
 	switch (sourceType)
 	{
 		case 'album':
 		{
 			const albumData = await fetchAlbum(sourceId)
-			sourceData = albumData.tracks.items.map(trackData => {
+			tracks = albumData.tracks.items.map(track => {
 				// In that case we have to enrich each track data with the cover which is available in the album data
-				trackData.cover = albumData.images[0].url
-				return trackData
+				track.cover = albumData.images[0].url
+				return track
 			})
 			break
 		}
@@ -79,29 +79,29 @@ export const fetchSourceData = async (sourceType, sourceId) => {
 			throw new Error(`Unknown spotify source type "${sourceType}"`)
 		}
 	}
-	return sourceData.map(trackData => ({
-		cover: trackData.cover,
-		id: trackData.id,
+	return tracks.map(track => ({
+		cover: track.cover,
+		id: track.id,
 		playing: false,
-		preview: trackData.preview_url,
+		preview: track.preview_url,
 		readable: true, // TODO
-		title: trackData.name,
-		url: trackData.external_urls.spotify,
+		title: track.name,
+		url: track.external_urls.spotify,
 		volume1: 0.5,
 		volume2: 1.0
 	}))
 }
 
 export const fetchTrack = async trackId => {
-	const trackData = await fetchAPI(`tracks/${trackId}`)
+	const track = await fetchAPI(`tracks/${trackId}`)
 	return {
-		cover: trackData.album.images[0].url,
-		id: trackData.id,
+		cover: track.album.images[0].url,
+		id: track.id,
 		playing: false,
-		preview: trackData.preview_url,
+		preview: track.preview_url,
 		readable: true, // TODO
-		title: trackData.name,
-		url: trackData.external_urls.spotify,
+		title: track.name,
+		url: track.external_urls.spotify,
 		volume1: 0.5,
 		volume2: 1.0
 	}
