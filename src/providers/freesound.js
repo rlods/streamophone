@@ -11,50 +11,54 @@ const API_BASE_URL = 'https://freesound.org/apiv2/'
 
 // ------------------------------------------------------------------
 
-const fetchAPI = url => new Promise((resolve, reject) => {
-	jsonp(API_BASE_URL + url + `?format=jsonp&token=${config.TMP.FREESOUND}`, null, (err, data) => {
-		if (err)
-			reject(err)
-		else if (data && data.error)
-			reject(data.error)
-		else
-			resolve(data)
-	})
-})
+export default class FreesoundProvider
+{
+	// constructor() {
+	// }
 
-// ------------------------------------------------------------------
-
-const fetchPackSounds = async packId => fetchAPI(`packs/${packId}/sounds`)
-
-// ------------------------------------------------------------------
-
-export const fetchTrack = async trackId => {
-	const track = await fetchAPI(`sounds/${trackId}`)
-	const preview = track.previews ? track.previews['preview-lq-mp3'] : null
-	return {
-		// cover: ... no cover available,
-		id: track.id,
-		playing: false,
-		preview,
-		readable: !!preview,
-		title: track.name,
-		url: track.url,
-		volume1: 0.5,
-		volume2: 1.0
+	fetchAPI(url) {
+		return new Promise((resolve, reject) => {
+			jsonp(API_BASE_URL + url + `?format=jsonp&token=${config.TMP.FREESOUND}`, null, (err, data) => {
+				if (err)
+					reject(err)
+				else if (data && data.error)
+					reject(data.error)
+				else
+					resolve(data)
+			})
+		})
 	}
-}
 
-// ------------------------------------------------------------------
-
-export const fetchTracks = async (sourceType, sourceId) => {
-	let tracks
-	switch (sourceType)
-	{
-		case 'freesound_pack':
-			tracks = (await fetchPackSounds(sourceId)).results.map(trackData => fetchTrack(trackData.id))
-			break
-		default:
-			throw new Error(`Unknown freesound source type "${sourceType}"`)
+	async fetchTracks(sourceType, sourceId) {
+		let tracks
+		switch (sourceType)
+		{
+			case 'freesound_pack':
+				tracks = (await this.fetchPackSounds(sourceId)).results.map(trackData => this.fetchTrack(trackData.id))
+				break
+			default:
+				throw new Error(`Unknown freesound source type "${sourceType}"`)
+		}
+		return await Promise.all(tracks)
 	}
-	return await Promise.all(tracks)
+
+	async fetchPackSounds(packId) {
+		return this.fetchAPI(`packs/${packId}/sounds`)
+	}
+
+	async fetchTrack(trackId) {
+		const track = await this.fetchAPI(`sounds/${trackId}`)
+		const preview = track.previews ? track.previews['preview-lq-mp3'] : null
+		return {
+			// cover: ... no cover available,
+			id: track.id,
+			playing: false,
+			preview,
+			readable: !!preview,
+			title: track.name,
+			url: track.url,
+			volume1: 0.5,
+			volume2: 1.0
+		}
+	}
 }
