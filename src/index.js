@@ -23,17 +23,17 @@ Object.entries(config.DRIVERS).forEach(([driverId, driverDefinition]) => {
 		let driver
 		switch (driverDefinition.type)
 		{
-			case 'basic':
-				driver = new Driver()
-				break 
-			case 'midi':
-				driver = new MidiDriver()
-				break 
-			case 'socket':
-				driver = new SocketDriver(driverDefinition.socketUrl, driverDefinition.socketPrefix)
-				break
-			default:
-				throw new Error(`Unknown driver type "${driverDefinition.type}"`)
+		case 'basic':
+			driver = new Driver()
+			break 
+		case 'midi':
+			driver = new MidiDriver()
+			break 
+		case 'socket':
+			driver = new SocketDriver(driverDefinition.socketUrl, driverDefinition.socketPrefix)
+			break
+		default:
+			throw new Error(`Unknown driver type "${driverDefinition.type}"`)
 		}
 		drivers[driverId] = driver
 	}
