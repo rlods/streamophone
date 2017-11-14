@@ -6,7 +6,8 @@ import config from '../config'
 
 const API_BASE_URL = 'https://api.spotify.com/v1/'
 
-const CLIENT_ID = config.TMP.SPOTIFY
+// ------------------------------------------------------------------
+
 let AUTHORIZATION_CODE = sessionStorage.getItem('SPOTIFY_AT')
 
 // https://developer.spotify.com/web-api/authorization-guide/#client_credentials_flow
@@ -38,7 +39,7 @@ const Fetcher = axios.create({
 	}
 })
 
-const refreshAuthentication = () => document.location = `https://accounts.spotify.com/authorize?client_id=${CLIENT_ID}&response_type=token&state=spotify&redirect_uri=http://localhost:8080`
+const refreshAuthentication = () => document.location = `https://accounts.spotify.com/authorize?client_id=${config.TMP.SPOTIFY}&response_type=token&state=spotify&redirect_uri=http://localhost:8080`
 
 const fetchAPI = async url => {
 	try {
@@ -60,7 +61,11 @@ const fetchAPI = async url => {
 	}
 }
 
+// ------------------------------------------------------------------
+
 const fetchAlbum = async albumId => fetchAPI(`albums/${albumId}`)
+
+// ------------------------------------------------------------------
 
 export const fetchTracks = async (sourceType, sourceId) => {
 	let tracks
@@ -93,6 +98,8 @@ export const fetchTracks = async (sourceType, sourceId) => {
 		volume2: 1.0
 	}))
 }
+
+// ------------------------------------------------------------------
 
 export const fetchTrack = async trackId => {
 	const track = await fetchAPI(`tracks/${trackId}`)

@@ -4,6 +4,8 @@ import jsonp from 'jsonp'
 
 const API_BASE_URL = 'https://api.deezer.com/'
 
+// ------------------------------------------------------------------
+
 const fetchAPI = url => new Promise((resolve, reject) => {
 	jsonp(API_BASE_URL + url + '?output=jsonp&strict=on', null, (err, data) => {
 		if (err)
@@ -15,11 +17,19 @@ const fetchAPI = url => new Promise((resolve, reject) => {
 	})
 })
 
+// ------------------------------------------------------------------
+
 const fetchAlbum = async albumId => fetchAPI(`album/${albumId}`)
+
+// ------------------------------------------------------------------
 
 const fetchArtistTracks = async artistId => fetchAPI(`artist/${artistId}/radio`)
 
+// ------------------------------------------------------------------
+
 const fetchPlaylist = async playlistId => fetchAPI(`playlist/${playlistId}`)
+
+// ------------------------------------------------------------------
 
 export const fetchTracks = async (sourceType, sourceId) => {
 	let tracks
