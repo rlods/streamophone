@@ -4,6 +4,9 @@ export default class Provider
 	// constructor() {
 	// }
 
+	async enrichTracks(tracks, cb) {
+	}
+
 	async fetchTracks(sourceType, sourceId) {
 		switch (sourceType)
 		{

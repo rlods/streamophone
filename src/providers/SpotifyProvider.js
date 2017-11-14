@@ -58,6 +58,7 @@ export default class SpotifyProvider extends Provider
 		return tracks.map(track => ({
 			cover: track.cover,
 			id: track.id,
+			normalized: false,
 			playing: false,
 			preview: track.preview_url,
 			readable: true, // TODO
@@ -66,21 +67,6 @@ export default class SpotifyProvider extends Provider
 			volume1: 0.5,
 			volume2: 1.0
 		}))
-	}
-
-	async fetchTrack(trackId) {
-		const track = await this.fetchAPI(`tracks/${trackId}`)
-		return {
-			cover: track.album.images[0].url,
-			id: track.id,
-			playing: false,
-			preview: track.preview_url,
-			readable: true, // TODO
-			title: track.name,
-			url: track.external_urls.spotify,
-			volume1: 0.5,
-			volume2: 1.0
-		}
 	}
 
 	refreshAuthentication() {

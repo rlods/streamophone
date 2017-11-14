@@ -32,18 +32,11 @@
 	line-height: 20px;
 	white-space: nowrap;
 	text-decoration: none;
+	z-index: 10000;
 }
 
 .sample-title:hover {
 	text-decoration: underline;
-}
-
-.sample.playing .sample-cover {
-	opacity: 1.0;
-}
-
-.sample:hover .sample-title {
-	display: block;
 }
 
 .sample-info {
@@ -56,6 +49,40 @@
 	padding: 5px;
 	min-width: 20px;
 	text-align: center;
+	z-index: 1000;
+}
+
+.sample-metas {
+	position: absolute;
+	display: flex;
+	bottom: 5px;
+	right: 5px;
+	flex-direction: row;
+	flex-wrap: wrap;
+	z-index: 100;
+	opacity: 0.3;
+	background-color: #FFF;
+	color: #000;
+	font-size: 12px;
+}
+
+.sample-meta {
+	padding: 2px;
+}
+
+.sample-meta:first-child {
+}
+
+.sample.playing .sample-cover {
+	opacity: 1.0;
+}
+
+.sample:hover .sample-title {
+	display: block;
+}
+
+.sample:hover .sample-metas {
+	opacity: 1.0;
 }
 
 /* --------------------------------------------------------------- */

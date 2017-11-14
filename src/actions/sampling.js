@@ -28,9 +28,14 @@ export const changeSamplingTransformation = transformation => dispatch => {
 
 // --------------------------------------------------------------
 
-export const changeSampleNormalizationVolume = (trackId, volume) => dispatch => dispatch({
+export const changeSampleBPM = (sampleIndex, bpm) => dispatch => dispatch({
+	type: 'SAMPLING_SET_TRACK_BPM',
+	data: { sampleIndex, bpm }
+})
+
+export const changeSampleNormalizationVolume = (sampleIndex, volume) => dispatch => dispatch({
 	type: 'SAMPLING_SET_TRACK_NORMALIZATION_VOLUME',
-	data: { trackId, volume }
+	data: { sampleIndex, volume }
 })
 
 export const changeSampleVolume = (sampleIndex, volume) => dispatch => dispatch({

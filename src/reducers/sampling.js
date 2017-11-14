@@ -16,8 +16,11 @@ const INITIAL_STATE = {
 const setTracks = (state, { audios, tracks }) =>
 	({ ...state, audios, tracks })
 
-const setTrackNormalizationVolume = (state, { trackId, volume }) =>
-	({ ...state, tracks: state.tracks.map(other => other.id !== trackId ? other : { ...other, volume1: volume }) })
+const setTrackBPM = (state, { sampleIndex, bpm }) => // TODO
+	({ ...state, tracks: state.tracks.map((other, otherIndex) => otherIndex !== sampleIndex ? other : { ...other, bpm: bpm }) })
+
+const setTrackNormalizationVolume = (state, { sampleIndex, volume }) => // TODO
+	({ ...state, tracks: state.tracks.map((other, otherIndex) => otherIndex !== sampleIndex ? other : { ...other, volume1: volume, normalized: true }) })
 
 const setSampleVolume = (state, { sampleIndex, volume }) => // TODO
 	({ ...state, tracks: state.tracks.map((other, otherIndex) => otherIndex !== sampleIndex ? other : { ...other, volume2: volume }) })
@@ -47,6 +50,8 @@ export default (state = INITIAL_STATE, action) => {
 		return setSamplingTransformation(state, action.data)
 	case 'SAMPLING_SET_TRACKS':
 		return setTracks(state, action.data)
+	case 'SAMPLING_SET_TRACK_BPM':
+		return setTrackBPM(state, action.data)
 	case 'SAMPLING_SET_TRACK_NORMALIZATION_VOLUME':
 		return setTrackNormalizationVolume(state, action.data)
 	case 'SAMPLING_SET_SAMPLE_STATUS':

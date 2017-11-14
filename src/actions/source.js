@@ -1,6 +1,6 @@
 import { createProvider } from '../providers'
 import { transformArray } from '../tools'
-import { changeSamplingTracks } from './sampling'
+import { changeSampleBPM, changeSampleNormalizationVolume, changeSamplingTracks } from './sampling'
 //
 import config from '../config'
 import { createStrategy } from '../strategies'
@@ -25,19 +25,19 @@ export const changeSourceType = type => dispatch => {
 
 // ------------------------------------------------------------------
 
-//export const normalizeAudio = async (dispatch, track, audio) => {
-//	try {
-//		const augmentedTrack = await deezer_fetchTrack(track.id)
-//		let volume1 = !augmentedTrack.gain ? 0.5 : 0.5 * Math.pow(10, ((-12 - augmentedTrack.gain) / 20))
-//		if (volume1 > 1.0) volume1 = 1.0
-//		// console.log(`Normalized ${track.id}: ${track.volume1} -> ${volume1}`)
-//		audio.volume = volume1 * track.volume2
-//		dispatch(changeSampleNormalizationVolume(track.id, volume1))
-//	}
-//	catch (error) {
-//		console.log('Cannot normalize sample volume', error)
-//	}
-//}
+export const normalizeAudio = (dispatch, audios, tracks, baseIndex, enrichedTracks) => {
+	enrichedTracks.forEach((enrichedTrack, index) => {
+		const sampleIndex = baseIndex + index
+		const audio = audios[sampleIndex]
+		const track = tracks[sampleIndex]
+		if (enrichedTrack.gain) {
+			let volume1 = 0.5 * Math.pow(10, ((-12 - enrichedTrack.gain) / 20))
+			if (volume1 > 1.0) volume1 = 1.0
+			audio.volume = volume1 * track.volume2
+			dispatch(changeSampleNormalizationVolume(sampleIndex, volume1))
+		}
+	})
+}
 
 export const loadAudios = (dispatch, sampling, tracks) => tracks.map(track => {
 	const audio = new Audio(track.preview)
@@ -51,10 +51,6 @@ export const loadAudios = (dispatch, sampling, tracks) => tracks.map(track => {
 	if (sampling.sampleDuration === 0) { // loop in full mode
 		audio.loop = true 
 	}
-
-	//if (config.ENABLE_VOLUME_FROM_GAIN) {
-	//	normalizeAudio(dispatch, track, audio)
-	//}
 
 	return audio
 })
@@ -92,6 +88,24 @@ export const play = history => async (dispatch, getState, { drivers }) => {
 		// Load audios
 		const audios = loadAudios(dispatch, sampling, tracks)
 		
+		// Start enrichment if needed
+		if (true) { // config.ENABLE_VOLUME_FROM_GAIN) {
+			provider.enrichTracks(tracks, (baseIndex, enrichedTracks) => {
+				console.log('Tracks have been enriched')
+
+				// Update normalization volume
+				normalizeAudio(dispatch, audios, tracks, baseIndex, enrichedTracks)
+
+				// Update BPM
+				enrichedTracks.forEach((enrichedTrack, index) => {
+					const sampleIndex = baseIndex + index
+					if (enrichedTrack.bpm) {
+						dispatch(changeSampleBPM(sampleIndex, enrichedTrack.bpm))
+					}
+				})
+			})
+		}
+
 		dispatch(changeSamplingTracks(audios, tracks))
 	}
 	catch (error) {

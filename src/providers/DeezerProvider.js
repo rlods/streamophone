@@ -5,14 +5,61 @@ import Provider from './Provider'
 // ------------------------------------------------------------------
 
 const API_BASE_URL = 'https://api.deezer.com/'
+const ENRICHMENT_CHUNK = 10
+const ENRICHMENT_DELAY = 500
+
+// ------------------------------------------------------------------
+
+class EnrichmentProcessor
+{
+	constructor(provider) {
+		this.baseIndex = 0
+		this.cb = null
+		this.provider = provider
+		this.tracks = null
+		this.interval = null
+	}
+
+	register(tracks, cb) {
+		if (this.interval) {
+			clearInterval(this.interval)
+			this.baseIndex = 0
+			this.cb = null
+			this.interval = null
+			this.tracks = null
+		}
+		if (cb && tracks && tracks.length > 0) {
+			this.cb = cb
+			this.tracks = tracks.slice() // we have to copy the given tracks because we'll modify it in process
+			this.interval = setInterval(this.process.bind(this), ENRICHMENT_DELAY)
+		}
+	}
+
+	async process() {
+		const tracks = this.tracks.splice(0, ENRICHMENT_CHUNK)
+		if (tracks.length > 0) {
+			const enrichedTracks = await Promise.all(tracks.map(async (track, index) => {
+				const { id, bpm, gain } = await this.provider.fetchAPI(`track/${track.id}`)
+				return {
+					id,
+					bpm,
+					gain
+				}
+			}))
+			this.cb(this.baseIndex, enrichedTracks)
+			this.baseIndex += ENRICHMENT_CHUNK
+		}
+	}
+}
 
 // ------------------------------------------------------------------
 
 export default class DeezerProvider extends Provider
 {
-	//constructor() {
-	//	super()
-	//}
+	constructor() {
+		super()
+		this.enricher = new EnrichmentProcessor(this)
+	}
 
 	fetchAPI(url) {
 		return new Promise((resolve, reject) => {
@@ -25,6 +72,10 @@ export default class DeezerProvider extends Provider
 					resolve(data)
 			})
 		})
+	}
+
+	enrichTracks(tracks, cb) {
+		this.enricher.register(tracks, cb)
 	}
 
 	async fetchTracks(sourceType, sourceId) {
@@ -61,6 +112,7 @@ export default class DeezerProvider extends Provider
 		return tracks.map(track => ({
 			cover: track.album.cover_medium,
 			id: track.id,
+			normalized: false,
 			playing: false,
 			preview: track.preview,
 			readable: track.readable,
@@ -69,21 +121,6 @@ export default class DeezerProvider extends Provider
 			volume1: 0.5,
 			volume2: 1.0
 		}))
-	}
-
-	async fetchTrack(trackId) {
-		const track = await this.fetchAPI(`track/${trackId}`)
-		return {
-			cover: track.album.cover_medium,
-			id: track.id,
-			playing: false,
-			preview: track.preview,
-			readable: track.readable,
-			title: track.title,
-			url: track.link,
-			volume1: 0.5,
-			volume2: 1.0
-		}
 	}
 
 	async fetchAlbum(albumId) {

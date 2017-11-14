@@ -36,7 +36,7 @@ class Player extends Component {
 					break
 
 				case 'BCF2000_MULTISLIDERS':
-					chunkSize = this.props.tracks.length / 8
+					chunkSize = Math.floor(this.props.tracks.length / 8)
 					chunks = chunkArray(this.props.tracks, chunkSize)
 					break
 
@@ -46,7 +46,7 @@ class Player extends Component {
 					break
 
 				case 'CUSTOM_SOCKET_STRATEGY':
-					chunkSize = this.props.tracks.length / 5
+					chunkSize = Math.floor(this.props.tracks.length / 5)
 					chunks = chunkArray(this.props.tracks, chunkSize)
 					break
 
