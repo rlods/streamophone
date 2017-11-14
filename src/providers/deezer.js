@@ -38,10 +38,10 @@ export const fetchTracks = async (sourceType, sourceId) => {
 		case 'album':
 		{
 			const albumData = await fetchAlbum(sourceId)
-			tracks = albumData.tracks.data.map(trackData => {
+			tracks = albumData.tracks.data.map(track => {
 				// In that case we have to enrich each track data with the cover which is available in the album data
-				trackData.album = { cover_medium: albumData.cover_medium }
-				return trackData
+				track.album = { cover_medium: albumData.cover_medium }
+				return track
 			})
 			break
 		}
@@ -76,15 +76,15 @@ export const fetchTracks = async (sourceType, sourceId) => {
 }
 
 export const fetchTrack = async trackId => {
-	const trackData = await fetchAPI(`track/${trackId}`)
+	const track = await fetchAPI(`track/${trackId}`)
 	return {
-		cover: trackData.album.cover_medium,
-		id: trackData.id,
+		cover: track.album.cover_medium,
+		id: track.id,
 		playing: false,
-		preview: trackData.preview,
-		readable: trackData.readable,
-		title: trackData.title,
-		url: trackData.link,
+		preview: track.preview,
+		readable: track.readable,
+		title: track.title,
+		url: track.link,
 		volume1: 0.5,
 		volume2: 1.0
 	}
