@@ -26,7 +26,10 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 	onChangeSamplingTransformation: e => dispatch(changeSamplingTransformation(e.target.value)),
 	onChangeSourceId: e               => dispatch(changeSourceId(e.target.value)),
 	onChangeSourceType: e             => dispatch(changeSourceType(e.target.value)),
-	onLoadPlaylist: ()                => dispatch(loadSource()),
+	onStart: e                       => {
+		dispatch(loadSource())
+		e.preventDefault()
+	},
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)

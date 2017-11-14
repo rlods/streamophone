@@ -66,7 +66,7 @@ class App extends Component {
 		}
 		else {
 			return (
-				<div className="app-menu">
+				<form className="app-menu" onSubmit={this.props.onStart}>
 					<div className="app-title">The Streamophone</div>
 					<SelectField
 						name="Sample Controller"
@@ -107,9 +107,9 @@ class App extends Component {
 						value={this.props.sourceId}
 						onChange={this.props.onChangeSourceId} />
 					<div className="app-menu-field">
-						<button className="app-menu-action" onClick={this.props.onLoadPlaylist}>Start</button>
+						<button className="app-menu-action" onClick={this.props.onStart}>Start</button>
 					</div>
-				</div>
+				</form>
 			)
 		}
 	}
@@ -130,7 +130,7 @@ App.propTypes = {
 	onChangeSamplingTransformation: PropTypes.func,
 	onChangeSourceId: PropTypes.func,
 	onChangeSourceType: PropTypes.func,
-	onLoadPlaylist: PropTypes.func
+	onStart: PropTypes.func
 }
 
 export default App
