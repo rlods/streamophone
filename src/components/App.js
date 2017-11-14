@@ -19,7 +19,8 @@ const DURATIONS = [
 const SOURCE_TYPES = {
 	album: 'Album',
 	artist: 'Artist',
-	playlist: 'Playlist'
+	playlist: 'Playlist',
+	freesound_pack: 'Freesound Pack'
 }
 
 const TRANSFORMATIONS = {

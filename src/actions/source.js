@@ -1,4 +1,5 @@
-import { fetchTracks, fetchTrack } from '../providers/deezer'
+import { fetchTracks as deezer_fetchTracks, fetchTrack as deezer_fetchTrack } from '../providers/deezer'
+import { fetchTracks as freesound_fetchTracks } from '../providers/freesound'
 import { transformArray } from '../tools'
 import { changeSampleNormalizationVolume, changeSamplingTracks } from './sampling'
 //
@@ -21,7 +22,7 @@ export const changeSourceType = type => dispatch => dispatch({
 
 export const normalizeAudio = async (dispatch, track, audio) => {
 	try {
-		const augmentedTrack = await fetchTrack(track.id)
+		const augmentedTrack = await deezer_fetchTrack(track.id)
 		let volume1 = !augmentedTrack.gain ? 0.5 : 0.5 * Math.pow(10, ((-12 - augmentedTrack.gain) / 20))
 		if (volume1 > 1.0) volume1 = 1.0
 		// console.log(`Normalized ${track.id}: ${track.volume1} -> ${volume1}`)
@@ -73,8 +74,10 @@ export const loadSource = () => async (dispatch, getState, { drivers }) => {
 		driver.strategy = createStrategy(sampling.strategyId)
 
 		// Fetch tracks
-		let tracks = await fetchTracks(source.type, source.id)
-		tracks = transformArray(tracks, driver.strategy.samplesCount, sampling.transformation, validateTrack)
+		let tracks = 
+			source.type.startsWith('freesound_') ? freesound_fetchTracks(source.type, source.id) :
+			deezer_fetchTracks(source.type, source.id)
+		tracks = transformArray(await tracks, driver.strategy.samplesCount, sampling.transformation, validateTrack)
 
 		// Load audios
 		const audios = loadAudios(dispatch, sampling, tracks)

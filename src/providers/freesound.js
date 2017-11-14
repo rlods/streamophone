@@ -1,4 +1,6 @@
 import jsonp from 'jsonp'
+//
+import config from '../config'
 
 // ------------------------------------------------------------------
 
@@ -6,12 +8,13 @@ import jsonp from 'jsonp'
 // https://freesound.org/apiv2/sounds/395246?format=json
 
 const API_BASE_URL = 'https://freesound.org/apiv2/'
+const API_KEY = config.TMP.FREESOUND
 const SOUND_IMG = require('../assets/sound.png')
 
 // ------------------------------------------------------------------
 
 const fetchAPI = url => new Promise((resolve, reject) => {
-	jsonp(API_BASE_URL + url + '?format=jsonp', null, (err, data) => {
+	jsonp(API_BASE_URL + url + `?format=jsonp&token=${API_KEY}`, null, (err, data) => {
 		if (err)
 			reject(err)
 		else if (data && data.error)
@@ -43,7 +46,7 @@ export const fetchTracks = async (sourceType, sourceId) => {
 	let tracks
 	switch (sourceType)
 	{
-		case 'album':
+		case 'freesound_pack':
 			tracks = (await fetchPackSounds(sourceId)).results.map(trackData => fetchTrack(trackData.id))
 			break
 		default:

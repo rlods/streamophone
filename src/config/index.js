@@ -70,8 +70,12 @@ const Config = {
 		//	driver: 'socket',
 		//	label: 'CUSTOM_SOCKET (25 samples)'
 		//}
-	}
+	},
 
+	TMP: {
+		FREESOUND: 'aGhZQh3Ishqc7OvoqC7pWupWHsjalJuxIzURKVqt', // TODO: replace by oauth
+		SPOTIFY: 'be156e1e10de43b2b4e3f73b2f40d1dc' // clientId for oauth
+	}
 }
 
 export default Config

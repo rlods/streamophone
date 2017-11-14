@@ -1,10 +1,12 @@
 import axios from 'axios'
+//
+import config from '../config'
 
 // ------------------------------------------------------------------
 
 const API_BASE_URL = 'https://api.spotify.com/v1/'
 
-const CLIENT_ID = 'be156e1e10de43b2b4e3f73b2f40d1dc' // TODO: to remove of course
+const CLIENT_ID = config.TMP.SPOTIFY
 let AUTHORIZATION_CODE = sessionStorage.getItem('SPOTIFY_AT')
 
 // https://developer.spotify.com/web-api/authorization-guide/#client_credentials_flow
@@ -12,12 +14,12 @@ let AUTHORIZATION_CODE = sessionStorage.getItem('SPOTIFY_AT')
 // Test Album ID: 5rOHrnrRomvSJhQLGVtfJ8
 
 if (!AUTHORIZATION_CODE && document.location.hash) {
-	const hashParams = document.location.hash.slice(1)
+	const params = document.location.hash.slice(1)
 
 	function getParameterByName(name) {
 		name = name.replace(/[[]]/g, "\\$&")
 		const regex = new RegExp(name + "(=([^&#]*)|&|#|$)")
-		const results = regex.exec(hashParams)
+		const results = regex.exec(params)
 		if (!results) return null
 		if (!results[2]) return ''
 		return decodeURIComponent(results[2].replace(/\+/g, " "))
