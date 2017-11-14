@@ -19,6 +19,14 @@ const Config = {
 		{ sourceType: 'freesound_pack',  sourceId: 16873,      title: 'Industrial' }
 	],
 
+	DEFAULT: {
+		SAMPLING_DURATION: sessionStorage.getItem('DEFAULT_SAMPLING_DURATION') || 0,
+		SAMPLING_STRATEGY: sessionStorage.getItem('DEFAULT_SAMPLING_STRATEGY') || 'KEYBOARD_AZERTY',
+		SAMPLING_TRANSFORMATION: sessionStorage.getItem('DEFAULT_SAMPLING_TRANSFORMATION') || 'shuffle',
+		SOURCE_ID: sessionStorage.getItem('DEFAULT_SOURCE_ID') || '1083902971',
+		SOURCE_TYPE: sessionStorage.getItem('DEFAULT_SOURCE_TYPE') || 'deezer_playlist'
+	},
+
 	ENABLE_LOGGER: false, // process.env.NODE_ENV !== 'production'
 
 	ENABLE_VOLUME_FROM_GAIN: false, // TODO: enable that with a significative delay between calls because of Deezer API Rate Limits (not done yet)

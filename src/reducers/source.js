@@ -1,7 +1,8 @@
+import config from '../config'
 
 const INITIAL_STATE = {
-	id: '1083902971',
-	type: 'deezer_playlist'
+	id: config.DEFAULT.SOURCE_ID,
+	type: config.DEFAULT.SOURCE_TYPE
 }
 
 const setSourceId = (state, { id }) =>

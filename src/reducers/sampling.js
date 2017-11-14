@@ -1,10 +1,11 @@
+import config from '../config'
 
 const INITIAL_STATE = {
 	audios: null,
 	tracks: null,
-	sampleDuration: 0, // full by default
-	strategyId: 'KEYBOARD_AZERTY',
-	transformation: 'shuffle'
+	sampleDuration: config.DEFAULT.SAMPLING_DURATION,
+	strategyId: config.DEFAULT.SAMPLING_STRATEGY,
+	transformation: config.DEFAULT.SAMPLING_TRANSFORMATION
 }
 
 const setTracks = (state, { audios, tracks }) =>
