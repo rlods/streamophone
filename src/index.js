@@ -8,7 +8,7 @@ import logger from 'redux-logger'
 import thunk from 'redux-thunk'
 // ...
 import rootReducer from './reducers'
-import registerServiceWorker from './registerServiceWorker'
+//import registerServiceWorker from './registerServiceWorker'
 import App from './containers/App'
 import Driver from './drivers/Driver'
 import MidiDriver from './drivers/MidiDriver'
@@ -64,4 +64,4 @@ ReactDOM.render(
 	document.getElementById('root')
 )
 
-registerServiceWorker()
+//registerServiceWorker()
