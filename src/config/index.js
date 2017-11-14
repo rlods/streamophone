@@ -14,7 +14,9 @@ const Config = {
 		{ sourceType: 'deezer_playlist', sourceId: 23804156,   title: 'Minimal electro house' },
 		{ sourceType: 'deezer_playlist', sourceId: 2762818384, title: 'Musique concrète' },
 		{ sourceType: 'deezer_album',    sourceId: 43825781,   title: 'Jul - Je ne me vois pas briller' },
-		{ sourceType: 'deezer_artist',   sourceId: 27,         title: 'Daft Punk' }
+		{ sourceType: 'deezer_artist',   sourceId: 27,         title: 'Daft Punk' },
+		{ sourceType: 'freesound_pack',  sourceId: 7447,       title: 'Zeeland dunes' },
+		{ sourceType: 'freesound_pack',  sourceId: 16873,      title: 'Industrial' }
 	],
 
 	ENABLE_LOGGER: false, // process.env.NODE_ENV !== 'production'
