@@ -10,16 +10,6 @@ export const changeSampleDuration = sampleDuration => dispatch => {
 	})
 }
 
-export const changeSampleNormalizationVolume = (trackId, volume) => dispatch => dispatch({
-	type: 'SAMPLING_SET_TRACK_NORMALIZATION_VOLUME',
-	data: { trackId, volume }
-})
-
-export const changeSampleVolume = (sampleIndex, volume) => dispatch => dispatch({
-	type: 'SAMPLING_SET_SAMPLE_VOLUME',
-	data: { sampleIndex, volume }
-})
-
 export const changeSamplingStrategy = strategyId => dispatch => {
 	sessionStorage.setItem('DEFAULT_SAMPLING_STRATEGY', strategyId)
 	return dispatch({
@@ -35,6 +25,18 @@ export const changeSamplingTransformation = transformation => dispatch => {
 		data: { transformation }
 	})
 }
+
+// --------------------------------------------------------------
+
+export const changeSampleNormalizationVolume = (trackId, volume) => dispatch => dispatch({
+	type: 'SAMPLING_SET_TRACK_NORMALIZATION_VOLUME',
+	data: { trackId, volume }
+})
+
+export const changeSampleVolume = (sampleIndex, volume) => dispatch => dispatch({
+	type: 'SAMPLING_SET_SAMPLE_VOLUME',
+	data: { sampleIndex, volume }
+})
 
 export const changeSamplingTracks = (audios, tracks) => dispatch => dispatch({
 	type: 'SAMPLING_SET_TRACKS',
@@ -65,7 +67,7 @@ export const handleKeyUp = keyCode => (dispatch, getState, { drivers }) => {
 export const setSampleVolume = (sampleIndex, volume) => (dispatch, getState) => {
 	const { sampling } = getState()
 	const { audios, tracks } = sampling
-	if (audios.length > 0) {
+	if (audios && audios.length > 0) {
 		const indexMod = Math.abs(sampleIndex) % audios.length
 		const audio = audios[indexMod]
 		const track = tracks[indexMod]
