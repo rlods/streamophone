@@ -23,11 +23,25 @@ const mapStateToProps = (state, ownProps) => {
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-	onTouchDown: e => {
+	onMouseDown: e => {
 		if (e.button === 0) dispatch(startSample(ownProps.index))
 	},
-	onTouchUp: e => {
+	onMouseUp: e => {
 		if (e.button === 0) dispatch(stopSample(ownProps.index))
+	},
+	onMouseEnter: e => {
+		if (e.buttons) {
+			// e.preventDefault()
+			// e.stopPropagation()
+			dispatch(startSample(ownProps.index))
+		}
+	},
+	onMouseLeave: e => {
+		if (e.buttons) {
+			// e.preventDefault()
+			// e.stopPropagation()
+			dispatch(stopSample(ownProps.index))
+		}
 	}
 })
 
