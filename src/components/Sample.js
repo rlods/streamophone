@@ -11,8 +11,8 @@ class Sample extends Component {
 		const meta = (
 			<div className="sample-metas">
 				{this.props.bpm ? <i className="sample-meta">{this.props.bpm}</i> : null}
-				{this.props.normalized ? <i className="fa fa-bolt sample-meta"></i> : null}
-				{this.props.ready ? <i className="fa fa-thumbs-up sample-meta"></i> : <i className="fa fa-thumbs-down sample-meta"></i>}
+				{this.props.normalized ? <i className="fa fa-bolt sample-meta" title="normalized"></i> : null}
+				{this.props.ready ? null : <i className="fa fa-exclamation-triangle sample-meta" title="not ready"></i>}
 			</div>
 		)
 		return (
