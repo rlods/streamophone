@@ -42,6 +42,14 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 			// e.stopPropagation()
 			dispatch(stopSample(ownProps.index))
 		}
+	},
+	onTouchStart: e => {
+		console.log('onTouchStart')
+		dispatch(startSample(ownProps.index))
+	},
+	onTouchEnd: e => {
+		console.log('onTouchEnd')
+		dispatch(stopSample(ownProps.index))
 	}
 })
 

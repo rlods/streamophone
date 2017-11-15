@@ -142,6 +142,9 @@ CUSTOM_SOCKET_STRATEGY
     .sample-metas {
         display: none;
     }
+    .sample-title {
+        display: none !important;
+    }
 }
 
 @media (orientation: portrait) {

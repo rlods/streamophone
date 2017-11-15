@@ -21,7 +21,9 @@ class Sample extends Component {
 				onMouseDown={this.props.onMouseDown}
 				onMouseUp={this.props.onMouseUp}
 				onMouseEnter={this.props.onMouseEnter}
-				onMouseLeave={this.props.onMouseLeave}>
+				onMouseLeave={this.props.onMouseLeave}
+				onTouchStart={this.props.onTouchStart}
+				onTouchEnd={this.props.onTouchEnd}>
 				<img className="sample-cover" src={this.props.cover} alt={this.props.title} />
 				{info}
 				{meta}
@@ -45,7 +47,9 @@ Sample.propTypes = {
 	onMouseDown: PropTypes.func,
 	onMouseUp: PropTypes.func,
 	onMouseEnter: PropTypes.func,
-	onMouseLeave: PropTypes.func
+	onMouseLeave: PropTypes.func,
+	onTouchStart: PropTypes.func,
+	onTouchEnd: PropTypes.func
 }
 
 export default Sample
