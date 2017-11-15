@@ -10,16 +10,7 @@
 .sample {
 	position: relative;
 	display: flex;
-	height: 80px;
-	width: 80px;
 	margin: 5px;
-}
-
-.sample-cover {
-	height: 80px;
-	width: 80px;
-	opacity: 0.1;
-	transition: opacity 0.5s ease-in-out;
 }
 
 .sample-title {
@@ -73,10 +64,6 @@
 .sample-meta:first-child {
 }
 
-.sample.playing .sample-cover {
-	opacity: 1.0;
-}
-
 .sample:hover .sample-title {
 	display: block;
 }
@@ -93,6 +80,14 @@
 }
 
 .player .sample-cover {
-	height: 20vh;
-	width: 20vh;
+	height: calc(20vh - 10px);
+	width: calc(20vh - 10px);
+	box-shadow: 10px 10px 10px;
+	opacity: 0.5;
+	transition: opacity 0.5s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.sample.playing .sample-cover {
+	opacity: 1.0;
+	box-shadow: 0 0 0;
 }

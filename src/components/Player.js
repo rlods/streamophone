@@ -56,7 +56,7 @@ class Player extends Component {
 					break
 			}
 			return (
-				<div specialClass={classNames('player', this.props.samplingStrategyId)}>
+				<div className={classNames('player', this.props.samplingStrategyId)}>
 					{
 						samples
 						? samples : chunks
