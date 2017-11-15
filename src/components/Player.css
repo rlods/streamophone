@@ -46,8 +46,8 @@
 .sample-metas {
 	position: absolute;
 	display: flex;
-	bottom: 5px;
-	right: 5px;
+	bottom: 10px;
+	right: 10px;
 	flex-direction: row;
 	flex-wrap: wrap;
 	z-index: 100;
