@@ -1,10 +1,5 @@
 
-
 - Add loop option on samples
-
-- Add music provider selection on splash screen (...)
-
-- Add messages reducer to display information to user
 
 - In the mixing page, be able to "lock" samples and refresh all the others
 
