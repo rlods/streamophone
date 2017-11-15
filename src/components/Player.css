@@ -7,10 +7,21 @@
 	align-items: center;
 }
 
+.samples-group-by-col {
+	display: flex;
+	flex-direction: column;
+}
+
+.samples-group-by-row {
+	display: flex;
+	flex-direction: row;
+}
+
 .sample {
 	position: relative;
 	display: flex;
 	margin: 5px;
+	overflow: hidden;
 }
 
 .sample-title {
@@ -49,7 +60,7 @@
 	bottom: 10px;
 	right: 10px;
 	flex-direction: row;
-	flex-wrap: wrap;
+	flex-wrap: nowrap;
 	z-index: 100;
 	opacity: 0.3;
 	background-color: #FFF;
@@ -83,7 +94,7 @@
 .player .sample-cover {
 	height: calc(20vh - 10px);
 	width: calc(20vh - 10px);
-	box-shadow: 10px 10px 10px;
+	box-shadow: 5px 5px 10px;
 	opacity: 0.5;
 	transition: opacity 0.5s ease-in-out, box-shadow 0.2s ease-in-out;
 }
@@ -91,4 +102,35 @@
 .sample.playing .sample-cover {
 	opacity: 1.0;
 	box-shadow: 0 0 0;
+}
+
+/*
+KEYBOARD_AZERTY
+BCF2000_MULTISLIDERS
+LIGHTPADBLOCK_16
+CUSTOM_SOCKET_STRATEGY
+*/
+.player.KEYBOARD_AZERTY {
+	flex-direction: column;
+}
+
+.player.KORG_NANOKEY2 {
+	flex-direction: column;
+	align-items: left;
+}
+
+.player.KORG_NANOKEY2 .samples-group:nth-child(1) .sample:nth-child(1) {
+	margin-left: 12vh;
+}
+
+.player.KORG_NANOKEY2 .samples-group:nth-child(1) .sample:nth-child(3) {
+	margin-left: 24vh;
+}
+
+.player.KORG_NANOKEY2 .samples-group:nth-child(1) .sample:nth-child(6) {
+	margin-left: 24vh;
+}
+
+.player.KORG_NANOKEY2 .samples-group:nth-child(1) .sample:nth-child(8) {
+	margin-left: 24vh;
 }

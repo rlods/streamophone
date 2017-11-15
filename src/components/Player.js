@@ -29,40 +29,74 @@ class Player extends Component {
 
 	render() {
 		if (null !== this.props.tracks) {
-			let chunks, chunkSize, samples
+			let chunkSize, body
 			switch (this.props.samplingStrategyId)
 			{
 				case 'KEYBOARD_AZERTY':
-					samples = this.props.tracks.map((sample, sampleIndex) => <Sample key={sampleIndex} index={sampleIndex} info={KEY_ORDER_AZERTY[sampleIndex]} />)
+					const rows = [
+						this.props.tracks.slice(0, 10),
+						this.props.tracks.slice(10, 20),
+						this.props.tracks.slice(20)
+					]
+					body = rows.map((row, rowIndex) => <div className="samples-group samples-group-by-row" key={rowIndex}>{row.map((sample, sampleIndex) => <Sample key={sampleIndex} index={rowIndex * 10 + sampleIndex} info={KEY_ORDER_AZERTY[rowIndex * 10 + sampleIndex]} />)}</div>)
 					break
 
 				case 'BCF2000_MULTISLIDERS':
 					chunkSize = Math.floor(this.props.tracks.length / 8)
-					chunks = chunkArray(this.props.tracks, chunkSize)
+					body = chunkArray(this.props.tracks, chunkSize).map((chunk, chunkIndex) => <div className="samples-group samples-group-by-col" key={chunkIndex}>{chunk.map((sample, sampleIndex) => <Sample key={sampleIndex} index={chunkIndex * chunkSize + sampleIndex} />)}</div>)
 					break
 
 				case 'LIGHTPADBLOCK_16':
 					chunkSize = Math.sqrt(this.props.tracks.length)
-					chunks = chunkArray(this.props.tracks, chunkSize)
+					body = chunkArray(this.props.tracks, chunkSize).map((chunk, chunkIndex) => <div className="samples-group samples-group-by-col" key={chunkIndex}>{chunk.map((sample, sampleIndex) => <Sample key={sampleIndex} index={chunkIndex * chunkSize + sampleIndex} />)}</div>)
 					break
 
 				case 'CUSTOM_SOCKET_STRATEGY':
 					chunkSize = Math.floor(this.props.tracks.length / 5)
-					chunks = chunkArray(this.props.tracks, chunkSize)
+					body = chunkArray(this.props.tracks, chunkSize).map((chunk, chunkIndex) => <div className="samples-group samples-group-by-col" key={chunkIndex}>{chunk.map((sample, sampleIndex) => <Sample key={sampleIndex} index={chunkIndex * chunkSize + sampleIndex} />)}</div>)
+					break
+
+				case 'KORG_NANOKEY2':
+					body = [
+						<div className="samples-group samples-group-by-row">
+							<Sample index={1} />
+							<Sample index={3} />
+							<Sample index={6} />
+							<Sample index={8} />
+							<Sample index={10} />
+							<Sample index={13} />
+							<Sample index={15} />
+							<Sample index={18} />
+							<Sample index={20} />
+							<Sample index={22} />
+						</div>,
+						<div className="samples-group samples-group-by-row">
+							<Sample index={0} />
+							<Sample index={2} />
+							<Sample index={4} />
+							<Sample index={5} />
+							<Sample index={7} />
+							<Sample index={9} />
+							<Sample index={11} />
+							<Sample index={12} />
+							<Sample index={14} />
+							<Sample index={16} />
+							<Sample index={17} />
+							<Sample index={19} />
+							<Sample index={21} />
+							<Sample index={23} />
+							<Sample index={24} />
+						</div>
+					]
 					break
 
 				default:
-					chunks = null
+					body = this.props.tracks.map((sample, sampleIndex) => <Sample key={sampleIndex} index={sampleIndex} />)
 					break
 			}
 			return (
 				<div className={classNames('player', this.props.samplingStrategyId)}>
-					{
-						samples
-						? samples : chunks
-						? chunks.map((chunk, chunkIndex) => <div key={chunkIndex}>{chunk.map((sample, sampleIndex) => <Sample key={sampleIndex} index={chunkIndex * chunkSize + sampleIndex} />)}</div>)
-						: this.props.tracks.map((sample, sampleIndex) => <Sample key={sampleIndex} index={sampleIndex} />)
-					}
+					{body}
 				</div>
 			)
 		}
