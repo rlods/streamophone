@@ -83,17 +83,12 @@
 	opacity: 1.0;
 }
 
-@media only screen and (max-height: 300px) {
-    .sample-metas {
-        display: none;
-    }
-}
-
 /* --------------------------------------------------------------- */
 
 .player .sample {
 	height: 20vh;
 	width: 20vh;
+	user-select: none;
 }
 
 .player .sample-cover {
@@ -139,4 +134,34 @@ CUSTOM_SOCKET_STRATEGY
 
 .player.KORG_NANOKEY2 .samples-group:nth-child(1) .sample:nth-child(8) {
 	margin-left: 24vh;
+}
+
+/* --------------------------------------------------------------- */
+
+@media (max-height: 500px), (max-width: 800px) {
+    .sample-metas {
+        display: none;
+    }
+}
+
+@media (orientation: portrait) {
+	.player.KEYBOARD_AZERTY .sample {
+		height: 7.5vw;
+		width: 7.5vw;
+	}
+	.player.KEYBOARD_AZERTY .sample-cover {
+		height: calc(7.5vw - 10px);
+		width: calc(7.5vw - 10px);
+	}
+}
+
+@media (orientation: landscape) {
+	.player.KEYBOARD_AZERTY .sample {
+		height: 8.5vw;
+		width: 8.5vw;
+	}
+	.player.KEYBOARD_AZERTY .sample-cover {
+		height: calc(8.5vw - 10px);
+		width: calc(8.5vw - 10px);
+	}
 }
