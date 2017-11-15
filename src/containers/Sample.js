@@ -15,6 +15,7 @@ const mapStateToProps = (state, ownProps) => {
 		cover: sample.cover || SOUND_IMG,
 		normalized: sample.normalized,
 		playing: sample.playing,
+		ready: sample.ready,
 		title: sample.title,
 		url: sample.url
 	}

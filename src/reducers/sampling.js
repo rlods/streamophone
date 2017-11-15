@@ -22,11 +22,14 @@ const setTrackBPM = (state, { sampleIndex, bpm }) => // TODO
 const setTrackNormalizationVolume = (state, { sampleIndex, volume }) => // TODO
 	({ ...state, tracks: state.tracks.map((other, otherIndex) => otherIndex !== sampleIndex ? other : { ...other, volume1: volume, normalized: true }) })
 
-const setSampleVolume = (state, { sampleIndex, volume }) => // TODO
-	({ ...state, tracks: state.tracks.map((other, otherIndex) => otherIndex !== sampleIndex ? other : { ...other, volume2: volume }) })
+const setSampleReady = (state, { sampleIndex }) => // TODO
+	({ ...state, tracks: state.tracks.map((other, otherIndex) => otherIndex !== sampleIndex ? other : { ...other, ready: true }) })
 
 const setSampleStatus = (state, { playing, sampleIndex }) => // TODO
 	({ ...state, tracks: state.tracks.map((other, otherIndex) => otherIndex !== sampleIndex ? other : { ...other, playing }) })
+
+const setSampleVolume = (state, { sampleIndex, volume }) => // TODO
+	({ ...state, tracks: state.tracks.map((other, otherIndex) => otherIndex !== sampleIndex ? other : { ...other, volume2: volume }) })
 
 const setSampleDuration = (state, { sampleDuration }) =>
 	({ ...state, sampleDuration })
@@ -44,6 +47,8 @@ export default (state = INITIAL_STATE, action) => {
 	{
 	case 'SAMPLING_SET_SAMPLE_DURATION':
 		return setSampleDuration(state, action.data)
+	case 'SAMPLING_SET_SAMPLE_READY':
+		return setSampleReady(state, action.data)
 	case 'SAMPLING_SET_STRATEGY':
 		return setSamplingStrategy(state, action.data)
 	case 'SAMPLING_SET_TRANSFORMATION':

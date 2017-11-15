@@ -1,6 +1,6 @@
 import { createProvider } from '../providers'
 import { transformArray } from '../tools'
-import { changeSampleBPM, changeSampleNormalizationVolume, changeSamplingTracks } from './sampling'
+import { changeSampleAudioReady, changeSampleBPM, changeSampleNormalizationVolume, changeSamplingTracks } from './sampling'
 //
 import config from '../config'
 import { createStrategy } from '../strategies'
@@ -36,17 +36,19 @@ export const normalizeAudio = (dispatch, audios, tracks, baseIndex, enrichedTrac
 			audio.volume = volume1 * track.volume2
 			dispatch(changeSampleNormalizationVolume(sampleIndex, volume1))
 		}
+		else {
+			// console.log('NO GAIN ', track.id)
+		}
 	})
 }
 
-export const loadAudios = (dispatch, sampling, tracks) => tracks.map(track => {
+export const loadAudios = (dispatch, sampling, tracks) => tracks.map((track, sampleIndex) => {
 	const audio = new Audio(track.preview)
 	audio.volume = track.volume1 * track.volume2
 
-	// console.log('XXXX - Waiting', track.id)
-	// audio.addEventListener('loadeddata', function() {
-	// 	console.log('XXXX - Received', track.id, audio.readyState)
-	// })
+	audio.addEventListener('loadeddata', () => {
+		dispatch(changeSampleAudioReady(sampleIndex))
+	})
 
 	if (sampling.sampleDuration === 0) { // loop in full mode
 		audio.loop = true 

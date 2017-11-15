@@ -28,6 +28,11 @@ export const changeSamplingTransformation = transformation => dispatch => {
 
 // --------------------------------------------------------------
 
+export const changeSampleAudioReady = (sampleIndex) => dispatch => dispatch({
+	type: 'SAMPLING_SET_SAMPLE_READY',
+	data: { sampleIndex }
+})
+
 export const changeSampleBPM = (sampleIndex, bpm) => dispatch => dispatch({
 	type: 'SAMPLING_SET_TRACK_BPM',
 	data: { sampleIndex, bpm }

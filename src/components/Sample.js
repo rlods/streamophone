@@ -8,12 +8,13 @@ class Sample extends Component {
 	render() {
 		// props.info is given for the keyboard strategy to display keycode
 		const info = this.props.info ? <div className="sample-info">{this.props.info}</div> : null
-		const meta = this.props.bpm || this.props.normalized ? (
+		const meta = (
 			<div className="sample-metas">
-				{this.props.bpm ? <i className="sample-meta sample-meta-bpm">{this.props.bpm}</i> : null}
-				{this.props.normalized ? <i className="fa fa-thumbs-up sample-meta sample-meta-normalized"></i> : null}
+				{this.props.bpm ? <i className="sample-meta">{this.props.bpm}</i> : null}
+				{this.props.normalized ? <i className="fa fa-bolt sample-meta"></i> : null}
+				{this.props.ready ? <i className="fa fa-thumbs-up sample-meta"></i> : <i className="fa fa-thumbs-down sample-meta"></i>}
 			</div>
-		) : null
+		)
 		return (
 			<div className={classNames('sample', { playing: this.props.playing })}>
 				<img className="sample-cover" src={this.props.cover} alt={this.props.title} />
@@ -32,6 +33,7 @@ Sample.propTypes = {
 	cover: PropTypes.string,
 	normalized: PropTypes.bool,
 	playing: PropTypes.bool,
+	ready: PropTypes.bool,
 	title: PropTypes.string,
 	url: PropTypes.string
 }
