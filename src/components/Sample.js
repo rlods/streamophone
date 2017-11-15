@@ -16,7 +16,7 @@ class Sample extends Component {
 			</div>
 		)
 		return (
-			<div className={classNames('sample', { playing: this.props.playing })}>
+			<div className={classNames('sample', { playing: this.props.playing })} onMouseDown={this.props.onTouchDown} onMouseUp={this.props.onTouchUp}>
 				<img className="sample-cover" src={this.props.cover} alt={this.props.title} />
 				{info}
 				{meta}
@@ -35,7 +35,10 @@ Sample.propTypes = {
 	playing: PropTypes.bool,
 	ready: PropTypes.bool,
 	title: PropTypes.string,
-	url: PropTypes.string
+	url: PropTypes.string,
+	//
+	onTouchDown: PropTypes.func,
+	onTouchUp: PropTypes.func
 }
 
 export default Sample

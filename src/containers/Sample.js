@@ -1,5 +1,6 @@
 import { connect } from 'react-redux'
 //
+import { startSample, stopSample } from '../actions/sampling'
 import Sample from '../components/Sample'
 
 // --------------------------------------------------------------
@@ -22,7 +23,12 @@ const mapStateToProps = (state, ownProps) => {
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-	// onPlay: () => dispatch(startSample(...))
+	onTouchDown: e => {
+		if (e.button === 0) dispatch(startSample(ownProps.index))
+	},
+	onTouchUp: e => {
+		if (e.button === 0) dispatch(stopSample(ownProps.index))
+	}
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Sample)

@@ -21,7 +21,6 @@
 	position: relative;
 	display: flex;
 	margin: 5px;
-	overflow: hidden;
 }
 
 .sample-title {
@@ -82,6 +81,12 @@
 
 .sample:hover .sample-metas {
 	opacity: 1.0;
+}
+
+@media only screen and (max-height: 300px) {
+    .sample-metas {
+        display: none;
+    }
 }
 
 /* --------------------------------------------------------------- */
