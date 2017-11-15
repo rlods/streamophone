@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import classNames from 'classnames'
 //
 import { chunkArray } from '../tools'
 import Sample from '../containers/Sample'
@@ -55,7 +56,7 @@ class Player extends Component {
 					break
 			}
 			return (
-				<div className="player">
+				<div specialClass={classNames('player', this.props.samplingStrategyId)}>
 					{
 						samples
 						? samples : chunks
