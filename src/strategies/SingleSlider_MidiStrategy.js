@@ -3,7 +3,7 @@ import Strategy from './Strategy'
 
 // --------------------------------------------------------------
 
-export default class SingleSliderStrategy extends Strategy {
+export default class SingleSlider_MidiStrategy extends Strategy {
 	constructor() {
 		super()
 		this.currentSample = 0

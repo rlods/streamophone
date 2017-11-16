@@ -24,7 +24,7 @@ const keyMapping = {
 
 // --------------------------------------------------------------
 
-export default class LightPadStrategy extends Strategy {
+export default class LightPadBlock_MidiStrategy extends Strategy {
     constructor() {
         super()
         this.samplesCount = 16

@@ -3,7 +3,7 @@ import Strategy from './Strategy'
 
 // --------------------------------------------------------------
 
-export default class CustomSocketStrategy extends Strategy {
+export default class Custom_SocketStrategy extends Strategy {
 	constructor() {
 		super()
 		this.slidersCount = 5

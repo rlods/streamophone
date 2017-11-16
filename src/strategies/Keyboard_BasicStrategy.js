@@ -10,7 +10,7 @@ const KEY_ORDER_QWERTY   = 'qwertyuiopasdfghjklzxcvbnm'
 
 // --------------------------------------------------------------
 
-class KeyboardBasicStrategy extends Strategy {
+class Keyboard_BasicStrategy extends Strategy {
 	constructor(keys) {
 		super()
 		this.keys = keys
@@ -32,7 +32,7 @@ class KeyboardBasicStrategy extends Strategy {
 
 // --------------------------------------------------------------
 
-export class AzertyKeyboardBasicStrategy extends KeyboardBasicStrategy {
+export class AzertyKeyboard_BasicStrategy extends Keyboard_BasicStrategy {
 	constructor() {
 		super(KEY_ORDER_AZERTY)
 	}
@@ -40,7 +40,7 @@ export class AzertyKeyboardBasicStrategy extends KeyboardBasicStrategy {
 
 // --------------------------------------------------------------
 
-export class QwertyKeyboardBasicStrategy extends KeyboardBasicStrategy {
+export class QwertyKeyboard_BasicStrategy extends Keyboard_BasicStrategy {
 	constructor() {
 		super(KEY_ORDER_QWERTY)
 	}

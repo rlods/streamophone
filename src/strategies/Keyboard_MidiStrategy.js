@@ -9,7 +9,7 @@ const keyUp = 143
 
 // --------------------------------------------------------------
 
-export default class KeyboardStrategy extends Strategy {
+export default class Keyboard_MidiStrategy extends Strategy {
 	constructor() {
 		super()
 		this.samplesCount = 24

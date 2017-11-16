@@ -3,7 +3,7 @@ import Strategy from './Strategy'
 
 // --------------------------------------------------------------
 
-export default class MultiSlidersStrategy extends Strategy {
+export default class MultiSliders_MidiStrategy extends Strategy {
 	constructor(slidersCount, slidersSteps) {
 		super()
 		this.slidersCount = slidersCount

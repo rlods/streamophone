@@ -9,7 +9,7 @@ const keyUp = 128
 
 // --------------------------------------------------------------
 
-export default class KeyboardStrategy extends Strategy {
+export default class KORG_NanoKey2_MidiStrategy extends Strategy {
 	constructor() {
 		super()
 		this.samplesCount = 25

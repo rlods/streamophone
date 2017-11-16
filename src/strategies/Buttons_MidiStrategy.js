@@ -3,7 +3,7 @@ import Strategy from './Strategy'
 
 // --------------------------------------------------------------
 
-export default class ButtonsStrategy extends Strategy {
+export default class Buttons_MidiStrategy extends Strategy {
 	constructor() {
 		super()
 		this.samplesCount = 8
