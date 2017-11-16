@@ -1,4 +1,4 @@
-import KeyboardBasicStrategy from './KeyboardBasicStrategy'
+import { AzertyKeyboardBasicStrategy, QwertyKeyboardBasicStrategy } from './KeyboardBasicStrategy'
 import ButtonsStrategy from './midiStrategy_Buttons'
 import CustomSocketStrategy from './CustomSocketStrategy'
 import MultiSlidersStrategy from './midiStrategy_MultiSliders'
@@ -12,7 +12,8 @@ import KORG_NanoKey2_Strategy from './KORG_NanoKey2_Strategy'
 export const createStrategy = strategyId => {
 	switch (strategyId)
 	{
-	case 'KEYBOARD_AZERTY':        return new KeyboardBasicStrategy()
+	case 'KEYBOARD_AZERTY':        return new AzertyKeyboardBasicStrategy()
+	case 'KEYBOARD_QWERTY':        return new QwertyKeyboardBasicStrategy()
 	case 'BCF2000_BUTTONS':        return new ButtonsStrategy()
 	case 'BCF2000_SINGLESLIDER':   return new SingleSliderStrategy()
 	case 'BCF2000_MULTISLIDERS':   return new MultiSlidersStrategy(8, 128)

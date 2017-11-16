@@ -32,8 +32,6 @@ const Config = {
 
 	ENABLE_VOLUME_FROM_GAIN: false, // TODO: enable that with a significative delay between calls because of Deezer API Rate Limits (not done yet)
 
-	SAMPLE_MAX_DURATION: 30000,
-
 	DRIVERS: {
 		basic: {
 			type: 'basic'
@@ -52,6 +50,10 @@ const Config = {
 		KEYBOARD_AZERTY: {
 			driver: 'basic',
 			label: 'Keyboard Azerty'
+		},
+		KEYBOARD_QWERTY: {
+			driver: 'basic',
+			label: 'Keyboard Qwerty'
 		},
 		BCF2000_BUTTONS: {
 			driver: 'midi',

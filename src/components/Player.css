@@ -119,12 +119,12 @@
 }
 
 /*
-KEYBOARD_AZERTY
+KEYBOARD
 BCF2000_MULTISLIDERS
 LIGHTPADBLOCK_16
 CUSTOM_SOCKET_STRATEGY
 */
-.player.KEYBOARD_AZERTY {
+.player.KEYBOARD {
 	flex-direction: column;
 }
 
@@ -161,22 +161,22 @@ CUSTOM_SOCKET_STRATEGY
 }
 
 @media (orientation: portrait) {
-	.player.KEYBOARD_AZERTY .sample {
+	.player.KEYBOARD .sample {
 		height: 7.5vw;
 		width: 7.5vw;
 	}
-	.player.KEYBOARD_AZERTY .sample-cover, .player.KEYBOARD_AZERTY .sample-canvas {
+	.player.KEYBOARD .sample-cover, .player.KEYBOARD .sample-canvas {
 		height: calc(7.5vw - 10px);
 		width: calc(7.5vw - 10px);
 	}
 }
 
 @media (orientation: landscape) {
-	.player.KEYBOARD_AZERTY .sample {
+	.player.KEYBOARD .sample {
 		height: 8.5vw;
 		width: 8.5vw;
 	}
-	.player.KEYBOARD_AZERTY .sample-cover, .player.KEYBOARD_AZERTY .sample-canvas {
+	.player.KEYBOARD .sample-cover, .player.KEYBOARD .sample-canvas {
 		height: calc(8.5vw - 10px);
 		width: calc(8.5vw - 10px);
 	}

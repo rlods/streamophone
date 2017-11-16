@@ -29,15 +29,17 @@ class Player extends Component {
 
 	render() {
 		if (null !== this.props.tracks) {
-			let chunkSize, body
+			let chunkSize, body, layoutClassName = this.props.samplingStrategyId
 			switch (this.props.samplingStrategyId)
 			{
 				case 'KEYBOARD_AZERTY':
+				case 'KEYBOARD_QWERTY':
 					const rows = [
 						this.props.tracks.slice(0, 10),
 						this.props.tracks.slice(10, 20),
 						this.props.tracks.slice(20)
 					]
+					layoutClassName = 'KEYBOARD'
 					body = rows.map((row, rowIndex) => <div className="samples-group samples-group-by-row" key={rowIndex}>{row.map((sample, sampleIndex) => <Sample key={sampleIndex} index={rowIndex * 10 + sampleIndex} info={KEY_ORDER_AZERTY[rowIndex * 10 + sampleIndex]} />)}</div>)
 					break
 
@@ -95,7 +97,7 @@ class Player extends Component {
 					break
 			}
 			return (
-				<div className={classNames('player', this.props.samplingStrategyId)}>
+				<div className={classNames('player', layoutClassName)}>
 					{body}
 				</div>
 			)

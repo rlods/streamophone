@@ -1,11 +1,9 @@
-import config from '../config'
-
-// --------------------------------------------------------------
 
 const AUDIO_CONTEXT = new (window.AudioContext || window.webkitAudioContext)()
 const WAVE_WIDTH = 2
-const WAVE_COLOR = 'rgb(255, 0, 0)'
+const WAVE_COLOR = 'rgb(0, 0, 0)'
 const WAVE_FFT_SIZE = 512 // 2048
+const CURRENT_TIME_COLOR = 'rgba(0, 0, 0, 0.5)'
 
 // ------------------------------------------------------------------
 
@@ -15,9 +13,9 @@ export default class CustomAudio
 		this._animationFrameRequest = null
 		this._audioBuffer = null
 		this._canvas = null
-		this._loop = false
+		this._duration = 0
+		this._loop = true
 		this._loopStart = 0
-		this._loopEnd = 0
 		this._playing = false
 		this._ready = false
 		this._sourceNode = null
@@ -34,6 +32,8 @@ export default class CustomAudio
 		// this._analyserNode.minDecibels = -90
 		// this._analyserNode.maxDecibels = -10
 		this._analyserNode.connect(this._gainNode)
+
+		this._startedAt = 0
 	}
 
 	getSpeed() {
@@ -48,11 +48,7 @@ export default class CustomAudio
 	}
 	
 	setLoop(duration) {
-		this._loop = true // duration < 0 // loop if duration < 0
-		this._loopEnd = duration > 0 && duration <= config.SAMPLE_MAX_DURATION ? duration / 1000.0 : 0
-		if (null !== this._sourceNode) {
-			this._sourceNode.loop = this._loop
-		}
+		this._duration = duration / 1000.0
 	}
 	
 	setSpeed(speed) {
@@ -81,14 +77,15 @@ export default class CustomAudio
 		if (this._ready && !this._playing) {
 			this._sourceNode = AUDIO_CONTEXT.createBufferSource()
 			this._sourceNode.buffer = this._audioBuffer
-			this._sourceNode.playbackRate.value = this._speed
 			this._sourceNode.loop = this._loop
 			this._sourceNode.loopStart = this._loopStart
-			this._sourceNode.loopEnd = this._loopEnd
+			this._sourceNode.loopEnd = this._duration > 0 ? this._loopStart + this._duration : this._audioBuffer.duration
 			this._sourceNode.onended = this._onStop.bind(this)
+			this._sourceNode.playbackRate.value = this._speed
 			this._sourceNode.connect(this._analyserNode)
 			this._sourceNode.start() // A new BufferSource must be created for each start
 			this._playing = true
+			this._startedAt = AUDIO_CONTEXT.currentTime
 			this._startCB()
 			if (this._canvas) {
 				this._startVisualization()
@@ -134,14 +131,19 @@ export default class CustomAudio
 			if (this._playing) {
 				this._animationFrameRequest = requestAnimationFrame(draw)
 
+				canvasCtx.clearRect(0, 0, width, height)
+
+				const duration = this._sourceNode.loopEnd - this._sourceNode.loopStart
+				const elapsed = ((AUDIO_CONTEXT.currentTime - this._startedAt) % duration) * width / duration
+				canvasCtx.fillStyle = CURRENT_TIME_COLOR
+				canvasCtx.fillRect(0, 0, elapsed, height)
+
 				if (true) {
 					// WAVE
 
 					this._analyserNode.getByteTimeDomainData(dataArray)
 
-					canvasCtx.clearRect(0, 0, width, height)
 					canvasCtx.beginPath()
-
 					for (let i = 0, x = 0, v, y; i < bufferLength; ++i, x += sliceWidth) {
 						v = dataArray[i] / 128.0
 						y = v * height / 2
@@ -159,10 +161,6 @@ export default class CustomAudio
 					// https://developer.mozilla.org/fr/docs/Web/API/AnalyserNode/minDecibels
 
 					this._analyserNode.getByteFrequencyData(dataArray)
-
-					canvasCtx.fillStyle = 'rgb(0, 0, 0)'
-					canvasCtx.fillRect(0, 0, width, height)
-
 					const wbar = (width / bufferLength) * 2.5
 					for (let i = 0, x = 0, hbar; i < bufferLength; ++i, x += wbar + 1) {
 						hbar = dataArray[i]
