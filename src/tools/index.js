@@ -44,7 +44,10 @@ export const transformArray = (arr, size, transformation, validationCB) => {
 
 const HASH_PARAMS = document.location.hash.slice(1)
 
-const SEARCH_PARAMS = document.location.search.slice(1)
+// With BrowserRoute:
+// const SEARCH_PARAMS = document.location.search.slice(1)
+// With HashRoute:
+const SEARCH_PARAMS = document.location.hash.slice(document.location.hash.indexOf('?')+1)
 
 export const getHashParam = name => {
 	const regex = new RegExp(name.replace(/[[]]/g, "\\$&") + "(=([^&#]*)|&|#|$)")

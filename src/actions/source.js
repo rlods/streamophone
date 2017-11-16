@@ -8,6 +8,14 @@ import CustomAudio from '../tools/CustomAudio'
 
 // ------------------------------------------------------------------
 
+export const changeSourceBPM = bpm => dispatch => {
+	sessionStorage.setItem('DEFAULT_SOURCE_BPM', bpm)
+	return dispatch({
+		type: 'SOURCE_SET_BPM',
+		data: { bpm }
+	})
+}
+
 export const changeSourceId = id => dispatch => {
 	sessionStorage.setItem('DEFAULT_SOURCE_ID', id)
 	return dispatch({
@@ -50,7 +58,7 @@ export const normalizeAudio = (dispatch, audios, tracks, baseIndex, enrichedTrac
 
 export const loadAudios = (dispatch, sampling, tracks) => tracks.map((track, sampleIndex) => {
 	const audio = new CustomAudio(track.preview)
-	audio.setLoop(sampling.sampleDuration === 0) // loop in full mode
+	audio.setLoop(sampling.sampleDuration < 0) // loop if < 0
 	audio.setVolume(track.volume1 * track.volume2)
 	audio.init().then(() => dispatch(changeSampleAudioReady(sampleIndex)))
 	return audio
@@ -64,7 +72,7 @@ export const play = history => async (dispatch, getState, { drivers }) => {
 	try {
 		const { sampling, source } = getState()
 
-		history.replace(`/play?sampling_duration=${sampling.sampleDuration}&sampling_strategy=${sampling.strategyId}&source_id=${source.id}&source_transformation=${source.transformation}&source_type=${source.type}`)
+		history.replace(`/play?sampling_duration=${sampling.sampleDuration}&sampling_strategy=${sampling.strategyId}&source_bpm=${source.bpm}&source_id=${source.id}&source_transformation=${source.transformation}&source_type=${source.type}`)
 
 		if (sampling.audios) {
 			// Stop all previously loaded audios
@@ -101,7 +109,8 @@ export const play = history => async (dispatch, getState, { drivers }) => {
 				enrichedTracks.forEach((enrichedTrack, index) => {
 					const sampleIndex = baseIndex + index
 					if (enrichedTrack.bpm) {
-						// dispatch(changeSampleSpeed(sampleIndex, 192 / enrichedTrack.bpm))
+						if (source.bpm > 0)
+							dispatch(changeSampleSpeed(sampleIndex, source.bpm / enrichedTrack.bpm))
 						dispatch(changeSampleBPM(sampleIndex, enrichedTrack.bpm))
 					}
 				})

@@ -10,15 +10,17 @@ const SOUND_IMG = require('../assets/sound.png')
 // --------------------------------------------------------------
 
 const mapStateToProps = (state, ownProps) => {
-	const sample = state.sampling.tracks[ownProps.index]
+	const audio = state.sampling.audios[ownProps.index]
+	const track = state.sampling.tracks[ownProps.index]
 	return {
-		bpm: Math.floor(sample.bpm),
-		cover: sample.cover || SOUND_IMG,
-		normalized: sample.normalized,
-		playing: sample.playing,
-		ready: sample.ready,
-		title: sample.title,
-		url: sample.url
+		bpm: Math.floor(track.bpm),
+		cover: track.cover || SOUND_IMG,
+		normalized: track.normalized,
+		playing: track.playing,
+		ready: track.ready,
+		speed: audio.getSpeed().toFixed(2),
+		title: track.title,
+		url: track.url
 	}
 }
 

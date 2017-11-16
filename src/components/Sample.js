@@ -10,9 +10,10 @@ class Sample extends Component {
 		const info = this.props.info ? <div className="sample-info">{this.props.info}</div> : null
 		const meta = (
 			<div className="sample-metas">
-				{this.props.bpm ? <i className="sample-meta">{this.props.bpm}</i> : null}
-				{this.props.normalized ? <i className="fa fa-bolt sample-meta" title="normalized"></i> : null}
-				{this.props.ready ? null : <i className="fa fa-exclamation-triangle sample-meta" title="not ready"></i>}
+				{this.props.bpm ? <i className="sample-meta sample-meta-bpm">{this.props.bpm}</i> : null}
+				{Math.abs(this.props.speed - 1.0) > Number.EPSILON ? <i className="sample-meta sample-meta-spped">{this.props.speed}</i> : null}
+				{this.props.normalized ? <i className="fa fa-bolt sample-meta sample-meta-normalized" title="normalized"></i> : null}
+				{this.props.ready ? null : <i className="fa fa-exclamation-triangle sample-meta sample-meta-notready" title="not ready"></i>}
 			</div>
 		)
 		return (

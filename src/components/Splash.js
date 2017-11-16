@@ -6,13 +6,21 @@ import './Splash.css'
 
 // --------------------------------------------------------------
 
+const BPMS = [
+	{ value: 50,  label: '50 (Tango)'  },
+	{ value: 110, label: '110 (New Beat)' },
+	{ value: 128, label: '128 (Trance)' },
+	{ value: 195, label: '195 (Speedcore)' },
+	{ value: -1,  label: 'Default' }
+]
+
 const DURATIONS = [
 	{ value: 1000,  label: '1 second' },
 	{ value: 2000,  label: '2 seconds' },
 	{ value: 3000,  label: '3 seconds' },
 	{ value: 10000, label: '10 seconds' },
 	{ value: 20000, label: '20 seconds' },
-	{ value: 0,     label: 'Full' }
+	{ value: -1,    label: 'Full' }
 ]
 
 const SOURCE_TYPES = {
@@ -82,6 +90,13 @@ class Splash extends Component {
 					getValue={curated => `${curated.sourceType}:${curated.sourceId}`}
 					getText={curated => `${SOURCE_TYPES[curated.sourceType]} / ${curated.title}`} />
 				<SelectField
+					name="Source BPM"
+					items={BPMS}
+					value={this.props.sourceBPM}
+					onChange={this.props.onChangeSourceBPM}
+					getValue={bpm => bpm.value}
+					getText={bpm => bpm.label} />
+				<SelectField
 					name="Source Transformation"
 					items={Object.entries(TRANSFORMATIONS)}
 					value={this.props.sourceTransformation}
@@ -112,12 +127,14 @@ class Splash extends Component {
 Splash.propTypes = {
 	sampleDuration: PropTypes.number,
 	samplingStrategyId: PropTypes.string,
+	sourceBPM: PropTypes.number,
 	sourceId: PropTypes.string,
 	sourceTransformation: PropTypes.string,
 	sourceType: PropTypes.string,
 	onChangeCurated: PropTypes.func,
 	onChangeSampleDuration: PropTypes.func,
 	onChangeSamplingStrategy: PropTypes.func,
+	onChangeSourceBPM: PropTypes.func,
 	onChangeSourceId: PropTypes.func,
 	onChangeSourceTransformation: PropTypes.func,
 	onChangeSourceType: PropTypes.func,

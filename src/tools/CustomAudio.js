@@ -18,6 +18,10 @@ export default class CustomAudio
 		this._url = url
 	}
 
+	getSpeed() {
+		return this._speed
+	}
+	
 	setLoop(loop) {
 		this._loop = loop
 		if (null !== this._sourceNode)

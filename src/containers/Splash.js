@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 //
 import { changeSampleDuration, changeSamplingStrategy } from '../actions/sampling'
-import { changeSourceId, changeSourceTransformation, changeSourceType, play } from '../actions/source'
+import { changeSourceBPM, changeSourceId, changeSourceTransformation, changeSourceType, play } from '../actions/source'
 import Splash from '../components/Splash'
 
 // --------------------------------------------------------------
@@ -9,6 +9,7 @@ import Splash from '../components/Splash'
 const mapStateToProps = (state, ownProps) => ({
 	sampleDuration: state.sampling.sampleDuration,
 	samplingStrategyId: state.sampling.strategyId,
+	sourceBPM: state.source.bpm,
 	sourceId: state.source.id,
 	sourceTransformation: state.source.transformation,
 	sourceType: state.source.type
@@ -22,6 +23,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 	},
 	onChangeSampleDuration: e       => dispatch(changeSampleDuration(parseInt(e.target.value, 10))),
 	onChangeSamplingStrategy: e     => dispatch(changeSamplingStrategy(e.target.value)),
+	onChangeSourceBPM: e            => dispatch(changeSourceBPM(parseInt(e.target.value, 10))),
 	onChangeSourceId: e             => dispatch(changeSourceId(e.target.value)),
 	onChangeSourceTransformation: e => dispatch(changeSourceTransformation(e.target.value)),
 	onChangeSourceType: e           => dispatch(changeSourceType(e.target.value)),
