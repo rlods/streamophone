@@ -1,9 +1,15 @@
 
 const AUDIO_CONTEXT = new (window.AudioContext || window.webkitAudioContext)()
-const WAVE_WIDTH = 2
-const WAVE_COLOR = 'rgb(0, 0, 0)'
-const WAVE_FFT_SIZE = 512 // 2048
 const CURRENT_TIME_COLOR = 'rgba(0, 0, 0, 0.5)'
+
+const VISU_STYLE = 1 // 0=wave, 1=bar
+
+const WAVE_COLOR = 'rgb(255, 0, 0)'
+const WAVE_FFT_SIZE = 256
+const WAVE_WIDTH = 2
+
+const BAR_FFT_SIZE = 128
+const BAR_MARGIN = 0
 
 // ------------------------------------------------------------------
 
@@ -28,9 +34,9 @@ export default class CustomAudio
 		this._gainNode.gain.value = 1.0
 		this._gainNode.connect(AUDIO_CONTEXT.destination)
 		this._analyserNode = AUDIO_CONTEXT.createAnalyser()
-		this._analyserNode.fftSize = WAVE_FFT_SIZE
-		// this._analyserNode.minDecibels = -90
-		// this._analyserNode.maxDecibels = -10
+		this._analyserNode.fftSize = VISU_STYLE === 0 ? WAVE_FFT_SIZE : BAR_FFT_SIZE
+		this._analyserNode.minDecibels = -90
+		this._analyserNode.maxDecibels = -10
 		this._analyserNode.connect(this._gainNode)
 
 		this._startedAt = 0
@@ -138,11 +144,9 @@ export default class CustomAudio
 				canvasCtx.fillStyle = CURRENT_TIME_COLOR
 				canvasCtx.fillRect(0, 0, elapsed, height)
 
-				if (true) {
+				if (VISU_STYLE === 0) {
 					// WAVE
-
 					this._analyserNode.getByteTimeDomainData(dataArray)
-
 					canvasCtx.beginPath()
 					for (let i = 0, x = 0, v, y; i < bufferLength; ++i, x += sliceWidth) {
 						v = dataArray[i] / 128.0
@@ -157,15 +161,12 @@ export default class CustomAudio
 					canvasCtx.stroke()
 				}
 				else {
-					// OSCI // TODO
-					// https://developer.mozilla.org/fr/docs/Web/API/AnalyserNode/minDecibels
-
+					// OSCI https://developer.mozilla.org/fr/docs/Web/API/AnalyserNode/minDecibels
 					this._analyserNode.getByteFrequencyData(dataArray)
 					const wbar = (width / bufferLength) * 2.5
-					for (let i = 0, x = 0, hbar; i < bufferLength; ++i, x += wbar + 1) {
+					for (let i = 0, x = 0, hbar; i < bufferLength; ++i, x += wbar + BAR_MARGIN) {
 						hbar = dataArray[i]
-						canvasCtx.fillStyle = 'rgb(255, 255, 255)'
-						//canvasCtx.fillStyle = 'rgb(' + (hbar + 100) + ', 50, 50)'
+						canvasCtx.fillStyle = 'rgba(' + (hbar + 100) + ', 0, 0, 0.5)'
 						canvasCtx.fillRect(x, height - hbar / 2, wbar, hbar / 2)
 					}
 				}
