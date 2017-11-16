@@ -44,16 +44,16 @@ const setStrategy = (state, { strategyId }) =>
 export default (state = INITIAL_STATE, action) => {
 	switch (action.type)
 	{
+	case 'SAMPLING_SET_SAMPLE_BPM':
+		return setSampleBPM(state, action.data)
 	case 'SAMPLING_SET_SAMPLE_DURATION':
 		return setSampleDuration(state, action.data)
+	case 'SAMPLING_SET_SAMPLE_NORMALIZATION_VOLUME':
+		return setSampleNormalizationVolume(state, action.data)
 	case 'SAMPLING_SET_SAMPLE_READY':
 		return setSampleReady(state, action.data)
 	case 'SAMPLING_SET_SAMPLE_SPEED':
 		return setSampleSpeed(state, action.data)
-	case 'SAMPLING_SET_SAMPLE_BPM':
-		return setSampleBPM(state, action.data)
-	case 'SAMPLING_SET_SAMPLE_NORMALIZATION_VOLUME':
-		return setSampleNormalizationVolume(state, action.data)
 	case 'SAMPLING_SET_SAMPLE_STATUS':
 		return setSampleStatus(state, action.data)
 	case 'SAMPLING_SET_SAMPLE_VOLUME':
