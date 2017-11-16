@@ -1,4 +1,4 @@
-import { startSample, stopSample, setSampleVolume } from '../actions/sampling'
+import { startSample, stopSample, changeSampleVolume } from '../actions/sampling'
 import Strategy from './Strategy'
 
 // --------------------------------------------------------------
@@ -28,7 +28,7 @@ export default class KeyboardStrategy extends Strategy {
             } else if (channel === keyUp) {
                 dispatch(stopSample(sample))
             }
-            dispatch(setSampleVolume(sample, velocity / 128))
+            dispatch(changeSampleVolume(sample, velocity / 128))
 		}
 	}
 }

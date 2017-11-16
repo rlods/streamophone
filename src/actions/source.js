@@ -1,9 +1,10 @@
 import { createProvider } from '../providers'
 import { transformArray } from '../tools'
-import { changeSampleAudioReady, changeSampleBPM, changeSampleNormalizationVolume, changeSamplingTracks } from './sampling'
+import { changeSampleAudioReady, changeSampleBPM, changeSampleSpeed, changeSampleNormalizationVolume, changeSamplingTracks } from './sampling'
 //
 import config from '../config'
 import { createStrategy } from '../strategies'
+import CustomAudio from '../tools/CustomAudio'
 
 // ------------------------------------------------------------------
 
@@ -12,6 +13,14 @@ export const changeSourceId = id => dispatch => {
 	return dispatch({
 		type: 'SOURCE_SET_ID',
 		data: { id }
+	})
+}
+
+export const changeSourceTransformation = transformation => dispatch => {
+	sessionStorage.setItem('DEFAULT_SOURCE_TRANSFORMATION', transformation)
+	dispatch({
+		type: 'SOURCE_SET_TRANSFORMATION',
+		data: { transformation }
 	})
 }
 
@@ -28,13 +37,10 @@ export const changeSourceType = type => dispatch => {
 export const normalizeAudio = (dispatch, audios, tracks, baseIndex, enrichedTracks) => {
 	enrichedTracks.forEach((enrichedTrack, index) => {
 		const sampleIndex = baseIndex + index
-		const audio = audios[sampleIndex]
-		const track = tracks[sampleIndex]
 		if (enrichedTrack.gain) {
-			let volume1 = 0.5 * Math.pow(10, ((-12 - enrichedTrack.gain) / 20))
-			if (volume1 > 1.0) volume1 = 1.0
-			audio.volume = volume1 * track.volume2
-			dispatch(changeSampleNormalizationVolume(sampleIndex, volume1))
+			let volume = 0.5 * Math.pow(10, ((-12 - enrichedTrack.gain) / 20))
+			if (volume > 1.0) volume = 1.0
+			dispatch(changeSampleNormalizationVolume(sampleIndex, volume))
 		}
 		else {
 			// console.log('NO GAIN ', track.id)
@@ -43,17 +49,10 @@ export const normalizeAudio = (dispatch, audios, tracks, baseIndex, enrichedTrac
 }
 
 export const loadAudios = (dispatch, sampling, tracks) => tracks.map((track, sampleIndex) => {
-	const audio = new Audio(track.preview)
-	audio.volume = track.volume1 * track.volume2
-
-	audio.addEventListener('loadeddata', () => {
-		dispatch(changeSampleAudioReady(sampleIndex))
-	})
-
-	if (sampling.sampleDuration === 0) { // loop in full mode
-		audio.loop = true 
-	}
-
+	const audio = new CustomAudio(track.preview)
+	audio.setLoop(sampling.sampleDuration === 0) // loop in full mode
+	audio.setVolume(track.volume1 * track.volume2)
+	audio.init().then(() => dispatch(changeSampleAudioReady(sampleIndex)))
 	return audio
 })
 
@@ -65,11 +64,11 @@ export const play = history => async (dispatch, getState, { drivers }) => {
 	try {
 		const { sampling, source } = getState()
 
-		history.replace(`/play?sampling_duration=${sampling.sampleDuration}&sampling_strategy=${sampling.strategyId}&sampling_transformation=${sampling.transformation}&source_id=${source.id}&source_type=${source.type}`)
+		history.replace(`/play?sampling_duration=${sampling.sampleDuration}&sampling_strategy=${sampling.strategyId}&source_id=${source.id}&source_transformation=${source.transformation}&source_type=${source.type}`)
 
 		if (sampling.audios) {
 			// Stop all previously loaded audios
-			sampling.audios.forEach(audio => audio.pause())
+			sampling.audios.forEach(audio => audio.stop())
 		}
 		
 		// Create sampling midi strategy if specified
@@ -85,7 +84,7 @@ export const play = history => async (dispatch, getState, { drivers }) => {
 		const providerId = source.type.split('_')[0]
 		const provider = createProvider(providerId)
 		let tracks = await provider.fetchTracks(source.type, source.id)
-		tracks = transformArray(tracks, driver.strategy.samplesCount, sampling.transformation, validateTrack)
+		tracks = transformArray(tracks, driver.strategy.samplesCount, source.transformation, validateTrack)
 
 		// Load audios
 		const audios = loadAudios(dispatch, sampling, tracks)
@@ -93,7 +92,7 @@ export const play = history => async (dispatch, getState, { drivers }) => {
 		// Start enrichment if needed
 		if (true) { // config.ENABLE_VOLUME_FROM_GAIN) {
 			provider.enrichTracks(tracks, (baseIndex, enrichedTracks) => {
-				console.log('Tracks have been enriched')
+				// console.log('Tracks have been enriched')
 
 				// Update normalization volume
 				normalizeAudio(dispatch, audios, tracks, baseIndex, enrichedTracks)
@@ -102,6 +101,7 @@ export const play = history => async (dispatch, getState, { drivers }) => {
 				enrichedTracks.forEach((enrichedTrack, index) => {
 					const sampleIndex = baseIndex + index
 					if (enrichedTrack.bpm) {
+						// dispatch(changeSampleSpeed(sampleIndex, 192 / enrichedTrack.bpm))
 						dispatch(changeSampleBPM(sampleIndex, enrichedTrack.bpm))
 					}
 				})

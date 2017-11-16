@@ -17,14 +17,14 @@ export default class MidiDriver extends Driver {
 			}
 
 			navigator.requestMIDIAccess({ sysex: false }).then(midiAccess => {
-			    console.log("MIDI success");
+			    //console.log("MIDI success");
 
 			    const inputs = midiAccess.inputs.values();
 			    for (var input = inputs.next(); input && !input.done; input = inputs.next()) {
 				input.value.onmidimessage = this.onMessage.bind(this);
 			    }
-			}, (error) => {
-		    		console.log("No access to MIDI devices or your browser doesn't support WebMIDI API. Please use WebMIDIAPIShim " + error);
+			}, error => {
+		    	console.log("No access to MIDI devices or your browser doesn't support WebMIDI API. Please use WebMIDIAPIShim " + error);
 				reject()
 			});
 		})

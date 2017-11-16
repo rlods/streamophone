@@ -76,18 +76,18 @@ class Splash extends Component {
 					getValue={duration => duration.value}
 					getText={duration => duration.label} />
 				<SelectField
-					name="Sample Transformation"
-					items={Object.entries(TRANSFORMATIONS)}
-					value={this.props.samplingTransformation}
-					onChange={this.props.onChangeSamplingTransformation}
-					getValue={([transformationType, transformationLabel]) => transformationType}
-					getText={([transformationType, transformationLabel]) => transformationLabel} />
-				<SelectField
 					name="Curated Sources"
 					items={config.CURATED_SOURCES}
 					value={`${this.props.sourceType}:${this.props.sourceId}`} onChange={this.props.onChangeCurated}
 					getValue={curated => `${curated.sourceType}:${curated.sourceId}`}
 					getText={curated => `${SOURCE_TYPES[curated.sourceType]} / ${curated.title}`} />
+				<SelectField
+					name="Source Transformation"
+					items={Object.entries(TRANSFORMATIONS)}
+					value={this.props.sourceTransformation}
+					onChange={this.props.onChangeSourceTransformation}
+					getValue={([transformationType, transformationLabel]) => transformationType}
+					getText={([transformationType, transformationLabel]) => transformationLabel} />
 				<SelectField
 					name="Source Type"
 					items={Object.entries(SOURCE_TYPES)}
@@ -112,14 +112,14 @@ class Splash extends Component {
 Splash.propTypes = {
 	sampleDuration: PropTypes.number,
 	samplingStrategyId: PropTypes.string,
-	samplingTransformation: PropTypes.string,
 	sourceId: PropTypes.string,
+	sourceTransformation: PropTypes.string,
 	sourceType: PropTypes.string,
 	onChangeCurated: PropTypes.func,
 	onChangeSampleDuration: PropTypes.func,
 	onChangeSamplingStrategy: PropTypes.func,
-	onChangeSamplingTransformation: PropTypes.func,
 	onChangeSourceId: PropTypes.func,
+	onChangeSourceTransformation: PropTypes.func,
 	onChangeSourceType: PropTypes.func,
 	onPlay: PropTypes.func
 }

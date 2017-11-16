@@ -18,7 +18,7 @@ export const shuffleArray = (arr, size) => {
 	return res
 }
 
-export const transformArray = (arr, size, transformationType, validationCB) => {
+export const transformArray = (arr, size, transformation, validationCB) => {
 	const copy = arr.filter(item => validationCB(item))
 
 	// Fill by looping if not enough items
@@ -29,14 +29,14 @@ export const transformArray = (arr, size, transformationType, validationCB) => {
 		}
 	}
 
-	switch (transformationType)
+	switch (transformation)
 	{
 	case 'none':
 		return copy.slice(0, size)
 	case 'shuffle':
 		return shuffleArray(copy, size)
 	default:
-		throw new Error(`Unknown transformation type "${transformationType}"`)
+		throw new Error(`Unknown transformation "${transformation}"`)
 	}
 }
 

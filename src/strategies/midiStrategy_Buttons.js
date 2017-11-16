@@ -1,4 +1,4 @@
-import { startSample, stopSample, setSampleVolume } from '../actions/sampling'
+import { startSample, stopSample, changeSampleVolume } from '../actions/sampling'
 import Strategy from './Strategy'
 
 // --------------------------------------------------------------
@@ -13,7 +13,7 @@ export default class ButtonsStrategy extends Strategy {
 		if (channel === 176 && key >= 1 && key <= 8) {
 			// change volume of key-1
 			console.log("Change volume of ", key-1, " to ", velocity/127)
-			dispatch(setSampleVolume(key-1, velocity/127))
+			dispatch(changeSampleVolume(key-1, velocity/127))
 		}
 		else {
 			// start one sample

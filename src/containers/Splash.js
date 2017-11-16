@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 //
-import { changeSampleDuration, changeSamplingStrategy, changeSamplingTransformation } from '../actions/sampling'
-import { changeSourceId, changeSourceType, play } from '../actions/source'
+import { changeSampleDuration, changeSamplingStrategy } from '../actions/sampling'
+import { changeSourceId, changeSourceTransformation, changeSourceType, play } from '../actions/source'
 import Splash from '../components/Splash'
 
 // --------------------------------------------------------------
@@ -9,8 +9,8 @@ import Splash from '../components/Splash'
 const mapStateToProps = (state, ownProps) => ({
 	sampleDuration: state.sampling.sampleDuration,
 	samplingStrategyId: state.sampling.strategyId,
-	samplingTransformation: state.sampling.transformation,
 	sourceId: state.source.id,
+	sourceTransformation: state.source.transformation,
 	sourceType: state.source.type
 })
 
@@ -20,12 +20,12 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 		dispatch(changeSourceId(sourceId))
 		dispatch(changeSourceType(sourceType))
 	},
-	onChangeSampleDuration: e         => dispatch(changeSampleDuration(parseInt(e.target.value, 10))),
-	onChangeSamplingStrategy: e       => dispatch(changeSamplingStrategy(e.target.value)),
-	onChangeSamplingTransformation: e => dispatch(changeSamplingTransformation(e.target.value)),
-	onChangeSourceId: e               => dispatch(changeSourceId(e.target.value)),
-	onChangeSourceType: e             => dispatch(changeSourceType(e.target.value)),
-	onPlay: e                         => {
+	onChangeSampleDuration: e       => dispatch(changeSampleDuration(parseInt(e.target.value, 10))),
+	onChangeSamplingStrategy: e     => dispatch(changeSamplingStrategy(e.target.value)),
+	onChangeSourceId: e             => dispatch(changeSourceId(e.target.value)),
+	onChangeSourceTransformation: e => dispatch(changeSourceTransformation(e.target.value)),
+	onChangeSourceType: e           => dispatch(changeSourceType(e.target.value)),
+	onPlay: e                       => {
 		e.preventDefault()
 		dispatch(play(ownProps.history))
 	},
