@@ -34,7 +34,7 @@ export const changeSampleBPM = (sampleIndex, bpm) => (dispatch, getState) => {
 	const { sampling } = getState()
 	if (sampling.tracks && sampleIndex >= 0 && sampleIndex < sampling.tracks.length) {
 		dispatch({
-			type: 'SAMPLING_SET_TRACK_BPM',
+			type: 'SAMPLING_SET_SAMPLE_BPM',
 			data: { sampleIndex, bpm }
 		})
 	}
@@ -45,7 +45,7 @@ export const changeSampleNormalizationVolume = (sampleIndex, volume) => (dispatc
 	if (sampling.tracks && sampleIndex >= 0 && sampleIndex < sampling.tracks.length) {
 		sampling.audios[sampleIndex].setVolume(volume * sampling.tracks[sampleIndex].volume2)
 		dispatch({
-			type: 'SAMPLING_SET_TRACK_NORMALIZATION_VOLUME',
+			type: 'SAMPLING_SET_SAMPLE_NORMALIZATION_VOLUME',
 			data: { sampleIndex, volume }
 		})
 	}
