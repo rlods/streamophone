@@ -117,7 +117,7 @@ export default class CustomAudio
 	}
 
 	// https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API#Audio_Workers
-	_startVisualization() {
+	_startVisualization() { // TODO: move outside of CustomAudio class
 		const width = this._canvas.width
 		const height = this._canvas.width
 		const canvasCtx = this._canvas.getContext('2d')
