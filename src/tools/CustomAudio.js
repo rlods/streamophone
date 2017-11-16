@@ -116,6 +116,7 @@ export default class CustomAudio
 		const canvasCtx = this._canvas.getContext('2d')
 		const bufferLength = this._analyserNode.frequencyBinCount // half the FFT value
 		const dataArray = new Uint8Array(bufferLength)
+		const sliceWidth = width * 1.0 / bufferLength
 
 		canvasCtx.lineWidth = 1
 		canvasCtx.strokeStyle = 'rgb(255, 0, 0)'
@@ -128,18 +129,16 @@ export default class CustomAudio
 				canvasCtx.clearRect(0, 0, width, height)
 				canvasCtx.beginPath()
 
-				let sliceWidth = width * 1.0 / bufferLength
-				let x = 0, v, y
-				for (let i = 0; i < bufferLength; ++i, x += sliceWidth) {
+				for (let i = 0, x = 0, v, y; i < bufferLength; ++i, x += sliceWidth) {
 					v = dataArray[i] / 128.0
-					y = v * height/2
+					y = v * height / 2
 
 					if (i === 0)
 						canvasCtx.moveTo(x, y)
 					else
 						canvasCtx.lineTo(x, y)
 				}
-				canvasCtx.lineTo(width, height/2)
+				canvasCtx.lineTo(width, height / 2)
 				canvasCtx.stroke()
 			}
 		}
