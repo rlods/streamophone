@@ -58,8 +58,11 @@ export default class SpotifyProvider extends Provider
 		return tracks.map(track => ({
 			cover: track.cover,
 			id: track.id,
+			playing: false,
 			preview: track.preview_url,
-			readable: true, // TODO
+			readable: true, // TODO,
+			ready: false,
+			speed: 1.0,
 			title: track.name,
 			url: track.external_urls.spotify,
 			volume1: 0.5,

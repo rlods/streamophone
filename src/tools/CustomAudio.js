@@ -8,8 +8,7 @@ const AUDIO_CONTEXT = new (window.AudioContext || window.webkitAudioContext)()
 
 export default class CustomAudio
 {
-	constructor(url, stopCB) {
-		this.ready = false
+	constructor(url, startCB, stopCB) {
 		this._animationFrameRequest = null
 		this._audioBuffer = null
 		this._canvas = null
@@ -17,8 +16,10 @@ export default class CustomAudio
 		this._loopStart = 0
 		this._loopEnd = 0
 		this._playing = false
+		this._ready = false
 		this._sourceNode = null
 		this._speed = 1.0
+		this._startCB = startCB
 		this._stopCB = stopCB
 		this._url = url
 
@@ -36,6 +37,9 @@ export default class CustomAudio
 	
 	setCanvas(canvas) {
 		this._canvas = canvas
+		if (canvas && this._playing) {
+			this._startVisualization()
+		}
 	}
 	
 	setLoop(duration) {
@@ -57,10 +61,10 @@ export default class CustomAudio
 	}
 
 	async init() {
-		if (!this.ready) {
+		if (!this._ready) {
 			try {
 				this._audioBuffer = await this._loadAudioBuffer()
-				this.ready = true
+				this._ready = true
 			}
 			catch (error) {
 				console.log('Audio buffer creation failed', error)
@@ -69,7 +73,7 @@ export default class CustomAudio
 	}
 
 	start() {
-		if (this.ready) {
+		if (this._ready && !this._playing) {
 			this._sourceNode = AUDIO_CONTEXT.createBufferSource()
 			this._sourceNode.buffer = this._audioBuffer
 			this._sourceNode.playbackRate.value = this._speed
@@ -78,9 +82,12 @@ export default class CustomAudio
 			this._sourceNode.loopEnd = this._loopEnd
 			this._sourceNode.onended = this._onStop.bind(this)
 			this._sourceNode.connect(this._analyserNode)
-			this._sourceNode.start() // NOTE that a new BufferSource must be created for each start
+			this._sourceNode.start() // A new BufferSource must be created for each start
 			this._playing = true
-			this._startVisualization()
+			this._startCB()
+			if (this._canvas) {
+				this._startVisualization()
+			}
 		}
 	}
 
@@ -91,8 +98,7 @@ export default class CustomAudio
 
 	_onStop() {
 		this._stopVisualization()
-		if (null !== this._stopCB)
-			this._stopCB()
+		this._stopCB()
 		this._playing = false
 		this._sourceNode = null
 	}

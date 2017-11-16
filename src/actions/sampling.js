@@ -79,7 +79,8 @@ export const changeSamplingTracks = (audios, tracks) => (dispatch, getState) => 
 
 export const changeSampleStatus = (sampleIndex, playing) => (dispatch, getState) => {
 	const { sampling } = getState()
-	if (sampling.tracks && sampleIndex >= 0 && sampleIndex < sampling.tracks.length) {
+	if (sampling.audios && sampleIndex >= 0 && sampleIndex < sampling.audios.length) {
+		if (playing) sampling.audios[sampleIndex].start()
 		dispatch({
 			type: 'SAMPLING_SET_SAMPLE_STATUS',
 			data: { playing, sampleIndex }
@@ -89,52 +90,32 @@ export const changeSampleStatus = (sampleIndex, playing) => (dispatch, getState)
 
 export const registerSampleCanvas = (sampleIndex, canvas) => (dispatch, getState) => {
 	const { sampling } = getState()
-	if (sampling.tracks && sampleIndex >= 0 && sampleIndex < sampling.tracks.length) {
+	if (sampling.audios && sampleIndex >= 0 && sampleIndex < sampling.audios.length)
 		sampling.audios[sampleIndex].setCanvas(canvas)
-	}
 }
 
 // --------------------------------------------------------------
 
 export const handleKeyDown = keyCode => async (dispatch, getState, { drivers }) => {
 	const driver = drivers['basic'] // TODO what if basic driver is not registered ?
-	if (driver && driver.strategy) {
+	if (driver && driver.strategy)
 		driver.strategy.handleKeyDown(dispatch, keyCode)
-	}
 }
 
 export const handleKeyUp = keyCode => (dispatch, getState, { drivers }) => {
 	const driver = drivers['basic'] // TODO what if basic driver is not registered ?
-	if (driver && driver.strategy) {
+	if (driver && driver.strategy)
 		driver.strategy.handleKeyUp(dispatch, keyCode)
-	}
 }
 
 export const startSample = sampleIndex => async (dispatch, getState) => {
 	const { sampling } = getState()
-	const { audios, tracks } = sampling
-	if (audios && audios.length > 0) {
-		const indexMod = Math.abs(sampleIndex) % audios.length
-		const audio = audios[indexMod]
-		const track = tracks[indexMod]
-		if (!track.playing && audio.ready) {
-			audio.start()
-			dispatch(changeSampleStatus(sampleIndex, true))
-		}
-		else {
-			console.log('Audio track is not available or ready')
-		}
-	}
+	if (sampling.audios && sampleIndex >= 0 && sampleIndex < sampling.audios.length)
+		 sampling.audios[sampleIndex].start()
 }
 
 export const stopSample = sampleIndex => async (dispatch, getState) => {
 	const { sampling } = getState()
-	const { audios, tracks } = sampling
-	if (audios && audios.length > 0) {
-		const indexMod = Math.abs(sampleIndex) % audios.length
-		const audio = audios[indexMod]
-		const track = tracks[indexMod]
-		if (track.playing)
-			audio.stop()
-	}
+	if (sampling.audios && sampleIndex >= 0 && sampleIndex < sampling.audios.length)
+		 sampling.audios[sampleIndex].stop()
 }

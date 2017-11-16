@@ -112,8 +112,11 @@ export default class DeezerProvider extends Provider
 		return tracks.map(track => ({
 			cover: track.album.cover_medium,
 			id: track.id,
+			playing: false,
 			preview: track.preview,
 			readable: track.readable,
+			ready: false,
+			speed: 1.0,
 			title: track.title,
 			url: track.link,
 			volume1: 0.5,

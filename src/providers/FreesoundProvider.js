@@ -41,8 +41,11 @@ export default class FreesoundProvider extends Provider
 					return {
 						cover: track.images.waveform_m,
 						id: track.id,
+						playing: false,
 						preview,
 						readable: !!preview,
+						ready: false,
+						speed: 1.0,
 						title: track.name,
 						url: track.url,
 						volume1: 0.5,

@@ -7,6 +7,7 @@ import classNames from 'classnames'
 class Sample extends Component {
 	render() {
 		// props.info is given for the keyboard strategy to display keycode
+		const canvas = this.props.playing ? <canvas className="sample-canvas" ref={canvas => this.props.onRegisterCanvas(canvas)}></canvas> : null
 		const info = this.props.info ? <div className="sample-info">{this.props.info}</div> : null
 		const meta = (
 			<div className="sample-metas">
@@ -26,7 +27,7 @@ class Sample extends Component {
 				onTouchStart={this.props.onTouchStart}
 				onTouchEnd={this.props.onTouchEnd}>
 				<img className="sample-cover" src={this.props.cover} alt={this.props.title} />
-				<canvas className="sample-canvas" ref={canvas => this.props.onRegisterCanvas(canvas)}></canvas>
+				{canvas}
 				{info}
 				{meta}
 				<a href={this.props.url} target="_blank" className="sample-title">{this.props.title}</a>

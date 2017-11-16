@@ -57,7 +57,7 @@ export const normalizeAudio = (dispatch, audios, tracks, baseIndex, enrichedTrac
 }
 
 export const loadAudios = (dispatch, sampling, tracks) => tracks.map((track, sampleIndex) => {
-	const audio = new CustomAudio(track.preview, () => dispatch(changeSampleStatus(sampleIndex, false)))
+	const audio = new CustomAudio(track.preview, () => dispatch(changeSampleStatus(sampleIndex, true)), () => dispatch(changeSampleStatus(sampleIndex, false)))
 	audio.setLoop(sampling.sampleDuration)
 	audio.setVolume(track.volume1 * track.volume2)
 	audio.init().then(() => dispatch(changeSampleAudioReady(sampleIndex)))

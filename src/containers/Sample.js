@@ -10,7 +10,6 @@ const SOUND_IMG = require('../assets/sound.png')
 // --------------------------------------------------------------
 
 const mapStateToProps = (state, ownProps) => {
-	const audio = state.sampling.audios[ownProps.index]
 	const track = state.sampling.tracks[ownProps.index]
 	return {
 		bpm: Math.floor(track.bpm),
@@ -18,7 +17,7 @@ const mapStateToProps = (state, ownProps) => {
 		normalized: track.normalized,
 		playing: track.playing,
 		ready: track.ready,
-		speed: audio.getSpeed().toFixed(2),
+		speed: track.speed.toFixed(2),
 		title: track.title,
 		url: track.url
 	}
