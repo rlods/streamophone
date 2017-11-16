@@ -5,7 +5,7 @@ import config from '../config'
 const AUDIO_CONTEXT = new (window.AudioContext || window.webkitAudioContext)()
 const WAVE_WIDTH = 2
 const WAVE_COLOR = 'rgb(255, 0, 0)'
-const WAVE_FFT_SIZE = 2048 // 2048
+const WAVE_FFT_SIZE = 512 // 2048
 
 // ------------------------------------------------------------------
 
@@ -31,6 +31,8 @@ export default class CustomAudio
 		this._gainNode.connect(AUDIO_CONTEXT.destination)
 		this._analyserNode = AUDIO_CONTEXT.createAnalyser()
 		this._analyserNode.fftSize = WAVE_FFT_SIZE
+		// this._analyserNode.minDecibels = -90
+		// this._analyserNode.maxDecibels = -10
 		this._analyserNode.connect(this._gainNode)
 	}
 
@@ -131,25 +133,47 @@ export default class CustomAudio
 		const draw = () => {
 			if (this._playing) {
 				this._animationFrameRequest = requestAnimationFrame(draw)
-				this._analyserNode.getByteTimeDomainData(dataArray)
 
-				canvasCtx.clearRect(0, 0, width, height)
-				canvasCtx.beginPath()
+				if (true) {
+					// WAVE
 
-				for (let i = 0, x = 0, v, y; i < bufferLength; ++i, x += sliceWidth) {
-					v = dataArray[i] / 128.0
-					y = v * height / 2
+					this._analyserNode.getByteTimeDomainData(dataArray)
 
-					if (i === 0)
-						canvasCtx.moveTo(x, y)
-					else
-						canvasCtx.lineTo(x, y)
+					canvasCtx.clearRect(0, 0, width, height)
+					canvasCtx.beginPath()
+
+					for (let i = 0, x = 0, v, y; i < bufferLength; ++i, x += sliceWidth) {
+						v = dataArray[i] / 128.0
+						y = v * height / 2
+
+						if (i === 0)
+							canvasCtx.moveTo(x, y)
+						else
+							canvasCtx.lineTo(x, y)
+					}
+					canvasCtx.lineTo(width, height / 2)
+					canvasCtx.stroke()
 				}
-				canvasCtx.lineTo(width, height / 2)
-				canvasCtx.stroke()
+				else {
+					// OSCI // TODO
+					// https://developer.mozilla.org/fr/docs/Web/API/AnalyserNode/minDecibels
+
+					this._analyserNode.getByteFrequencyData(dataArray)
+
+					canvasCtx.fillStyle = 'rgb(0, 0, 0)'
+					canvasCtx.fillRect(0, 0, width, height)
+
+					const wbar = (width / bufferLength) * 2.5
+					for (let i = 0, x = 0, hbar; i < bufferLength; ++i, x += wbar + 1) {
+						hbar = dataArray[i]
+						canvasCtx.fillStyle = 'rgb(255, 255, 255)'
+						//canvasCtx.fillStyle = 'rgb(' + (hbar + 100) + ', 50, 50)'
+						canvasCtx.fillRect(x, height - hbar / 2, wbar, hbar / 2)
+					}
+				}
 			}
 		}
-		draw()
+		this._animationFrameRequest = requestAnimationFrame(draw)
 	}
 
 	_stopVisualization() {

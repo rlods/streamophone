@@ -111,7 +111,6 @@
 .player .sample-canvas {
 	height: calc(20vh - 10px);
 	width: calc(20vh - 10px);
-	opacity: 0.5;
 }
 
 .sample.playing .sample-cover {
