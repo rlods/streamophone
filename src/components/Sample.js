@@ -26,6 +26,7 @@ class Sample extends Component {
 				onTouchStart={this.props.onTouchStart}
 				onTouchEnd={this.props.onTouchEnd}>
 				<img className="sample-cover" src={this.props.cover} alt={this.props.title} />
+				<canvas className="sample-canvas" ref={canvas => this.props.onRegisterCanvas(canvas)}></canvas>
 				{info}
 				{meta}
 				<a href={this.props.url} target="_blank" className="sample-title">{this.props.title}</a>
@@ -50,7 +51,8 @@ Sample.propTypes = {
 	onMouseEnter: PropTypes.func,
 	onMouseLeave: PropTypes.func,
 	onTouchStart: PropTypes.func,
-	onTouchEnd: PropTypes.func
+	onTouchEnd: PropTypes.func,
+	onRegisterCanvas: PropTypes.func
 }
 
 export default Sample

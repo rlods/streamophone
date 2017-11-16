@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 //
-import { startSample, stopSample } from '../actions/sampling'
+import { registerSampleCanvas, startSample, stopSample } from '../actions/sampling'
 import Sample from '../components/Sample'
 
 // --------------------------------------------------------------
@@ -53,6 +53,9 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 	onTouchEnd: e => {
 		console.log('onTouchEnd')
 		dispatch(stopSample(ownProps.index))
+	},
+	onRegisterCanvas: canvas => {
+		dispatch(registerSampleCanvas(ownProps.index, canvas))
 	}
 })
 

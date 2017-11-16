@@ -1,6 +1,3 @@
-import config from '../config'
-
-// --------------------------------------------------------------
 
 export const changeSampleDuration = sampleDuration => dispatch => {
 	sessionStorage.setItem('DEFAULT_SAMPLING_DURATION', sampleDuration)
@@ -90,6 +87,13 @@ export const changeSampleStatus = (sampleIndex, playing) => (dispatch, getState)
 	}
 }
 
+export const registerSampleCanvas = (sampleIndex, canvas) => (dispatch, getState) => {
+	const { sampling } = getState()
+	if (sampling.tracks && sampleIndex >= 0 && sampleIndex < sampling.tracks.length) {
+		sampling.audios[sampleIndex].setCanvas(canvas)
+	}
+}
+
 // --------------------------------------------------------------
 
 export const handleKeyDown = keyCode => async (dispatch, getState, { drivers }) => {
@@ -108,19 +112,15 @@ export const handleKeyUp = keyCode => (dispatch, getState, { drivers }) => {
 
 export const startSample = sampleIndex => async (dispatch, getState) => {
 	const { sampling } = getState()
-	const { audios, tracks, sampleDuration } = sampling
+	const { audios, tracks } = sampling
 	if (audios && audios.length > 0) {
 		const indexMod = Math.abs(sampleIndex) % audios.length
 		const audio = audios[indexMod]
 		const track = tracks[indexMod]
 		if (!track.playing && audio.ready) {
 			audio.onStop = () => dispatch(changeSampleStatus(sampleIndex, false))
-			// audio.setLoop(true) TODO as an option
 			audio.start()
 			dispatch(changeSampleStatus(sampleIndex, true))
-			if (sampleDuration > 0 && sampleDuration < config.SAMPLE_MAX_DURATION) {
-				setTimeout(() => dispatch(stopSample(sampleIndex)), sampleDuration)
-			}
 		}
 		else {
 			console.log('Audio track is not available or ready')

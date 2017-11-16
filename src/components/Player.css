@@ -5,6 +5,7 @@
 	flex-wrap: wrap;
 	justify-content: center;
 	align-items: center;
+	overflow:hidden; /* to hide scrollbars (eg. when track title is displayed) */
 }
 
 .samples-group-by-col {
@@ -38,6 +39,13 @@
 
 .sample-title:hover {
 	text-decoration: underline;
+}
+
+.sample-canvas {
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 10;
 }
 
 .sample-info {
@@ -100,6 +108,12 @@
 	pointer-events: none;
 }
 
+.player .sample-canvas {
+	height: calc(20vh - 10px);
+	width: calc(20vh - 10px);
+	opacity: 0.5;
+}
+
 .sample.playing .sample-cover {
 	opacity: 1.0;
 	box-shadow: 0 0 0;
@@ -152,7 +166,7 @@ CUSTOM_SOCKET_STRATEGY
 		height: 7.5vw;
 		width: 7.5vw;
 	}
-	.player.KEYBOARD_AZERTY .sample-cover {
+	.player.KEYBOARD_AZERTY .sample-cover, .player.KEYBOARD_AZERTY .sample-canvas {
 		height: calc(7.5vw - 10px);
 		width: calc(7.5vw - 10px);
 	}
@@ -163,7 +177,7 @@ CUSTOM_SOCKET_STRATEGY
 		height: 8.5vw;
 		width: 8.5vw;
 	}
-	.player.KEYBOARD_AZERTY .sample-cover {
+	.player.KEYBOARD_AZERTY .sample-cover, .player.KEYBOARD_AZERTY .sample-canvas {
 		height: calc(8.5vw - 10px);
 		width: calc(8.5vw - 10px);
 	}
