@@ -3,6 +3,9 @@ import config from '../config'
 // --------------------------------------------------------------
 
 const AUDIO_CONTEXT = new (window.AudioContext || window.webkitAudioContext)()
+const WAVE_WIDTH = 2
+const WAVE_COLOR = 'rgb(255, 0, 0)'
+const WAVE_FFT_SIZE = 2048 // 2048
 
 // ------------------------------------------------------------------
 
@@ -27,7 +30,7 @@ export default class CustomAudio
 		this._gainNode.gain.value = 1.0
 		this._gainNode.connect(AUDIO_CONTEXT.destination)
 		this._analyserNode = AUDIO_CONTEXT.createAnalyser()
-		this._analyserNode.fftSize = 2048
+		this._analyserNode.fftSize = WAVE_FFT_SIZE
 		this._analyserNode.connect(this._gainNode)
 	}
 
@@ -122,8 +125,8 @@ export default class CustomAudio
 		const dataArray = new Uint8Array(bufferLength)
 		const sliceWidth = width * 1.0 / bufferLength
 
-		canvasCtx.lineWidth = 1
-		canvasCtx.strokeStyle = 'rgb(255, 0, 0)'
+		canvasCtx.lineWidth = WAVE_WIDTH
+		canvasCtx.strokeStyle = WAVE_COLOR
 
 		const draw = () => {
 			if (this._playing) {
