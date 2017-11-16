@@ -62,6 +62,7 @@
 }
 
 .sample-metas {
+	border-top-left-radius: 5px;
 	position: absolute;
 	display: flex;
 	bottom: 10px;
@@ -118,15 +119,50 @@
 	box-shadow: 0 0 0;
 }
 
+@media (max-height: 500px), (max-width: 800px) {
+    .sample-metas {
+        display: none;
+    }
+    .sample-title {
+        display: none !important;
+    }
+}
+
+/* --------------------------------------------------------------- */
+/* --------------------------------------------------------------- */
+/* --------------------------------------------------------------- */
+/* --------------------------------------------------------------- */
+
 /*
 KEYBOARD
 BCF2000_MULTISLIDERS
 LIGHTPADBLOCK_16
 CUSTOM_SOCKET_STRATEGY
 */
-.player.KEYBOARD {
-	flex-direction: column;
+
+/* --------------------------------------------------------------- */
+/* --------------------------------------------------------------- */
+/* --------------------------------------------------------------- */
+/* --------------------------------------------------------------- */
+
+.player.LIGHTPADBLOCK {
+	flex-direction: column-reverse;
 }
+
+.player.LIGHTPADBLOCK_4 .sample {
+	height: 45vh;
+	width: 45vh;
+}
+
+.player.LIGHTPADBLOCK_4 .sample-cover, .player.LIGHTPADBLOCK_4 .sample-canvas {
+	height: calc(45vh - 10px);
+	width: calc(45vh - 10px);
+}
+
+/* --------------------------------------------------------------- */
+/* --------------------------------------------------------------- */
+/* --------------------------------------------------------------- */
+/* --------------------------------------------------------------- */
 
 .player.KORG_NANOKEY2 {
 	flex-direction: column;
@@ -150,14 +186,12 @@ CUSTOM_SOCKET_STRATEGY
 }
 
 /* --------------------------------------------------------------- */
+/* --------------------------------------------------------------- */
+/* --------------------------------------------------------------- */
+/* --------------------------------------------------------------- */
 
-@media (max-height: 500px), (max-width: 800px) {
-    .sample-metas {
-        display: none;
-    }
-    .sample-title {
-        display: none !important;
-    }
+.player.KEYBOARD {
+	flex-direction: column;
 }
 
 @media (orientation: portrait) {

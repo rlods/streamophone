@@ -7,7 +7,7 @@ import classNames from 'classnames'
 class Sample extends Component {
 	render() {
 		// props.info is given for the keyboard strategy to display keycode
-		const canvas = this.props.playing ? <canvas className="sample-canvas" width="100%" height="100%" ref={canvas => this.props.onRegisterCanvas(canvas)}></canvas> : null
+		const canvas = this.props.playing ? <canvas className="sample-canvas" width="300" height="300" ref={canvas => this.props.onRegisterCanvas(canvas)}></canvas> : null
 		const info = this.props.info ? <div className="sample-info">{this.props.info}</div> : null
 		const meta = (
 			<div className="sample-metas">

@@ -3,7 +3,7 @@ import Buttons_MidiStrategy from './Buttons_MidiStrategy'
 import Custom_SocketStrategy from './Custom_SocketStrategy'
 import Keyboard_MidiStrategy from './Keyboard_MidiStrategy'
 import KORG_NanoKey2_MidiStrategy from './KORG_NanoKey2_MidiStrategy'
-import LightPadBlock_MidiStrategy from './LightPadBlock_MidiStrategy'
+import { LightPadBlock4_MidiStrategy, LightPadBlock16_MidiStrategy } from './LightPadBlock_MidiStrategy'
 import MultiSliders_MidiStrategy from './MultiSliders_MidiStrategy'
 import SingleSlider_MidiStrategy from './SingleSlider_MidiStrategy'
 
@@ -20,7 +20,8 @@ export const createStrategy = strategyId => {
 	case 'KEYBOARD_AZERTY':        return new AzertyKeyboard_BasicStrategy()
 	case 'KEYBOARD_QWERTY':        return new QwertyKeyboard_BasicStrategy()
 	case 'KORG_NANOKEY2':          return new KORG_NanoKey2_MidiStrategy()
-	case 'LIGHTPADBLOCK_16':       return new LightPadBlock_MidiStrategy()
+	case 'LIGHTPADBLOCK_4':        return new LightPadBlock4_MidiStrategy()
+	case 'LIGHTPADBLOCK_16':       return new LightPadBlock16_MidiStrategy()
 	default: throw new Error(`Unknown strategy "${strategyId}"`)
 	}
 }

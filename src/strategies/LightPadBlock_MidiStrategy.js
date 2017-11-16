@@ -3,47 +3,68 @@ import Strategy from './Strategy'
 
 // --------------------------------------------------------------
 
-const keyMapping = {
-	51:  0,
-	55:  1,
-	59:  2,
-	63:  3,
-	50:  4,
-	54:  5,
-	58:  6,
-	62:  7,
-	49:  8,
-	53:  9,
-	57: 10,
-	61: 11,
-	48: 12,
-	52: 13,
-	56: 14,
-	60: 15
+class LightPadBlock_MidiStrategy extends Strategy {
+	constructor(mapping, samplesCount) {
+		super()
+		this.mapping = mapping
+		this.samplesCount = samplesCount
+	}
+
+	handleMIDI(dispatch, c, k, v) {
+		// messages are given four by four
+		if (k >= 48 && k <= 63 && c < 209) {
+			console.log("k", k, "c", c, "v", v)
+			const m = this.mapping[k]
+			if (m !== undefined) {
+				if (c >= 145 && c < 160) {
+					dispatch(startSample(m))
+				}
+				else if (c < 145 && c >= 129) {
+					dispatch(stopSample(m))
+				}
+			}
+		}
+	}
 }
 
 // --------------------------------------------------------------
 
-export default class LightPadBlock_MidiStrategy extends Strategy {
-	constructor() {
-		super()
-		this.samplesCount = 16
-	}
+const keyMapping16 = {
+	48:  0,
+	49:  1,
+	50:  2,
+	51:  3,
+	52:  4,
+	53:  5,
+	54:  6,
+	55:  7,
+	56:  8,
+	57:  9,
+	58: 10,
+	59: 11,
+	60: 12,
+	61: 13,
+	62: 14,
+	63: 15,
+}
 
-	handleMIDI(dispatch, channel, key, velocity) {
-		// messages are given four by four
-		if (key >= 48 && key <= 63 && channel < 209) {
-			console.log("k", key, "c", channel, "v", velocity)
-			const mapping = keyMapping[key]
-			if (mapping !== undefined) {
-				console.log("m", mapping)
-				if (channel>=145 && channel<160) {
-					dispatch(startSample(mapping))
-				}
-				else if (channel<145 && channel>=129) {
-					dispatch(stopSample(mapping))
-				}
-			}
-		}
+export class LightPadBlock16_MidiStrategy extends LightPadBlock_MidiStrategy {
+	constructor() {
+		super(keyMapping16, 16)
+	}
+}
+
+// --------------------------------------------------------------
+
+const keyMapping4 = {
+	48: 0,
+	49: 1,
+	50: 2,
+	51: 3,
+}
+
+export class LightPadBlock4_MidiStrategy extends LightPadBlock_MidiStrategy {
+	constructor() {
+		super(keyMapping4, 4)
 	}
 }

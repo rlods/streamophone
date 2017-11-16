@@ -48,9 +48,11 @@ class Player extends Component {
 					body = chunkArray(this.props.tracks, chunkSize).map((chunk, chunkIndex) => <div className="samples-group samples-group-by-col" key={chunkIndex}>{chunk.map((sample, sampleIndex) => <Sample key={sampleIndex} index={chunkIndex * chunkSize + sampleIndex} />)}</div>)
 					break
 
+				case 'LIGHTPADBLOCK_4':
 				case 'LIGHTPADBLOCK_16':
+					layoutClassName = 'LIGHTPADBLOCK'
 					chunkSize = Math.sqrt(this.props.tracks.length)
-					body = chunkArray(this.props.tracks, chunkSize).map((chunk, chunkIndex) => <div className="samples-group samples-group-by-col" key={chunkIndex}>{chunk.map((sample, sampleIndex) => <Sample key={sampleIndex} index={chunkIndex * chunkSize + sampleIndex} />)}</div>)
+					body = chunkArray(this.props.tracks, chunkSize).map((chunk, chunkIndex) => <div className="samples-group samples-group-by-row" key={chunkIndex}>{chunk.map((sample, sampleIndex) => <Sample key={sampleIndex} index={chunkIndex * chunkSize + sampleIndex} />)}</div>)
 					break
 
 				case 'CUSTOM_SOCKET_STRATEGY':
@@ -97,7 +99,7 @@ class Player extends Component {
 					break
 			}
 			return (
-				<div className={classNames('player', layoutClassName)}>
+				<div className={classNames('player', this.props.samplingStrategyId, layoutClassName)}>
 					{body}
 				</div>
 			)

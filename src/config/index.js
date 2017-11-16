@@ -67,9 +67,13 @@ const Config = {
 			driver: 'midi',
 			label: 'BCF2000 - Multi Sliders'
 		},
+		LIGHTPADBLOCK_4: {
+			driver: 'midi',
+			label: 'ROLI LightPadBlock 2x2'
+		},
 		LIGHTPADBLOCK_16: {
 			driver: 'midi',
-			label: 'ROLI LightPadBlock'
+			label: 'ROLI LightPadBlock 4x4'
 		},
 		KEYBOARD_24: {
 			driver: 'midi',
