@@ -8,18 +8,18 @@ const AUDIO_CONTEXT = new (window.AudioContext || window.webkitAudioContext)()
 
 export default class CustomAudio
 {
-	constructor(url) {
-		this.playing = false
+	constructor(url, stopCB) {
 		this.ready = false
-		this.onStop = null
 		this._animationFrameRequest = null
 		this._audioBuffer = null
 		this._canvas = null
 		this._loop = false
 		this._loopStart = 0
 		this._loopEnd = 0
+		this._playing = false
 		this._sourceNode = null
 		this._speed = 1.0
+		this._stopCB = stopCB
 		this._url = url
 
 		this._gainNode = AUDIO_CONTEXT.createGain()
@@ -79,23 +79,21 @@ export default class CustomAudio
 			this._sourceNode.onended = this._onStop.bind(this)
 			this._sourceNode.connect(this._analyserNode)
 			this._sourceNode.start() // NOTE that a new BufferSource must be created for each start
-			this.playing = true
+			this._playing = true
 			this._startVisualization()
 		}
 	}
 
 	stop() {
-		if (null !== this._sourceNode) {
-			this._sourceNode.stop() // NOTE that a new BufferSource must be created for each start
-			this._onStop()
-		}
+		if (null !== this._sourceNode)
+			this._sourceNode.stop()
 	}
 
 	_onStop() {
 		this._stopVisualization()
-		if (null !== this.onStop)
-			this.onStop()
-		this.playing = false
+		if (null !== this._stopCB)
+			this._stopCB()
+		this._playing = false
 		this._sourceNode = null
 	}
 
@@ -122,7 +120,7 @@ export default class CustomAudio
 		canvasCtx.strokeStyle = 'rgb(255, 0, 0)'
 
 		const draw = () => {
-			if (this.playing) {
+			if (this._playing) {
 				this._animationFrameRequest = requestAnimationFrame(draw)
 				this._analyserNode.getByteTimeDomainData(dataArray)
 

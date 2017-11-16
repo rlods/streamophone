@@ -118,7 +118,6 @@ export const startSample = sampleIndex => async (dispatch, getState) => {
 		const audio = audios[indexMod]
 		const track = tracks[indexMod]
 		if (!track.playing && audio.ready) {
-			audio.onStop = () => dispatch(changeSampleStatus(sampleIndex, false))
 			audio.start()
 			dispatch(changeSampleStatus(sampleIndex, true))
 		}
