@@ -54,4 +54,9 @@ export default class AudioEngine
 			this.audios = null
 		}
 	}
+
+	snapshot() {
+		console.log('RECORD JS', this.record)
+		console.log('RECORD 64', btoa(JSON.stringify(this.record)))
+	}
 }

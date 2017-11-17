@@ -75,20 +75,17 @@ export const createSampling = () => async (dispatch, getState, { app }) => {
 		// Start enrichment
 		provider.enrichTracks(tracks, (baseIndex, enrichedTracks) => {
 			console.log(`${enrichedTracks.length} tracks have been enriched`)
-
-			// Update normalization volume
 			enrichedTracks.forEach((enrichedTrack, index) => {
 				const sampleIndex = baseIndex + index
+
+				// Update normalization volume
 				if (enrichedTrack.gain) {
 					let volume = 0.5 * Math.pow(10, ((-12 - enrichedTrack.gain) / 20))
 					if (volume > 1.0) volume = 1.0
 					dispatch(changeSampleNormalizationVolume(sampleIndex, volume))
 				}
-			})
 
-			// Update BPM
-			enrichedTracks.forEach((enrichedTrack, index) => {
-				const sampleIndex = baseIndex + index
+				// Update BPM
 				if (enrichedTrack.bpm) {
 					if (source.bpm > 0)
 						dispatch(changeSampleSpeed(sampleIndex, source.bpm / enrichedTrack.bpm))
