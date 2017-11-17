@@ -20,7 +20,8 @@ export default class FreesoundProvider extends Provider
 
 	fetchAPI(url) {
 		return new Promise((resolve, reject) => {
-			jsonp(API_BASE_URL + url + `&format=jsonp&token=${config.TMP.FREESOUND}`, null, (err, data) => {
+			const fullUrl = API_BASE_URL + url + `&format=jsonp&token=${config.TMP.FREESOUND}`
+			jsonp(fullUrl, null, (err, data) => {
 				if (err)
 					reject(err)
 				else if (data && data.error)
