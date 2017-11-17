@@ -33,7 +33,7 @@ export default class AudioEngine
 				default:
 					break
 				}
-				if (this.record.tracks[sampleIndex]) // only record event of tracks which have been played
+				if (this.record.tracks[sampleIndex]) // only record events of tracks which have been already been played
 					this.record.events.push([Math.floor(this.context.currentTime * 1000), sampleIndex, e])
 			})
 			audio.setLoop(track.loopStart, track.loopEnd)
