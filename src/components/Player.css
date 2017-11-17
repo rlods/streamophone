@@ -6,6 +6,7 @@
 	justify-content: center;
 	align-items: center;
 	overflow:hidden; /* to hide scrollbars (eg. when track title is displayed) */
+	font-family: 'Arial';
 }
 
 .samples-group-by-col {
@@ -73,8 +74,8 @@
 	opacity: 0.3;
 	background-color: #FFF;
 	color: #000;
-	font-size: 12px;
-	line-height: 12px;
+	font-size: 10px;
+	line-height: 10px;
 }
 
 .sample-meta {
