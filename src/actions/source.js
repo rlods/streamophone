@@ -57,12 +57,14 @@ export const createSampling = () => async (dispatch, getState, { app }) => {
 		app.strategy = createStrategy(sampling.strategyId)
 
 		// Fetch tracks
-		const provider = createProvider(source.type.split('_')[0])
+		const providerId = source.type.split('_')[0]
+		const provider = createProvider(providerId)
 		const tracks = transformArray(await provider.fetchTracks(source.type, source.id), app.strategy.samplesCount, source.transformation, validateTrack)
 		tracks.forEach(track => {
 			track.loopStart = 0
 			track.loopEnd = sampling.defaultDuration > 0 ? track.loopStart + (sampling.defaultDuration / 1000.0) : 0
 			track.playing = false
+			track.providerId = providerId
 			track.ready = false
 			track.speed = 1.0
 			track.volume1 = 0.5

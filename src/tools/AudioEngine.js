@@ -22,8 +22,8 @@ export default class AudioEngine
 				{
 				case AUDIO_EVENT_PLAY:
 					if (!this.record.tracks[sampleIndex]) {
-						const { id, loopStart, loopEnd, preview, speed, title, volume1, volume2 } = track
-						this.record.tracks[sampleIndex] = { id, loopStart, loopEnd, preview, speed, title, volume: volume1 * volume2 }
+						const { id, loopStart, loopEnd, preview, providerId, speed, title, volume1, volume2 } = track
+						this.record.tracks[sampleIndex] = { id, loopStart, loopEnd, preview, providerId, speed, title, volume: volume1 * volume2 }
 					}
 					dispatch(changeSampleStatus(sampleIndex, true))
 					break
