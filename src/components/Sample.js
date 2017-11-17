@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
+//
+import './Sample.css'
 
 // --------------------------------------------------------------
 
@@ -17,6 +19,10 @@ class Sample extends Component {
 				{this.props.ready ? null : <i className="fa fa-exclamation-triangle sample-meta sample-meta-notready" title="not ready"></i>}
 			</div>
 		)
+		const menu = true ? null : (
+			<div className="sample-menu">TEST</div>
+		)
+
 		return (
 			<div
 				className={classNames('sample', { playing: this.props.playing })}
@@ -30,6 +36,7 @@ class Sample extends Component {
 				{canvas}
 				{info}
 				{meta}
+				{menu}
 				<a href={this.props.url} target="_blank" className="sample-title">{this.props.title}</a>
 			</div>
 		)

@@ -96,8 +96,14 @@ class Player extends Component {
 					body = this.props.tracks.map((sample, sampleIndex) => <Sample key={sampleIndex} index={sampleIndex} />)
 					break
 			}
+
+			const info = true ? null : (
+				<div className="player-info">TEST</div>
+			)
+
 			return (
 				<div className={classNames('player', this.props.samplingStrategyId, layoutClassName)}>
+					{info}
 					{body}
 				</div>
 			)
