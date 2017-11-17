@@ -5,16 +5,19 @@ import { getSearchParam } from '../tools'
 
 const INITIAL_STATE = {
 	tracks: null,
-	duration: getSearchParam('sampling_duration') || sessionStorage.getItem('DEFAULT_SAMPLING_DURATION') || config.DEFAULT.SAMPLING_DURATION,
+	defaultDuration: getSearchParam('sampling_duration') || sessionStorage.getItem('DEFAULT_SAMPLING_DURATION') || config.DEFAULT.SAMPLING_DURATION,
 	strategyId: getSearchParam('sampling_strategy') || sessionStorage.getItem('DEFAULT_SAMPLING_STRATEGY') || config.DEFAULT.SAMPLING_STRATEGY
 }
 
-if (typeof INITIAL_STATE.duration === 'string') INITIAL_STATE.duration = parseInt(INITIAL_STATE.duration, 10)
+if (typeof INITIAL_STATE.defaultDuration === 'string') INITIAL_STATE.defaultDuration = parseInt(INITIAL_STATE.defaultDuration, 10)
 
 // ------------------------------------------------------------------
 
 const setSampleBPM = (state, { sampleIndex, bpm }) => // TODO
 	({ ...state, tracks: state.tracks.map((other, otherIndex) => otherIndex !== sampleIndex ? other : { ...other, bpm }) })
+
+const setSampleDefaultDuration = (state, { defaultDuration }) =>
+	({ ...state, defaultDuration })
 
 const setSampleNormalizationVolume = (state, { sampleIndex, volume }) => // TODO
 	({ ...state, tracks: state.tracks.map((other, otherIndex) => otherIndex !== sampleIndex ? other : { ...other, volume1: volume, normalized: true }) })
@@ -31,9 +34,6 @@ const setSampleStatus = (state, { playing, sampleIndex }) => // TODO
 const setSampleVolume = (state, { sampleIndex, volume }) => // TODO
 	({ ...state, tracks: state.tracks.map((other, otherIndex) => otherIndex !== sampleIndex ? other : { ...other, volume2: volume }) })
 
-const setSampleDuration = (state, { duration }) =>
-	({ ...state, duration })
-
 const setSamples = (state, { tracks }) =>
 	({ ...state, tracks })
 
@@ -47,8 +47,8 @@ export default (state = INITIAL_STATE, action) => {
 	{
 	case 'SAMPLING_SET_SAMPLE_BPM':
 		return setSampleBPM(state, action.data)
-	case 'SAMPLING_SET_SAMPLE_DURATION':
-		return setSampleDuration(state, action.data)
+	case 'SAMPLING_SET_DEFAULT_DURATION':
+		return setSampleDefaultDuration(state, action.data)
 	case 'SAMPLING_SET_SAMPLE_NORMALIZATION_VOLUME':
 		return setSampleNormalizationVolume(state, action.data)
 	case 'SAMPLING_SET_SAMPLE_READY':

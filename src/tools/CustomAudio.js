@@ -1,5 +1,4 @@
 
-const AUDIO_CONTEXT = new (window.AudioContext || window.webkitAudioContext)()
 const CURRENT_TIME_COLOR = 'rgba(0, 0, 0, 0.5)'
 
 const VISU_STYLE = 1 // 0=wave, 1=bar
@@ -13,58 +12,41 @@ const BAR_MARGIN = 0
 
 // ------------------------------------------------------------------
 
+export const AUDIO_EVENT_PLAY   = 1
+export const AUDIO_EVENT_PAUSE  = 2
+export const AUDIO_EVENT_SPEED  = 3
+export const AUDIO_EVENT_VOLUME = 4
+export const AUDIO_EVENT_LOOP   = 5
+
+// ------------------------------------------------------------------
+
 export default class CustomAudio
 {
-	constructor(url, startCB, stopCB) {
+	constructor(context, url, eventCB) {
 		this._animationFrameRequest = null
 		this._audioBuffer = null
 		this._canvas = null
-		this._duration = 0
+		this._eventCB = eventCB
+		this._context = context
 		this._loop = true
+		this._loopEnd = 0
 		this._loopStart = 0
 		this._playing = false
 		this._ready = false
 		this._sourceNode = null
 		this._speed = 1.0
-		this._startCB = startCB
-		this._stopCB = stopCB
+		this._startedAt = 0
 		this._url = url
 
-		this._gainNode = AUDIO_CONTEXT.createGain()
+		this._gainNode = this._context.createGain()
 		this._gainNode.gain.value = 1.0
-		this._gainNode.connect(AUDIO_CONTEXT.destination)
-		this._analyserNode = AUDIO_CONTEXT.createAnalyser()
+		this._gainNode.connect(this._context.destination)
+
+		this._analyserNode = this._context.createAnalyser()
 		this._analyserNode.fftSize = VISU_STYLE === 0 ? WAVE_FFT_SIZE : BAR_FFT_SIZE
 		this._analyserNode.minDecibels = -90
 		this._analyserNode.maxDecibels = -10
 		this._analyserNode.connect(this._gainNode)
-
-		this._startedAt = 0
-	}
-
-	getSpeed() {
-		return this._speed
-	}
-	
-	setCanvas(canvas) {
-		this._canvas = canvas
-		if (canvas && this._playing) {
-			this._startVisualization()
-		}
-	}
-	
-	setLoop(duration) {
-		this._duration = duration / 1000.0
-	}
-	
-	setSpeed(speed) {
-		this._speed = speed
-		if (null !== this._sourceNode)
-			this._sourceNode.playbackRate.value = speed
-	}
-	
-	setVolume(volume) {
-		this._gainNode.gain.value = volume
 	}
 
 	async init() {
@@ -79,20 +61,49 @@ export default class CustomAudio
 		}
 	}
 
+	setCanvas(canvas) {
+		this._canvas = canvas
+		if (canvas && this._playing) {
+			this._startVisualization()
+		}
+	}
+	
+	setLoop(loopStart, loopEnd) {
+		this._eventCB([AUDIO_EVENT_LOOP, loopStart, loopEnd])
+		this._loopEnd = loopEnd
+		this._loopStart = loopStart
+		if (null !== this._sourceNode) {
+			this._sourceNode.loopEnd = this._loopEnd
+			this._sourceNode.loopStart = this._loopStart
+		}
+	}
+	
+	setSpeed(speed) {
+		this._eventCB([AUDIO_EVENT_SPEED, speed])
+		this._speed = speed
+		if (null !== this._sourceNode)
+			this._sourceNode.playbackRate.value = speed
+	}
+	
+	setVolume(volume) {
+		this._eventCB([AUDIO_EVENT_VOLUME, volume])
+		this._gainNode.gain.value = volume
+	}
+
 	start() {
 		if (this._ready && !this._playing) {
-			this._sourceNode = AUDIO_CONTEXT.createBufferSource()
+			this._sourceNode = this._context.createBufferSource()
 			this._sourceNode.buffer = this._audioBuffer
 			this._sourceNode.loop = this._loop
 			this._sourceNode.loopStart = this._loopStart
-			this._sourceNode.loopEnd = this._duration > 0 ? this._loopStart + this._duration : this._audioBuffer.duration
+			this._sourceNode.loopEnd = this._loopEnd
 			this._sourceNode.onended = this._onStop.bind(this)
 			this._sourceNode.playbackRate.value = this._speed
 			this._sourceNode.connect(this._analyserNode)
 			this._sourceNode.start() // A new BufferSource must be created for each start
 			this._playing = true
-			this._startedAt = AUDIO_CONTEXT.currentTime
-			this._startCB()
+			this._startedAt = this._context.currentTime
+			this._eventCB([AUDIO_EVENT_PLAY])
 			if (this._canvas) {
 				this._startVisualization()
 			}
@@ -106,7 +117,7 @@ export default class CustomAudio
 
 	_onStop() {
 		this._stopVisualization()
-		this._stopCB()
+		this._eventCB([AUDIO_EVENT_PAUSE])
 		this._playing = false
 		this._sourceNode = null
 	}
@@ -116,7 +127,7 @@ export default class CustomAudio
 			const req = new XMLHttpRequest()
 			req.open('GET', this._url, true)
 			req.responseType = 'arraybuffer'
-			req.onload = () => AUDIO_CONTEXT.decodeAudioData(req.response, buffer => resolve(buffer), error => reject(error))
+			req.onload = () => this._context.decodeAudioData(req.response, buffer => resolve(buffer), error => reject(error))
 			req.send()
 		})
 	}
@@ -139,8 +150,8 @@ export default class CustomAudio
 
 				canvasCtx.clearRect(0, 0, width, height)
 
-				const duration = this._sourceNode.loopEnd - this._sourceNode.loopStart
-				const elapsed = ((AUDIO_CONTEXT.currentTime - this._startedAt) % duration) * width / duration
+				const duration = (this._sourceNode.loopEnd || this._audioBuffer.duration) - this._sourceNode.loopStart
+				const elapsed = ((this._context.currentTime - this._startedAt) % duration) * width / duration
 				canvasCtx.fillStyle = CURRENT_TIME_COLOR
 				canvasCtx.fillRect(0, 0, elapsed, height)
 
@@ -182,25 +193,3 @@ export default class CustomAudio
 		}
 	}
 }
-
-// ------------------------------------------------------------------
-
-/*
-async function test() {
-	const audio = new CustomAudio('https://e-cdns-preview-2.dzcdn.net/stream/2ccd5277fa71187105b2450abf020d79-3.mp3')
-
-	await audio.init()
-	audio.start()
-
-	setTimeout(() => {
-		audio.setSpeed(1.5)
-
-		setTimeout(() => {
-			audio.setVolume(0.2)
-		}, 2000)
-
-	}, 2000)
-}
-
-test()
-*/

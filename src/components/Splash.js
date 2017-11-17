@@ -68,7 +68,7 @@ class SelectField extends Component {
 class Splash extends Component {
 	render() {
 		return (
-			<form className="app-menu" onSubmit={this.props.onPlay}>
+			<form className="app-menu" onSubmit={this.props.onCreate}>
 				<div className="app-title">The Streamophone</div>
 				<SelectField
 					name="Sample Controller"
@@ -80,8 +80,8 @@ class Splash extends Component {
 				<SelectField
 					name="Sample Duration"
 					items={DURATIONS}
-					value={this.props.samplingDuration}
-					onChange={this.props.onChangeSampleDuration}
+					value={this.props.samplingDefaultDuration}
+					onChange={this.props.onChangeSamplingDefaultDuration}
 					getValue={duration => duration.value}
 					getText={duration => duration.label} />
 				<SelectField
@@ -116,7 +116,7 @@ class Splash extends Component {
 					value={this.props.sourceId}
 					onChange={this.props.onChangeSourceId} />
 				<div className="app-menu-field">
-					<button className="app-menu-action" onClick={this.props.onPlay}>Play</button>
+					<button className="app-menu-action" onClick={this.props.onCreate}>Play</button>
 				</div>
 			</form>
 		)
@@ -126,20 +126,20 @@ class Splash extends Component {
 // --------------------------------------------------------------
 
 Splash.propTypes = {
-	samplingDuration: PropTypes.number,
+	samplingDefaultDuration: PropTypes.number,
 	samplingStrategyId: PropTypes.string,
 	sourceBPM: PropTypes.number,
 	sourceId: PropTypes.string,
 	sourceTransformation: PropTypes.string,
 	sourceType: PropTypes.string,
 	onChangeCurated: PropTypes.func,
-	onChangeSampleDuration: PropTypes.func,
+	onChangeSamplingDefaultDuration: PropTypes.func,
 	onChangeSamplingStrategy: PropTypes.func,
 	onChangeSourceBPM: PropTypes.func,
 	onChangeSourceId: PropTypes.func,
 	onChangeSourceTransformation: PropTypes.func,
 	onChangeSourceType: PropTypes.func,
-	onPlay: PropTypes.func
+	onCreate: PropTypes.func
 }
 
 export default Splash

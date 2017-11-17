@@ -13,7 +13,7 @@ class App extends Component {
 		return (
 			<Switch>
 				<Route exact path="/" component={Splash} />
-				<Route exact path="/play" component={Player} />
+				<Route exact path="/create" component={Player} />
 			</Switch>
 		)
 	}

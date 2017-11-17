@@ -1,13 +1,13 @@
 import { connect } from 'react-redux'
 //
-import { changeSampleDuration, changeSamplingStrategy } from '../actions/sampling'
-import { changeSourceBPM, changeSourceId, changeSourceTransformation, changeSourceType, play } from '../actions/source'
+import { changeSampleDefaultDuration, changeSamplingStrategy } from '../actions/sampling'
+import { changeSourceBPM, changeSourceId, changeSourceTransformation, changeSourceType, goToSampling } from '../actions/source'
 import Splash from '../components/Splash'
 
 // --------------------------------------------------------------
 
 const mapStateToProps = (state, ownProps) => ({
-	samplingDuration: state.sampling.duration,
+	samplingDefaultDuration: state.sampling.defaultDuration,
 	samplingStrategyId: state.sampling.strategyId,
 	sourceBPM: state.source.bpm,
 	sourceId: state.source.id,
@@ -21,15 +21,15 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 		dispatch(changeSourceId(sourceId))
 		dispatch(changeSourceType(sourceType))
 	},
-	onChangeSampleDuration: e       => dispatch(changeSampleDuration(parseInt(e.target.value, 10))),
-	onChangeSamplingStrategy: e     => dispatch(changeSamplingStrategy(e.target.value)),
-	onChangeSourceBPM: e            => dispatch(changeSourceBPM(parseInt(e.target.value, 10))),
-	onChangeSourceId: e             => dispatch(changeSourceId(e.target.value)),
-	onChangeSourceTransformation: e => dispatch(changeSourceTransformation(e.target.value)),
-	onChangeSourceType: e           => dispatch(changeSourceType(e.target.value)),
-	onPlay: e                       => {
+	onChangeSamplingDefaultDuration: e => dispatch(changeSampleDefaultDuration(parseInt(e.target.value, 10))),
+	onChangeSamplingStrategy: e        => dispatch(changeSamplingStrategy(e.target.value)),
+	onChangeSourceBPM: e               => dispatch(changeSourceBPM(parseInt(e.target.value, 10))),
+	onChangeSourceId: e                => dispatch(changeSourceId(e.target.value)),
+	onChangeSourceTransformation: e    => dispatch(changeSourceTransformation(e.target.value)),
+	onChangeSourceType: e              => dispatch(changeSourceType(e.target.value)),
+	onCreate: e                        => {
 		e.preventDefault()
-		dispatch(play(ownProps.history, true))
+		dispatch(goToSampling(ownProps.history))
 	},
 })
 

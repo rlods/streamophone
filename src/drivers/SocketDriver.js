@@ -10,11 +10,6 @@ export default class SocketDriver extends Driver {
 		super('socket')
 		this.prefix = prefix
 		this.url = url
-		this.ws = null
-		this.init()
-	}
-
-	init() {
 		this.ws = io(this.url)
 		this.ws.on(this.prefix, this.onMessage.bind(this))
 	}

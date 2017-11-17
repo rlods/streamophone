@@ -10,26 +10,25 @@ export default class MidiDriver extends Driver {
 		this.init()
 	}
 
-	init() {
-		return new Promise((resolve, reject) => {
+	async init() {
+		try {
 			if (!navigator.requestMIDIAccess) {
 				console.log("No MIDI support in your browser.")
-				reject("No MIDI support in your browser.")
-				return
+				throw new Error("No MIDI support in your browser.")
 			}
 
-			navigator.requestMIDIAccess({ sysex: false }).then(midiAccess => {
-				// console.log("MIDI success")
-				this.inputs = midiAccess.inputs.values()
-				for (let input of this.inputs) {
-					console.log(`Detected input "${input.name.trim()}"`) // -> 'Lightpad BLOCK'
-					input.onmidimessage = this.onMessage.bind(this)
-				}
-			}, error => {
-				console.log("No access to MIDI devices or your browser doesn't support WebMIDI API. Please use WebMIDIAPIShim ", error);
-				reject()
-			})
-		})
+			const midiAccess = await navigator.requestMIDIAccess({ sysex: false })
+			console.log("MIDI success")
+			
+			this.inputs = midiAccess.inputs.values()
+			for (let input of this.inputs) {
+				console.log(`Detected input "${input.name.trim()}"`) // -> 'Lightpad BLOCK'
+				input.onmidimessage = this.onMessage.bind(this)
+			}
+		}
+		catch (error) {
+			console.log("No access to MIDI devices or your browser doesn't support WebMIDI API. Please use WebMIDIAPIShim ", error);
+		}
 	}
 
 	onMessage(message) {
