@@ -1,9 +1,9 @@
 
-export const changeSampleDuration = sampleDuration => dispatch => {
-	sessionStorage.setItem('DEFAULT_SAMPLING_DURATION', sampleDuration)
+export const changeSampleDuration = duration => dispatch => {
+	sessionStorage.setItem('DEFAULT_SAMPLING_DURATION', duration)
 	return dispatch({
 		type: 'SAMPLING_SET_SAMPLE_DURATION',
-		data: { sampleDuration }
+		data: { duration }
 	})
 }
 

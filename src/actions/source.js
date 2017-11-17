@@ -58,7 +58,7 @@ export const normalizeAudio = (dispatch, audios, tracks, baseIndex, enrichedTrac
 
 export const loadAudios = (dispatch, sampling, tracks) => tracks.map((track, sampleIndex) => {
 	const audio = new CustomAudio(track.preview, () => dispatch(changeSampleStatus(sampleIndex, true)), () => dispatch(changeSampleStatus(sampleIndex, false)))
-	audio.setLoop(sampling.sampleDuration)
+	audio.setLoop(sampling.duration)
 	audio.setVolume(track.volume1 * track.volume2)
 	audio.init().then(() => dispatch(changeSampleAudioReady(sampleIndex)))
 	return audio
@@ -72,7 +72,7 @@ export const play = history => async (dispatch, getState, { drivers }) => {
 	try {
 		const { sampling, source } = getState()
 
-		history.replace(`/play?sampling_duration=${sampling.sampleDuration}&sampling_strategy=${sampling.strategyId}&source_bpm=${source.bpm}&source_id=${source.id}&source_transformation=${source.transformation}&source_type=${source.type}`)
+		history.replace(`/play?sampling_duration=${sampling.duration}&sampling_strategy=${sampling.strategyId}&source_bpm=${source.bpm}&source_id=${source.id}&source_transformation=${source.transformation}&source_type=${source.type}`)
 
 		if (sampling.audios) {
 			// Stop all previously loaded audios

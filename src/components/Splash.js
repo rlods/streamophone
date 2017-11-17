@@ -28,7 +28,8 @@ const SOURCE_TYPES = {
 	deezer_artist: 'Deezer Artist',
 	deezer_playlist: 'Deezer Playlist',
 	freesound_pack: 'Freesound Pack',
-	spotify_album: 'Spotify Album'
+	spotify_album: 'Spotify Album',
+	spotify_artist: 'Spotify Artist'
 }
 
 const TRANSFORMATIONS = {
@@ -79,7 +80,7 @@ class Splash extends Component {
 				<SelectField
 					name="Sample Duration"
 					items={DURATIONS}
-					value={this.props.sampleDuration}
+					value={this.props.samplingDuration}
 					onChange={this.props.onChangeSampleDuration}
 					getValue={duration => duration.value}
 					getText={duration => duration.label} />
@@ -125,7 +126,7 @@ class Splash extends Component {
 // --------------------------------------------------------------
 
 Splash.propTypes = {
-	sampleDuration: PropTypes.number,
+	samplingDuration: PropTypes.number,
 	samplingStrategyId: PropTypes.string,
 	sourceBPM: PropTypes.number,
 	sourceId: PropTypes.string,

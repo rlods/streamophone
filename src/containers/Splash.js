@@ -7,7 +7,7 @@ import Splash from '../components/Splash'
 // --------------------------------------------------------------
 
 const mapStateToProps = (state, ownProps) => ({
-	sampleDuration: state.sampling.sampleDuration,
+	samplingDuration: state.sampling.duration,
 	samplingStrategyId: state.sampling.strategyId,
 	sourceBPM: state.source.bpm,
 	sourceId: state.source.id,

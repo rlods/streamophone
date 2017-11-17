@@ -10,6 +10,8 @@ const INITIAL_STATE = {
 	type: getSearchParam('source_type') || sessionStorage.getItem('DEFAULT_SOURCE_TYPE') || config.DEFAULT.SOURCE_TYPE
 }
 
+if (typeof INITIAL_STATE.bpm === 'string') INITIAL_STATE.bpm = parseInt(INITIAL_STATE.bpm, 10)
+
 // ------------------------------------------------------------------
 
 const setSourceBPM = (state, { bpm }) =>

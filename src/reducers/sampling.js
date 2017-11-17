@@ -6,9 +6,11 @@ import { getSearchParam } from '../tools'
 const INITIAL_STATE = {
 	audios: null,
 	tracks: null,
-	sampleDuration: getSearchParam('sampling_duration') || sessionStorage.getItem('DEFAULT_SAMPLING_DURATION') || config.DEFAULT.SAMPLING_DURATION,
+	duration: getSearchParam('sampling_duration') || sessionStorage.getItem('DEFAULT_SAMPLING_DURATION') || config.DEFAULT.SAMPLING_DURATION,
 	strategyId: getSearchParam('sampling_strategy') || sessionStorage.getItem('DEFAULT_SAMPLING_STRATEGY') || config.DEFAULT.SAMPLING_STRATEGY
 }
+
+if (typeof INITIAL_STATE.duration === 'string') INITIAL_STATE.duration = parseInt(INITIAL_STATE.duration, 10)
 
 // ------------------------------------------------------------------
 
@@ -30,8 +32,8 @@ const setSampleStatus = (state, { playing, sampleIndex }) => // TODO
 const setSampleVolume = (state, { sampleIndex, volume }) => // TODO
 	({ ...state, tracks: state.tracks.map((other, otherIndex) => otherIndex !== sampleIndex ? other : { ...other, volume2: volume }) })
 
-const setSampleDuration = (state, { sampleDuration }) =>
-	({ ...state, sampleDuration })
+const setSampleDuration = (state, { duration }) =>
+	({ ...state, duration })
 
 const setTracks = (state, { audios, tracks }) =>
 	({ ...state, audios, tracks })

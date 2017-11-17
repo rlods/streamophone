@@ -13,14 +13,14 @@ const API_BASE_URL = 'https://api.spotify.com/v1/'
 // https://developer.spotify.com/my-applications/
 // https://developer.spotify.com/web-api/authorization-guide/#client_credentials_flow
 // curl -X POST https://accounts.spotify.com/api/token -d grant_type=client_credentials --header "Authorization: Basic YmUxNTZlMWUxMGRlNDNiMmI0ZTNmNzNiMmY0MGQxZGM6ODMzOTJmMjkxYjBjNDYyMTk2OTgyYWY5NzUwMTQ0YTg="
-// Test Album ID: 5rOHrnrRomvSJhQLGVtfJ8
+// Test Album ID: 5rOHrnrRomvSJhQLGVtfJ8, 0QhwxYDUougJiVDtyN4Lhm
+// Test Artist ID: 0OdUWJ0sBjDrqHygGUXeCF
 export default class SpotifyProvider extends Provider
 {
 	constructor() {
 		super()
 
 		let AUTHORIZATION_CODE = sessionStorage.getItem('SPOTIFY_AT')
-
 		if (!AUTHORIZATION_CODE && document.location.hash) {
 			if ('spotify' === getHashParam('state')) {
 				AUTHORIZATION_CODE = getHashParam('access_token')
@@ -42,12 +42,12 @@ export default class SpotifyProvider extends Provider
 		{
 			case 'spotify_album':
 			{
-				const albumData = await this.fetchAlbum(sourceId)
-				tracks = albumData.tracks.items.map(track => {
-					// In that case we have to enrich each track data with the cover which is available in the album data
-					track.cover = albumData.images[0].url
-					return track
-				})
+				tracks = await this.fetchAlbumTracks(sourceId)
+				break
+			}
+			case 'spotify_artist':
+			{
+				tracks = await this.fetchArtistTracks(sourceId)
 				break
 			}
 			default:
@@ -60,7 +60,7 @@ export default class SpotifyProvider extends Provider
 			id: track.id,
 			playing: false,
 			preview: track.preview_url,
-			readable: true, // TODO,
+			readable: !!track.preview_url,
 			ready: false,
 			speed: 1.0,
 			title: track.name,
@@ -71,7 +71,7 @@ export default class SpotifyProvider extends Provider
 	}
 
 	refreshAuthentication() {
-		document.location = `https://accounts.spotify.com/authorize?client_id=${config.TMP.SPOTIFY}&response_type=token&state=spotify&redirect_uri=http://localhost:8080/#/play`
+		document.location = `https://accounts.spotify.com/authorize?client_id=${config.TMP.SPOTIFY}&response_type=token&state=spotify&redirect_uri=http://localhost:8080`
 	}
 
 	async fetchAPI(url) {
@@ -94,7 +94,23 @@ export default class SpotifyProvider extends Provider
 		}
 	}
 
-	async fetchAlbum(albumId) {
-		return this.fetchAPI(`albums/${albumId}`)
+	async fetchAlbumTracks(albumId) {
+		const albums = await this.fetchAPI(`albums/${albumId}`)
+		return albums.tracks.items.map(track => {
+			// In that case we have to enrich each track data with the cover which is available in the album data
+			track.cover = albums.images[0].url
+			return track
+		})
+	}
+
+	async fetchArtistTracks(artistId) {
+		const albums = await this.fetchAPI(`artists/${artistId}/albums`)
+		const albumIds = albums.items.map(album => album.id).join(',')
+		const albumsDetailed = await this.fetchAPI(`albums?ids=${albumIds}`) // https://developer.spotify.com/web-api/console/get-several-albums/#complete
+		return [].concat.apply([], albumsDetailed.albums.map(album => album.tracks.items.map(track => {
+			// In that case we have to enrich each track data with the cover which is available in the album data
+			track.cover = album.images[0].url
+			return track
+		})))
 	}
 }
