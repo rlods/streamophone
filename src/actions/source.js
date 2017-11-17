@@ -56,14 +56,14 @@ export const createSampling = () => async (dispatch, getState, { app }) => {
 
 		// Create sampling midi strategy if specified
 		const strategyDefinition = config.STRATEGIES[sampling.strategyId]
+		if (!strategyDefinition)
+			throw new Error(`Unknown strategy "${sampling.strategyId}"`)
 		const driver = app.drivers[strategyDefinition.driver]
 		if (!driver)
 			throw new Error(`Unknown driver "${strategyDefinition.driver}"`)
-
 		app.strategy = createStrategy(sampling.strategyId)
 
 		// Fetch tracks
-
 		const providerId = source.type.split('_')[0]
 		const provider = createProvider(providerId)
 		const tracks = transformArray(await provider.fetchTracks(source.type, source.id), app.strategy.samplesCount, source.transformation, validateTrack)
