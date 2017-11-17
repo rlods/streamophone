@@ -44,7 +44,7 @@ export default class FreesoundProvider extends Provider
 						id: track.id,
 						playing: false,
 						preview,
-						readable: !!preview,
+						readable: !!preview && preview.endsWith('.mp3'),
 						ready: false,
 						speed: 1.0,
 						title: track.name,

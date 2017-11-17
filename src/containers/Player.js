@@ -14,7 +14,7 @@ const mapStateToProps = (state, ownProps) => ({
 const mapDispatchToProps = (dispatch, ownProps) => ({
 	onKeyDown: e => !e.repeat && dispatch(handleKeyDown(e.keyCode)),
 	onKeyUp: e => dispatch(handleKeyUp(e.keyCode)),
-	onInit: () => dispatch(play(ownProps.history))
+	onInit: () => dispatch(play(ownProps.history, false))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Player)

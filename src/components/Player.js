@@ -14,17 +14,15 @@ const KEY_ORDER_AZERTY = 'AZERTYUIOPQSDFGHJKLMWXCVBN'
 
 class Player extends Component {
 	componentWillMount() {
-		document.addEventListener("keydown", this.props.onKeyDown.bind(this))
-		document.addEventListener("keyup", this.props.onKeyUp.bind(this))
-		if (!this.props.tracks) {
-			// Because user directly opened the /play page not from the splash screen
-			this.props.onInit()
-		}
+		document.addEventListener('keydown', this.props.onKeyDown.bind(this))
+		document.addEventListener('keyup', this.props.onKeyUp.bind(this))
+		if (!this.props.tracks)	
+			this.props.onInit() // Because user directly opened the /play page not from the splash screen
 	}
 
 	componentWillUnmount() {
-		document.removeEventListener("keydown", this.props.onKeyDown.bind(this))
-		document.addEventListener("keyup", this.props.onKeyUp.bind(this))
+		document.removeEventListener('keydown', this.props.onKeyDown.bind(this))
+		document.addEventListener('keyup', this.props.onKeyUp.bind(this))
 	}
 
 	render() {

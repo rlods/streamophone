@@ -29,7 +29,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 	onChangeSourceType: e           => dispatch(changeSourceType(e.target.value)),
 	onPlay: e                       => {
 		e.preventDefault()
-		dispatch(play(ownProps.history))
+		dispatch(play(ownProps.history, true))
 	},
 })
 
