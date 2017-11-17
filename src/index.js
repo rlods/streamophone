@@ -10,41 +10,15 @@ import thunk from 'redux-thunk'
 import rootReducer from './reducers'
 //import registerServiceWorker from './registerServiceWorker'
 import App from './containers/App'
-import Driver from './drivers/Driver'
-import MidiDriver from './drivers/MidiDriver'
-import SocketDriver from './drivers/SocketDriver'
+import { createDrivers } from './drivers'
 import config from './config'
 import AudioEngine from './tools/AudioEngine'
 import './index.css'
 
 // --------------------------------------------------------------
 
-const drivers = {}
-Object.entries(config.DRIVERS).forEach(([driverId, driverDefinition]) => {
-	try {
-		let driver
-		switch (driverDefinition.type)
-		{
-		case 'basic':
-			driver = new Driver()
-			break 
-		case 'midi':
-			driver = new MidiDriver()
-			break 
-		case 'socket':
-			driver = new SocketDriver(driverDefinition.socketUrl, driverDefinition.socketPrefix)
-			break
-		default:
-			throw new Error(`Unknown driver type "${driverDefinition.type}"`)
-		}
-		drivers[driverId] = driver
-	}
-	catch (error) {
-		console.log('Cannot register driver', error)
-	}
-})
-
 const audioEngine = new AudioEngine()
+const drivers = createDrivers()
 
 // --------------------------------------------------------------
 

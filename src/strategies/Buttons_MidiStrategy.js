@@ -1,11 +1,11 @@
 import { startSample, stopSample, changeSampleVolume } from '../actions/sampling'
-import Strategy from './Strategy'
+import MidiStrategy from './MidiStrategy'
 
 // --------------------------------------------------------------
 
-export default class Buttons_MidiStrategy extends Strategy {
+export default class Buttons_MidiStrategy extends MidiStrategy {
 	constructor() {
-		super()
+		super('...') // TODO find input name
 		this.samplesCount = 8
 	}
 

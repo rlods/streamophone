@@ -1,11 +1,11 @@
 import { startSample, stopSample } from '../actions/sampling'
-import Strategy from './Strategy'
+import MidiStrategy from './MidiStrategy'
 
 // --------------------------------------------------------------
 
-class LightPadBlock_MidiStrategy extends Strategy {
+class LightPadBlock_MidiStrategy extends MidiStrategy {
 	constructor(mapping, samplesCount) {
-		super()
+		super('Lightpad BLOCK')
 		this.mapping = mapping
 		this.samplesCount = samplesCount
 	}

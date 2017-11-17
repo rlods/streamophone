@@ -1,5 +1,5 @@
 import { startSample, stopSample, changeSampleVolume } from '../actions/sampling'
-import Strategy from './Strategy'
+import MidiStrategy from './MidiStrategy'
 
 // --------------------------------------------------------------
 
@@ -9,9 +9,9 @@ const keyUp = 128
 
 // --------------------------------------------------------------
 
-export default class KORG_NanoKey2_MidiStrategy extends Strategy {
+export default class KORG_NanoKey2_MidiStrategy extends MidiStrategy {
 	constructor() {
-		super()
+		super('...') // TODO find input name
 		this.samplesCount = 25
 	}
 

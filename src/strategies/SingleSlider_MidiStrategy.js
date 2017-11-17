@@ -1,11 +1,11 @@
 import { startSample, stopSample } from '../actions/sampling'
-import Strategy from './Strategy'
+import MidiStrategy from './MidiStrategy'
 
 // --------------------------------------------------------------
 
-export default class SingleSlider_MidiStrategy extends Strategy {
+export default class SingleSlider_MidiStrategy extends MidiStrategy {
 	constructor() {
-		super()
+		super('...') // TODO find input name
 		this.currentSample = 0
 		this.samplesCount = 127
 	}
