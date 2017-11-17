@@ -1,8 +1,7 @@
-import { createProvider } from '../providers'
-import { transformArray } from '../tools'
 import { changeSampleBPM, changeSampleSpeed, changeSampleNormalizationVolume, changeSamples } from './sampling'
+import { createProvider } from '../providers'
 import { createStrategy } from '../strategies'
-import config from '../config'
+import { transformArray } from '../tools'
 
 // ------------------------------------------------------------------
 
@@ -54,18 +53,11 @@ export const createSampling = () => async (dispatch, getState, { app }) => {
 		// Stop all previously loaded audios
 		app.audioEngine.stopAll()
 
-		// Create sampling midi strategy if specified
-		const strategyDefinition = config.STRATEGIES[sampling.strategyId]
-		if (!strategyDefinition)
-			throw new Error(`Unknown strategy "${sampling.strategyId}"`)
-		const driver = app.drivers[strategyDefinition.driver]
-		if (!driver)
-			throw new Error(`Unknown driver "${strategyDefinition.driver}"`)
+		// Create strategy
 		app.strategy = createStrategy(sampling.strategyId)
 
 		// Fetch tracks
-		const providerId = source.type.split('_')[0]
-		const provider = createProvider(providerId)
+		const provider = createProvider(source.type.split('_')[0])
 		const tracks = transformArray(await provider.fetchTracks(source.type, source.id), app.strategy.samplesCount, source.transformation, validateTrack)
 		tracks.forEach(track => {
 			track.loopStart = 0
