@@ -66,7 +66,7 @@ export const createSampling = () => async (dispatch, getState, { app }) => {
 
 		const providerId = source.type.split('_')[0]
 		const provider = createProvider(providerId)
-		let tracks = await provider.fetchTracks(source.type, source.id)
+		const tracks = transformArray(await provider.fetchTracks(source.type, source.id), app.strategy.samplesCount, source.transformation, validateTrack)
 		tracks.forEach(track => {
 			track.loopStart = 0
 			track.loopEnd = sampling.defaultDuration > 0 ? track.loopStart + (sampling.defaultDuration / 1000.0) : 0
@@ -76,10 +76,9 @@ export const createSampling = () => async (dispatch, getState, { app }) => {
 			track.volume1 = 0.5
 			track.volume2 = 1.0
 		})
-		tracks = transformArray(tracks, app.strategy.samplesCount, source.transformation, validateTrack)
 
-		// Load audios
-		app.audioEngine.loadAudios(dispatch, tracks)
+		// Load audios (asynchronously)
+		/* await */ app.audioEngine.loadAudios(dispatch, tracks)
 		
 		// Start enrichment
 		provider.enrichTracks(tracks, (baseIndex, enrichedTracks) => {
