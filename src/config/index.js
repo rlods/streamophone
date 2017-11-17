@@ -71,11 +71,13 @@ const Config = {
 		},
 		LIGHTPADBLOCK_4: {
 			driver: 'midi',
-			label: 'ROLI LightPadBlock 2x2'
+			label: 'ROLI LightPadBlock 2x2',
+			midiName: 'Lightpad BLOCK' // TODO: this is the name given by the device, use it to match with the strategy
 		},
 		LIGHTPADBLOCK_16: {
 			driver: 'midi',
-			label: 'ROLI LightPadBlock 4x4'
+			label: 'ROLI LightPadBlock 4x4',
+			midiName: 'Lightpad BLOCK' // TODO: this is the name given by the device, use it to match with the strategy
 		},
 		KEYBOARD_24: {
 			driver: 'midi',
