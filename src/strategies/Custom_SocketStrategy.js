@@ -13,7 +13,7 @@ export default class Custom_SocketStrategy extends Strategy {
 			this.currentSamplesIndexes.push(0)
 	}
 
-	handleWebSocket(dispatch, { id, type, x, y }) {
+	handleSocketMessage(dispatch, { id, type, x, y }) {
 		if (type === 'position') {
 			y = Math.floor((y * 10 + 10) / 2)
 			console.log(id, y)

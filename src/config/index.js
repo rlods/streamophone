@@ -35,13 +35,13 @@ const Config = {
 	ENABLE_VOLUME_FROM_GAIN: false, // TODO: enable that with a significative delay between calls because of Deezer API Rate Limits (not done yet)
 
 	DRIVERS: {
-		basic: {
+		d1: {
 			type: 'basic'
 		},
-		midi: {
+		d2: {
 			type: 'midi'
 		},
-		// socket: {
+		// d3: {
 		//	type: 'socket',
 		//	socketUrl: 'http://129.102.147.114:3000',
 		//	socketPrefix: 'main'
@@ -50,43 +50,43 @@ const Config = {
 
 	STRATEGIES: {
 		KEYBOARD_AZERTY: {
-			driver: 'basic',
+			driver: 'd1',
 			label: 'Keyboard Azerty'
 		},
 		KEYBOARD_QWERTY: {
-			driver: 'basic',
+			driver: 'd1',
 			label: 'Keyboard Qwerty'
 		},
 		BCF2000_BUTTONS: {
-			driver: 'midi',
+			driver: 'd2',
 			label: 'BCF2000 - Buttons'
 		},
 		BCF2000_SINGLESLIDER: {
-			driver: 'midi',
+			driver: 'd2',
 			label: 'BCF2000 - Single Slider'
 		},
 		BCF2000_MULTISLIDERS: {
-			driver: 'midi',
+			driver: 'd2',
 			label: 'BCF2000 - Multi Sliders'
 		},
 		LIGHTPADBLOCK_4: {
-			driver: 'midi',
+			driver: 'd2',
 			label: 'ROLI LightPadBlock 2x2'
 		},
 		LIGHTPADBLOCK_16: {
-			driver: 'midi',
+			driver: 'd2',
 			label: 'ROLI LightPadBlock 4x4'
 		},
 		KEYBOARD_24: {
-			driver: 'midi',
+			driver: 'd2',
 			label: 'OXYGEN25'
 		},
 		KORG_NANOKEY2: {
-			driver: 'midi',
+			driver: 'd2',
 			label: 'KORG NanoKey2'
 		},
 		// CUSTOM_SOCKET: {
-		//	driver: 'socket',
+		//	driver: 'd3',
 		//	label: 'CUSTOM_SOCKET (25 samples)'
 		//}
 	},

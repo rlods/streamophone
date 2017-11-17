@@ -16,22 +16,22 @@ export default class MultiSliders_MidiStrategy extends MidiStrategy {
 			this.currentSamples.push(0)
 	}
 
-	handleMIDI(dispatch, channel, key, velocity) {
-		const sample = (key * this.samplesCountPerSlider) - Math.floor(velocity * this.samplesCountPerSlider / this.slidersSteps) - 1
-		if (velocity === 0) {
+	handleMidiEvent(dispatch, c, k, v) {
+		const sample = (k * this.samplesCountPerSlider) - Math.floor(v * this.samplesCountPerSlider / this.slidersSteps) - 1
+		if (v === 0) {
 			console.log("stop column")
 			dispatch(stopSample(this.oldSample))
-			this.currentSamples[key-1] = -1
+			this.currentSamples[k-1] = -1
 			return
 		}
-		if (channel === 176 && key >= 1 && key <= this.slidersCount) {
-			this.oldSample = this.currentSamples[key-1]
+		if (c === 176 && k >= 1 && k <= this.slidersCount) {
+			this.oldSample = this.currentSamples[k-1]
 			if (sample !== this.oldSample) {
 				// change sample
 				console.log("Start sample ", sample)
 				dispatch(stopSample(this.oldSample))
 				dispatch(startSample(sample))
-				this.currentSamples[key-1] = sample
+				this.currentSamples[k-1] = sample
 			}
 		}
 	}

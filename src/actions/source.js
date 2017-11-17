@@ -67,32 +67,32 @@ export const loadAudios = (dispatch, sampling, tracks) => tracks.map((track, sam
 
 const validateTrack = track => !!track.preview && track.readable // readable means the track is available in current country
 
-export const play = history => async (dispatch, getState, { audioEngine, drivers }) => {
+export const play = history => async (dispatch, getState, { app }) => {
 	try {
 		const { sampling, source } = getState()
 
 		history.replace(`/play?sampling_duration=${sampling.duration}&sampling_strategy=${sampling.strategyId}&source_bpm=${source.bpm}&source_id=${source.id}&source_transformation=${source.transformation}&source_type=${source.type}`)
 
 		// Stop all previously loaded audios
-		audioEngine.stopAll()
+		app.audioEngine.stopAll()
 		
 		// Create sampling midi strategy if specified
 		const strategyDefinition = config.STRATEGIES[sampling.strategyId]
-		const driver = drivers[strategyDefinition.driver]
+		const driver = app.drivers[strategyDefinition.driver]
 		if (!driver)
 			throw new Error(`Unknown driver "${strategyDefinition.driver}"`)
 
-		driver.strategy = createStrategy(sampling.strategyId)
+		app.strategy = createStrategy(sampling.strategyId)
 
 		// Fetch tracks
 
 		const providerId = source.type.split('_')[0]
 		const provider = createProvider(providerId)
 		let tracks = await provider.fetchTracks(source.type, source.id)
-		tracks = transformArray(tracks, driver.strategy.samplesCount, source.transformation, validateTrack)
+		tracks = transformArray(tracks, app.strategy.samplesCount, source.transformation, validateTrack)
 
 		// Load audios
-		audioEngine.loadAudios(dispatch, sampling, tracks)
+		app.audioEngine.loadAudios(dispatch, sampling, tracks)
 		
 		// Start enrichment
 		provider.enrichTracks(tracks, (baseIndex, enrichedTracks) => {

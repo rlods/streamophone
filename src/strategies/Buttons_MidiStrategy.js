@@ -9,15 +9,15 @@ export default class Buttons_MidiStrategy extends MidiStrategy {
 		this.samplesCount = 8
 	}
 
-	handleMIDI(dispatch, channel, key, velocity) {
-		if (channel === 176 && key >= 1 && key <= 8) {
-			// change volume of key-1
-			console.log("Change volume of ", key-1, " to ", velocity/127)
-			dispatch(changeSampleVolume(key-1, velocity/127))
+	handleMidiEvent(dispatch, c, k, v) {
+		if (c === 176 && k >= 1 && k <= 8) {
+			// change volume of k-1
+			console.log("Change volume of ", k-1, " to ", v/127)
+			dispatch(changeSampleVolume(k-1, v/127))
 		}
 		else {
 			// start one sample
-			var val = channel + "-" + key
+			var val = c + "-" + k
 			var sample = -1
 			switch (val)
 			{
@@ -50,10 +50,10 @@ export default class Buttons_MidiStrategy extends MidiStrategy {
 					break
 			}
 			if (sample!==-1) {
-				if (velocity === 0) {
+				if (v === 0) {
 					console.log("stop sample ", sample)
 					dispatch(stopSample(sample))
-				} else if (velocity === 127) {
+				} else if (v === 127) {
 					console.log("start sample ", sample)
 					dispatch(startSample(sample))
 				}

@@ -10,12 +10,12 @@ export default class SingleSlider_MidiStrategy extends MidiStrategy {
 		this.samplesCount = 127
 	}
 
-	handleMIDI(dispatch, channel, key, velocity) {
-		if (channel === 176 && key >= 1 && key <= 8) {
-			console.log("Start sample", velocity)
+	handleMidiEvent(dispatch, c, k, v) {
+		if (c === 176 && k >= 1 && k <= 8) {
+			console.log("Start sample", v)
 			dispatch(stopSample(this.currentSample))
-			dispatch(startSample(velocity))
-			this.currentSample = velocity
+			dispatch(startSample(v))
+			this.currentSample = v
 		}
 	}
 }

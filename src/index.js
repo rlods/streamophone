@@ -17,18 +17,21 @@ import './index.css'
 
 // --------------------------------------------------------------
 
-const audioEngine = new AudioEngine()
-const drivers = createDrivers()
+const app = {
+	audioEngine: new AudioEngine(),
+	drivers: createDrivers(),
+	strategy: null
+}
 
 // --------------------------------------------------------------
 
 const middlewares = [
-	thunk.withExtraArgument({ audioEngine, drivers }),
+	thunk.withExtraArgument({ app }),
 	config.ENABLE_LOGGER && logger
 ].filter(middleware => !!middleware)
 
 const store = createStore(rootReducer, {}, applyMiddleware(...middlewares))
-Object.values(drivers).forEach(driver => driver.attach(store.dispatch.bind(this)))
+Object.values(app.drivers).forEach(driver => driver.attach(store.dispatch.bind(this)))
 
 // --------------------------------------------------------------
 

@@ -4,15 +4,15 @@ export default class Strategy {
 		this.samplesCount = 0
 	}
 
-	handleMIDI(dispatch, channel, key, velocity) {
-	}
-
 	handleKeyDown(dispatch, keyCode) {
 	}
 
 	handleKeyUp(dispatch, keyCode) {
 	}
 
-	handleWebSocket(dispatch, message) {
+	handleMidiEvent(dispatch, channel, key, velocity) {
+	}
+
+	handleSocketMessage(dispatch, message) {
 	}
 }

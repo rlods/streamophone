@@ -1,8 +1,8 @@
 
 export default class Driver {
-	constructor() {
+	constructor(type) {
 		this.dispatch = null
-		this.strategy = null
+		this.type = type
 	}
 
 	attach(dispatch) {

@@ -1,12 +1,13 @@
 import io from 'socket.io-client'
 //
 import Driver from './Driver'
+import { handleSocketEvent } from '../actions/sampling'
 
 // --------------------------------------------------------------
 
 export default class SocketDriver extends Driver {
 	constructor(url, prefix) {
-		super()
+		super('socket')
 		this.prefix = prefix
 		this.url = url
 		this.ws = null
@@ -19,7 +20,6 @@ export default class SocketDriver extends Driver {
 	}
 
 	onMessage(message) {
-		if (this.strategy)
-			this.strategy.handleWebSocket(this.dispatch, message)
+		this.dispatch(handleSocketEvent(message))
 	}
 }

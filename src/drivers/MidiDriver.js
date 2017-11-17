@@ -1,10 +1,11 @@
+import { handleMidiEvent } from '../actions/sampling'
 import Driver from './Driver'
 
 // --------------------------------------------------------------
 
 export default class MidiDriver extends Driver {
 	constructor() {
-		super()
+		super('midi')
 		this.inputs = null
 		this.init()
 	}
@@ -27,14 +28,12 @@ export default class MidiDriver extends Driver {
 			}, error => {
 				console.log("No access to MIDI devices or your browser doesn't support WebMIDI API. Please use WebMIDIAPIShim ", error);
 				reject()
-			});
+			})
 		})
 	}
 
 	onMessage(message) {
-		const data = message.data; // this gives us our [command/channel, note, velocity] data.
-		// console.log('MIDI data', data); // MIDI data [144, 63, 73]
-		if (this.strategy)
-			this.strategy.handleMIDI(this.dispatch, data[0], data[1], data[2])
+		const data = message.data
+		this.dispatch(handleMidiEvent(data[0], data[1], data[2]))
 	}
 }
