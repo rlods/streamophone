@@ -14,6 +14,7 @@ import Driver from './drivers/Driver'
 import MidiDriver from './drivers/MidiDriver'
 import SocketDriver from './drivers/SocketDriver'
 import config from './config'
+import AudioEngine from './tools/AudioEngine'
 import './index.css'
 
 // --------------------------------------------------------------
@@ -43,10 +44,12 @@ Object.entries(config.DRIVERS).forEach(([driverId, driverDefinition]) => {
 	}
 })
 
+const audioEngine = new AudioEngine()
+
 // --------------------------------------------------------------
 
 const middlewares = [
-	thunk.withExtraArgument({ drivers }),
+	thunk.withExtraArgument({ audioEngine, drivers }),
 	config.ENABLE_LOGGER && logger
 ].filter(middleware => !!middleware)
 

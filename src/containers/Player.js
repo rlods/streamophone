@@ -7,7 +7,6 @@ import Player from '../components/Player'
 // --------------------------------------------------------------
 
 const mapStateToProps = (state, ownProps) => ({
-	audios: state.sampling.audios,
 	tracks: state.sampling.tracks,
 	samplingStrategyId: state.sampling.strategyId
 })

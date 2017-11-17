@@ -1,10 +1,9 @@
 import { createProvider } from '../providers'
 import { transformArray } from '../tools'
-import { changeSampleAudioReady, changeSampleBPM, changeSampleSpeed, changeSampleNormalizationVolume, changeSampleStatus, changeSamplingTracks } from './sampling'
-//
-import config from '../config'
+import { changeSampleAudioReady, changeSampleBPM, changeSampleSpeed, changeSampleNormalizationVolume, changeSampleStatus, changeSamples } from './sampling'
 import { createStrategy } from '../strategies'
 import CustomAudio from '../tools/CustomAudio'
+import config from '../config'
 
 // ------------------------------------------------------------------
 
@@ -68,16 +67,14 @@ export const loadAudios = (dispatch, sampling, tracks) => tracks.map((track, sam
 
 const validateTrack = track => !!track.preview && track.readable // readable means the track is available in current country
 
-export const play = history => async (dispatch, getState, { drivers }) => {
+export const play = history => async (dispatch, getState, { audioEngine, drivers }) => {
 	try {
 		const { sampling, source } = getState()
 
 		history.replace(`/play?sampling_duration=${sampling.duration}&sampling_strategy=${sampling.strategyId}&source_bpm=${source.bpm}&source_id=${source.id}&source_transformation=${source.transformation}&source_type=${source.type}`)
 
-		if (sampling.audios) {
-			// Stop all previously loaded audios
-			sampling.audios.forEach(audio => audio.stop())
-		}
+		// Stop all previously loaded audios
+		audioEngine.stopAll()
 		
 		// Create sampling midi strategy if specified
 		const strategyDefinition = config.STRATEGIES[sampling.strategyId]
@@ -95,29 +92,34 @@ export const play = history => async (dispatch, getState, { drivers }) => {
 		tracks = transformArray(tracks, driver.strategy.samplesCount, source.transformation, validateTrack)
 
 		// Load audios
-		const audios = loadAudios(dispatch, sampling, tracks)
+		audioEngine.loadAudios(dispatch, sampling, tracks)
 		
-		// Start enrichment if needed
-		if (true) { // config.ENABLE_VOLUME_FROM_GAIN) {
-			provider.enrichTracks(tracks, (baseIndex, enrichedTracks) => {
-				// console.log('Tracks have been enriched')
+		// Start enrichment
+		provider.enrichTracks(tracks, (baseIndex, enrichedTracks) => {
+			// console.log('Tracks have been enriched')
 
-				// Update normalization volume
-				normalizeAudio(dispatch, audios, tracks, baseIndex, enrichedTracks)
-
-				// Update BPM
-				enrichedTracks.forEach((enrichedTrack, index) => {
-					const sampleIndex = baseIndex + index
-					if (enrichedTrack.bpm) {
-						if (source.bpm > 0)
-							dispatch(changeSampleSpeed(sampleIndex, source.bpm / enrichedTrack.bpm))
-						dispatch(changeSampleBPM(sampleIndex, enrichedTrack.bpm))
-					}
-				})
+			// Update normalization volume
+			enrichedTracks.forEach((enrichedTrack, index) => {
+				const sampleIndex = baseIndex + index
+				if (enrichedTrack.gain) {
+					let volume = 0.5 * Math.pow(10, ((-12 - enrichedTrack.gain) / 20))
+					if (volume > 1.0) volume = 1.0
+					dispatch(changeSampleNormalizationVolume(sampleIndex, volume))
+				}
 			})
-		}
 
-		dispatch(changeSamplingTracks(audios, tracks))
+			// Update BPM
+			enrichedTracks.forEach((enrichedTrack, index) => {
+				const sampleIndex = baseIndex + index
+				if (enrichedTrack.bpm) {
+					if (source.bpm > 0)
+						dispatch(changeSampleSpeed(sampleIndex, source.bpm / enrichedTrack.bpm))
+					dispatch(changeSampleBPM(sampleIndex, enrichedTrack.bpm))
+				}
+			})
+		})
+
+		dispatch(changeSamples(tracks))
 	}
 	catch (error) {
 		console.log('Cannot load source', error)

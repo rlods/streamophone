@@ -37,10 +37,11 @@ export const changeSampleBPM = (sampleIndex, bpm) => (dispatch, getState) => {
 	}
 }
 
-export const changeSampleNormalizationVolume = (sampleIndex, volume) => (dispatch, getState) => {
+export const changeSampleNormalizationVolume = (sampleIndex, volume) => (dispatch, getState, { audioEngine }) => {
 	const { sampling } = getState()
-	if (sampling.tracks && sampleIndex >= 0 && sampleIndex < sampling.tracks.length) {
-		sampling.audios[sampleIndex].setVolume(volume * sampling.tracks[sampleIndex].volume2)
+	const audio = audioEngine.getAudio(sampleIndex)
+	if (audio) {
+		audio.setVolume(volume * sampling.tracks[sampleIndex].volume2)
 		dispatch({
 			type: 'SAMPLING_SET_SAMPLE_NORMALIZATION_VOLUME',
 			data: { sampleIndex, volume }
@@ -48,10 +49,10 @@ export const changeSampleNormalizationVolume = (sampleIndex, volume) => (dispatc
 	}
 }
 
-export const changeSampleSpeed = (sampleIndex, speed) => (dispatch, getState) => {
-	const { sampling } = getState()
-	if (sampling.tracks && sampleIndex >= 0 && sampleIndex < sampling.tracks.length) {
-		sampling.audios[sampleIndex].setSpeed(speed)
+export const changeSampleSpeed = (sampleIndex, speed) => (dispatch, getState, { audioEngine }) => {
+	const audio = audioEngine.getAudio(sampleIndex)
+	if (audio) {
+		audio.setSpeed(speed)
 		dispatch({
 			type: 'SAMPLING_SET_SAMPLE_SPEED',
 			data: { sampleIndex, speed }
@@ -59,10 +60,11 @@ export const changeSampleSpeed = (sampleIndex, speed) => (dispatch, getState) =>
 	}
 }
 
-export const changeSampleVolume = (sampleIndex, volume) => (dispatch, getState) => {
+export const changeSampleVolume = (sampleIndex, volume) => (dispatch, getState, { audioEngine }) => {
 	const { sampling } = getState()
-	if (sampling.tracks && sampleIndex >= 0 && sampleIndex < sampling.tracks.length) {
-		sampling.audios[sampleIndex].setVolume(sampling.tracks[sampleIndex].volume1 * volume)
+	const audio = audioEngine.getAudio(sampleIndex)
+	if (audio) {
+		audio.setVolume(sampling.tracks[sampleIndex].volume1 * volume)
 		dispatch({
 			type: 'SAMPLING_SET_SAMPLE_VOLUME',
 			data: { sampleIndex, volume }
@@ -70,17 +72,10 @@ export const changeSampleVolume = (sampleIndex, volume) => (dispatch, getState) 
 	}
 }
 
-export const changeSamplingTracks = (audios, tracks) => (dispatch, getState) => {
-	dispatch({
-		type: 'SAMPLING_SET_TRACKS',
-		data: { audios, tracks }
-	})
-}
-
-export const changeSampleStatus = (sampleIndex, playing) => (dispatch, getState) => {
-	const { sampling } = getState()
-	if (sampling.audios && sampleIndex >= 0 && sampleIndex < sampling.audios.length) {
-		if (playing) sampling.audios[sampleIndex].start()
+export const changeSampleStatus = (sampleIndex, playing) => (dispatch, getState, { audioEngine }) => {
+	const audio = audioEngine.getAudio(sampleIndex)
+	if (audio) {
+		if (playing) audio.start()
 		dispatch({
 			type: 'SAMPLING_SET_SAMPLE_STATUS',
 			data: { playing, sampleIndex }
@@ -88,10 +83,17 @@ export const changeSampleStatus = (sampleIndex, playing) => (dispatch, getState)
 	}
 }
 
-export const registerSampleCanvas = (sampleIndex, canvas) => (dispatch, getState) => {
-	const { sampling } = getState()
-	if (sampling.audios && sampleIndex >= 0 && sampleIndex < sampling.audios.length)
-		sampling.audios[sampleIndex].setCanvas(canvas)
+export const registerSampleCanvas = (sampleIndex, canvas) => (dispatch, getState, { audioEngine }) => {
+	const audio = audioEngine.getAudio(sampleIndex)
+	if (audio)
+		audio.setCanvas(canvas)
+}
+
+export const changeSamples = tracks => (dispatch, getState) => {
+	dispatch({
+		type: 'SAMPLING_SET_SAMPLES',
+		data: { tracks }
+	})
 }
 
 // --------------------------------------------------------------
@@ -108,14 +110,14 @@ export const handleKeyUp = keyCode => (dispatch, getState, { drivers }) => {
 		driver.strategy.handleKeyUp(dispatch, keyCode)
 }
 
-export const startSample = sampleIndex => async (dispatch, getState) => {
-	const { sampling } = getState()
-	if (sampling.audios && sampleIndex >= 0 && sampleIndex < sampling.audios.length)
-		 sampling.audios[sampleIndex].start()
+export const startSample = sampleIndex => async (dispatch, getState, { audioEngine }) => {
+	const audio = audioEngine.getAudio(sampleIndex)
+	if (audio)
+		audio.start()
 }
 
-export const stopSample = sampleIndex => async (dispatch, getState) => {
-	const { sampling } = getState()
-	if (sampling.audios && sampleIndex >= 0 && sampleIndex < sampling.audios.length)
-		 sampling.audios[sampleIndex].stop()
+export const stopSample = sampleIndex => async (dispatch, getState, { audioEngine }) => {
+	const audio = audioEngine.getAudio(sampleIndex)
+	if (audio)
+		audio.stop()
 }
