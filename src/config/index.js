@@ -2,21 +2,21 @@
 const Config = {
 
 	CURATED_SOURCES: [
-		{ sourceType: 'deezer_playlist', sourceId: 1083902971,               title: 'Hits 2017' },
-		{ sourceType: 'deezer_playlist', sourceId: 791313621,                title: 'The Greatest Piano Classics' },
-		{ sourceType: 'deezer_playlist', sourceId: 548368765,                title: 'Long Playlist' },
-		{ sourceType: 'deezer_playlist', sourceId: 3789105302,               title: 'Steve Reich' },
-		{ sourceType: 'deezer_playlist', sourceId: 10178447,                 title: 'Percus' },
-		{ sourceType: 'deezer_playlist', sourceId: 3791846562,               title: 'Speeches' },
-		{ sourceType: 'deezer_playlist', sourceId: 1194890603,               title: 'Best of Daft Punk' },
-		{ sourceType: 'deezer_playlist', sourceId: 771276181,                title: 'Musique concrète et électronique' },
-		{ sourceType: 'deezer_playlist', sourceId: 3510240466,               title: 'Soul to Funk' },
-		{ sourceType: 'deezer_playlist', sourceId: 23804156,                 title: 'Minimal electro house' },
-		{ sourceType: 'deezer_playlist', sourceId: 2762818384,               title: 'Musique concrète' },
-		{ sourceType: 'deezer_album',    sourceId: 13686698,                 title: 'Mr. Robot, Vol. 1' },
-		{ sourceType: 'deezer_artist',   sourceId: 27,                       title: 'Daft Punk' },
-		{ sourceType: 'freesound_pack',  sourceId: 7447,                     title: 'Zeeland dunes' },
-		{ sourceType: 'freesound_pack',  sourceId: 16873,                    title: 'Industrial' },
+		{ sourceType: 'deezer_playlist', sourceId: '1083902971',             title: 'Hits 2017' },
+		{ sourceType: 'deezer_playlist', sourceId: '791313621',              title: 'The Greatest Piano Classics' },
+		{ sourceType: 'deezer_playlist', sourceId: '548368765',              title: 'Long Playlist' },
+		{ sourceType: 'deezer_playlist', sourceId: '3789105302',             title: 'Steve Reich' },
+		{ sourceType: 'deezer_playlist', sourceId: '10178447',               title: 'Percus' },
+		{ sourceType: 'deezer_playlist', sourceId: '3791846562',             title: 'Speeches' },
+		{ sourceType: 'deezer_playlist', sourceId: '1194890603',             title: 'Best of Daft Punk' },
+		{ sourceType: 'deezer_playlist', sourceId: '771276181',              title: 'Musique concrète et électronique' },
+		{ sourceType: 'deezer_playlist', sourceId: '3510240466',             title: 'Soul to Funk' },
+		{ sourceType: 'deezer_playlist', sourceId: '23804156',               title: 'Minimal electro house' },
+		{ sourceType: 'deezer_playlist', sourceId: '2762818384',             title: 'Musique concrète' },
+		{ sourceType: 'deezer_album',    sourceId: '13686698',               title: 'Mr. Robot, Vol. 1' },
+		{ sourceType: 'deezer_artist',   sourceId: '27',                     title: 'Daft Punk' },
+		{ sourceType: 'freesound_pack',  sourceId: '7447',                   title: 'Zeeland dunes' },
+		{ sourceType: 'freesound_pack',  sourceId: '16873',                  title: 'Industrial' },
 		{ sourceType: 'spotify_album',   sourceId: '0QhwxYDUougJiVDtyN4Lhm', title: 'SPT1' },
 		{ sourceType: 'spotify_artist',  sourceId: '0OdUWJ0sBjDrqHygGUXeCF', title: 'SPT2' }
 	],
@@ -25,7 +25,7 @@ const Config = {
 		SAMPLING_DURATION: -1, // do not shortened
 		SAMPLING_STRATEGY: 'KEYBOARD_AZERTY',
 		SOURCE_BPM: -1, // do not adjust BPM
-		SOURCE_ID: '1083902971',
+		SOURCE_ID: '791313621',
 		SOURCE_TRANSFORMATION: 'shuffle',
 		SOURCE_TYPE: 'deezer_playlist'
 	},
