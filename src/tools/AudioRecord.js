@@ -3,6 +3,10 @@ import { sleep, js_to_b64, b64_to_js } from '../tools'
 
 // ------------------------------------------------------------------
 
+const RECORD_FORMAT = '1.0'
+
+// ------------------------------------------------------------------
+
 export default class AudioRecord
 {
 	constructor(data)
@@ -13,9 +17,10 @@ export default class AudioRecord
 			console.log('Import Record', this.data)
 		}
 		else {
-			this.data = {
-				tracks: {}, // sampleIndex will become a dictionary key in that case
-				events: []
+			this.data = { // sampleIndex will become a dictionary key in that case
+				events: [],
+				format: '1.0',
+				tracks: {}
 			}
 		}
 	}
@@ -40,7 +45,7 @@ export default class AudioRecord
 	}
 
 	async play() {
-		if (this.data.events.length > 0) {
+		if (this.data && RECORD_FORMAT === this.data.format && this.data.events.length > 0) {
 			console.log('Loading audios')
 			const context = new (window.AudioContext || window.webkitAudioContext)()
 			const audios = {}
@@ -56,8 +61,11 @@ export default class AudioRecord
 			let previousTime = this.data.events[0][0]
 			await Promise.all(this.data.events.map(async e => {
 				const [ currentTime, sampleIndex, eventType ] = e
-				await sleep(currentTime - previousTime)
-				previousTime = currentTime
+				const delay = currentTime - previousTime
+				if (delay > 0) {
+					await sleep(delay)
+					previousTime = currentTime
+				}
 				switch (eventType)
 				{
 				case AUDIO_EVENT_PLAY:
