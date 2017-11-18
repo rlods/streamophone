@@ -4,11 +4,8 @@ import classNames from 'classnames'
 //
 import { chunkArray } from '../tools'
 import Sample from '../containers/Sample'
+import { KEY_ORDER_AZERTY, KEY_ORDER_QWERTY } from '../tools'
 import './Player.css'
-
-// --------------------------------------------------------------
-
-const KEY_ORDER_AZERTY = 'AZERTYUIOPQSDFGHJKLMWXCVBN'
 
 // --------------------------------------------------------------
 
@@ -32,13 +29,13 @@ class Player extends Component {
 			{
 				case 'KEYBOARD_AZERTY':
 				case 'KEYBOARD_QWERTY':
-					const rows = [
+					const keys = (this.props.samplingStrategyId === 'KEYBOARD_AZERTY' ? KEY_ORDER_AZERTY : KEY_ORDER_QWERTY).toUpperCase()
+					layoutClassName = 'KEYBOARD'
+					body = [
 						this.props.tracks.slice(0, 10),
 						this.props.tracks.slice(10, 20),
 						this.props.tracks.slice(20)
-					]
-					layoutClassName = 'KEYBOARD'
-					body = rows.map((row, rowIndex) => <div className="samples-group samples-group-by-row" key={rowIndex}>{row.map((sample, sampleIndex) => <Sample key={sampleIndex} index={rowIndex * 10 + sampleIndex} info={KEY_ORDER_AZERTY[rowIndex * 10 + sampleIndex]} />)}</div>)
+					].map((row, rowIndex) => <div className="samples-group samples-group-by-row" key={rowIndex}>{row.map((sample, sampleIndex) => <Sample key={sampleIndex} index={rowIndex * 10 + sampleIndex} info={keys[rowIndex * 10 + sampleIndex]} />)}</div>)
 					break
 
 				case 'BCF2000_MULTISLIDERS':
@@ -97,8 +94,8 @@ class Player extends Component {
 					break
 			}
 
-			const info = true ? null : (
-				<div className="player-info">TEST</div>
+			const info = false ? null : (
+				<div className="player-info">"space" to replay your creation</div>
 			)
 
 			return (

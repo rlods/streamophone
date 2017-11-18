@@ -9,6 +9,11 @@
 	font-family: 'Arial';
 }
 
+.player-info {
+	color: #DDD;
+	margin: 10px 0;
+}
+
 .samples-group-by-col {
 	display: flex;
 	flex-direction: column;
@@ -41,13 +46,13 @@ CUSTOM_SOCKET_STRATEGY
 }
 
 .player.LIGHTPADBLOCK_4 .sample {
-	height: 45vh;
-	width: 45vh;
+	height: 40vh;
+	width: 40vh;
 }
 
 .player.LIGHTPADBLOCK_4 .sample-cover, .player.LIGHTPADBLOCK_4 .sample-canvas {
-	height: calc(45vh - 10px);
-	width: calc(45vh - 10px);
+	height: calc(40vh - 10px);
+	width: calc(40vh - 10px);
 }
 
 /* --------------------------------------------------------------- */

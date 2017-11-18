@@ -69,7 +69,8 @@ export default class CustomAudio
 	}
 	
 	setLoop(loopStart, loopEnd) {
-		this._eventCB([AUDIO_EVENT_LOOP, loopStart, loopEnd])
+		if (this._eventCB)
+			this._eventCB([AUDIO_EVENT_LOOP, loopStart, loopEnd])
 		this._loopEnd = loopEnd
 		this._loopStart = loopStart
 		if (null !== this._sourceNode) {
@@ -79,14 +80,16 @@ export default class CustomAudio
 	}
 	
 	setSpeed(speed) {
-		this._eventCB([AUDIO_EVENT_SPEED, speed])
+		if (this._eventCB)
+			this._eventCB([AUDIO_EVENT_SPEED, speed])
 		this._speed = speed
 		if (null !== this._sourceNode)
 			this._sourceNode.playbackRate.value = speed
 	}
 	
 	setVolume(volume) {
-		this._eventCB([AUDIO_EVENT_VOLUME, volume])
+		if (this._eventCB)
+			this._eventCB([AUDIO_EVENT_VOLUME, volume])
 		this._gainNode.gain.value = volume
 	}
 
@@ -103,10 +106,10 @@ export default class CustomAudio
 			this._sourceNode.start() // A new BufferSource must be created for each start
 			this._playing = true
 			this._startedAt = this._context.currentTime
-			this._eventCB([AUDIO_EVENT_PLAY])
-			if (this._canvas) {
+			if (this._eventCB) 
+				this._eventCB([AUDIO_EVENT_PLAY])
+			if (this._canvas)
 				this._startVisualization()
-			}
 		}
 	}
 
@@ -117,7 +120,8 @@ export default class CustomAudio
 
 	_onStop() {
 		this._stopVisualization()
-		this._eventCB([AUDIO_EVENT_PAUSE])
+		if (this._eventCB)
+			this._eventCB([AUDIO_EVENT_PAUSE])
 		this._playing = false
 		this._sourceNode = null
 	}

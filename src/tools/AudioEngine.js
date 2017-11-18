@@ -1,5 +1,6 @@
 import { changeSampleAudioReady, changeSampleStatus } from '../actions/sampling'
-import CustomAudio, { AUDIO_EVENT_PLAY, AUDIO_EVENT_PAUSE } from '../tools/CustomAudio'
+import AudioRecord from './AudioRecord'
+import CustomAudio, { AUDIO_EVENT_PLAY, AUDIO_EVENT_PAUSE } from './CustomAudio'
 
 // ------------------------------------------------------------------
 
@@ -9,32 +10,15 @@ export default class AudioEngine
 	{
 		this.audios = null
 		this.context = new (window.AudioContext || window.webkitAudioContext)()
-		this.record = {
-			tracks: {}, // sampleIndex will become a dictionary key in that case
-			events: []
-		}
+		this.record = new AudioRecord()
 	}
 
 	loadAudios(dispatch, tracks) {
 		this.audios = tracks.map((track, sampleIndex) => {
 			const audio = new CustomAudio(this.context, track.preview, e => {
-				switch (e[0])
-				{
-				case AUDIO_EVENT_PLAY:
-					if (!this.record.tracks[sampleIndex]) {
-						const { id, loopStart, loopEnd, preview, providerId, speed, title, volume1, volume2 } = track
-						this.record.tracks[sampleIndex] = { id, loopStart, loopEnd, preview, providerId, speed, title, volume: volume1 * volume2 }
-					}
-					dispatch(changeSampleStatus(sampleIndex, true))
-					break
-				case AUDIO_EVENT_PAUSE:
-					dispatch(changeSampleStatus(sampleIndex, false))
-					break
-				default:
-					break
-				}
-				if (this.record.tracks[sampleIndex]) // only record events of tracks which have been already been played
-					this.record.events.push([Math.floor(this.context.currentTime * 1000), sampleIndex, e])
+				if      (e[0] === AUDIO_EVENT_PLAY)  dispatch(changeSampleStatus(sampleIndex, true))
+				else if (e[0] === AUDIO_EVENT_PAUSE) dispatch(changeSampleStatus(sampleIndex, false))
+				this.record.pushEvent(this.context.currentTime, sampleIndex, e, track)
 			})
 			audio.setLoop(track.loopStart, track.loopEnd)
 			audio.setVolume(track.volume1 * track.volume2)
@@ -53,10 +37,5 @@ export default class AudioEngine
 			this.audios.forEach(audio => audio.stop())
 			this.audios = null
 		}
-	}
-
-	snapshot() {
-		console.log('RECORD JS', this.record)
-		console.log('RECORD 64', btoa(JSON.stringify(this.record)))
 	}
 }

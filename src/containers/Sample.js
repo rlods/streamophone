@@ -45,12 +45,10 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 		}
 	},
 	onTouchStart: e => {
-		console.log('onTouchStart')
 		e.preventDefault()
 		dispatch(startSample(ownProps.index))
 	},
 	onTouchEnd: e => {
-		console.log('onTouchEnd')
 		dispatch(stopSample(ownProps.index))
 	},
 	onRegisterCanvas: canvas => {

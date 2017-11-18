@@ -1,12 +1,11 @@
 import { startSample, stopSample } from '../actions/sampling'
 import Strategy from './Strategy'
+import { KEY_ORDER_AZERTY, KEY_ORDER_QWERTY } from '../tools'
 
 // --------------------------------------------------------------
 
 const A_CHAR_CODE = 65
 const KEY_ORDER_ALPHABET = 'abcdefghijklmnopqrstuvwxyz'
-const KEY_ORDER_AZERTY   = 'azertyuiopqsdfghjklmwxcvbn'
-const KEY_ORDER_QWERTY   = 'qwertyuiopasdfghjklzxcvbnm'
 
 // --------------------------------------------------------------
 

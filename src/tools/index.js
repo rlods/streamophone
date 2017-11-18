@@ -1,3 +1,27 @@
+export const KEY_ORDER_AZERTY   = 'azertyuiopqsdfghjklmwxcvbn'
+export const KEY_ORDER_QWERTY   = 'qwertyuiopasdfghjklzxcvbnm'
+
+// ------------------------------------------------------------------
+
+// https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/btoa
+
+const STR_TO_BASE64_MAPPING = { '+':'-', '/':'_', '=':'.' }
+const BASE64_TO_STR_MAPPING = { '-':'+', '_':'/', '.':'=' }
+
+export const utoa = str => btoa(unescape(encodeURIComponent(str)))
+export const atou = str => decodeURIComponent(escape(atob(str)))
+
+export const str_to_b64 = str => utoa(str).replace(/[+/=]/g, match => STR_TO_BASE64_MAPPING[match])
+export const b64_to_str = b64 => atou(b64.replace(/[-_.]/g, match => BASE64_TO_STR_MAPPING[match]))
+
+export const js_to_b64 = js  => str_to_b64(JSON.stringify(js))
+export const b64_to_js = b64 => JSON.parse(b64_to_str(b64))
+
+// ------------------------------------------------------------------
+
+export const sleep = delay => new Promise(resolve => setTimeout(resolve, delay))
+
+// ------------------------------------------------------------------
 
 export const chunkArray = (array, size) => {
 	const results = []

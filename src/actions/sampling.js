@@ -100,7 +100,7 @@ export const changeSamples = tracks => (dispatch, getState) => {
 
 export const handleKeyDown = keyCode => async (dispatch, getState, { app }) => {
 	if (keyCode === 32) // SPACE
-		app.audioEngine.snapshot()
+		app.audioEngine.record.snapshot()
 	else if (app.strategy)
 		app.strategy.handleKeyDown(dispatch, keyCode)
 }
