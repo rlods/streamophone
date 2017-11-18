@@ -86,10 +86,10 @@ class Splash extends Component {
 					getText={duration => duration.label} />
 				<SelectField
 					name="Curated Sources"
-					items={config.CURATED_SOURCES}
+					items={config.CURATED_SOURCES.sort((a, b) => a.title.localeCompare(b.title))}
 					value={`${this.props.sourceType}:${this.props.sourceId}`} onChange={this.props.onChangeCurated}
 					getValue={curated => `${curated.sourceType}:${curated.sourceId}`}
-					getText={curated => `${SOURCE_TYPES[curated.sourceType]} / ${curated.title}`} />
+					getText={curated => `${curated.title} (${SOURCE_TYPES[curated.sourceType]})`} />
 				<SelectField
 					name="Source BPM"
 					items={BPMS}
