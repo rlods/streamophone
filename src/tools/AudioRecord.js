@@ -11,6 +11,7 @@ export default class AudioRecord
 {
 	constructor(data)
 	{
+		this._canvas = null
 		if (data) {
 			console.log('Import Record (b64)', data)
 			this.data = b64_to_js(data)
@@ -39,6 +40,10 @@ export default class AudioRecord
 		}
 	}
 
+	setCanvas(canvas) {
+		this._canvas = canvas
+	}
+	
 	snapshot() {
 		console.log('Export Record', this.data)
 		window.open('/#/listen/' + js_to_b64(this.data))
