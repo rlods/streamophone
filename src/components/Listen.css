@@ -1,10 +1,61 @@
 .listen {
 	flex: 1;
 	display: flex;
+	flex-direction: column;
+	overflow: hidden; /* to hide scrollbars (eg. when track title is displayed) */
+	font-family: 'Arial';
+	padding: 10px;
+}
+
+.actions {
+	background-color: #EE0;
+	height: 50px;
+	display: flex;
 	flex-direction: row;
-	flex-wrap: wrap;
 	justify-content: center;
 	align-items: center;
-	overflow:hidden; /* to hide scrollbars (eg. when track title is displayed) */
-	font-family: 'Arial';	
+	box-shadow: 5px 5px 10px;
 }
+
+.timeline {
+	background-color: #E0E;
+	height: 50px;
+	margin-top: 10px;
+	box-shadow: 5px 5px 10px;
+}
+
+.tracks {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	padding: 10px;
+}
+
+.track {
+	display: inline-block;
+	margin-top: 10px;
+	padding: 10px 5px;
+	background-color: #CCC;
+	box-shadow: 5px 5px 10px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.track:first-child {
+	margin-top: 0;
+}
+
+.track a {
+}
+
+.track-title {
+	text-decoration: none;
+	white-space: nowrap;
+}
+
+.track-title:hover {
+	text-decoration: underline;
+}
+
+
+/*MODICY*/

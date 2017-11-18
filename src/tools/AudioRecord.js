@@ -28,8 +28,8 @@ export default class AudioRecord
 	pushEvent(currentTime, sampleIndex, e, track) {
 		if (e[0] === AUDIO_EVENT_PLAY) {
 			if (!this.data.tracks[sampleIndex]) {
-				const { id, loopStart, loopEnd, preview, providerId, speed, title, volume1, volume2 } = track
-				this.data.tracks[sampleIndex] = { id, loopStart, loopEnd, preview, providerId, speed, title, volume: volume1 * volume2 }
+				const { id, loopStart, loopEnd, preview, providerId, speed, title, url, volume1, volume2 } = track
+				this.data.tracks[sampleIndex] = { id, loopStart, loopEnd, preview, providerId, speed, title, url, volume: volume1 * volume2 }
 			}
 		}
 		if (this.data.tracks[sampleIndex]) {

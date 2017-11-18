@@ -10,7 +10,19 @@ class Listen extends Component {
 	render() {
 		return (
 			<div className="listen">
-				<button onClick={this.props.record.play.bind(this.props.record)}>LISTEN</button>
+				<div className="actions">
+					<button onClick={this.props.record.play.bind(this.props.record)}>LISTEN</button>
+				</div>
+				<canvas className="timeline"></canvas>
+				<div className="tracks">
+				{
+					Object.values(this.props.record.data.tracks).map(track => (
+						<div className="track">
+							<a className="track-title" href={track.url}>{track.title}</a>
+						</div>
+					))
+				}
+				</div>
 			</div>
 		)
 	}

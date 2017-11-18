@@ -5,7 +5,7 @@
 	flex-wrap: wrap;
 	justify-content: center;
 	align-items: center;
-	overflow:hidden; /* to hide scrollbars (eg. when track title is displayed) */
+	overflow: hidden; /* to hide scrollbars (eg. when track title is displayed) */
 	font-family: 'Arial';
 }
 
