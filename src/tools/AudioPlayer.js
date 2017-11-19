@@ -10,20 +10,56 @@ export const PLAYER_EVENT_PAUSE  = 2
 
 // ------------------------------------------------------------------
 
+const getDuration = events => {
+	let duration = 0, previousTime = events[0]
+	for (let i = 0; i < events.length; ) {
+		const currentTime = events[i++]
+		i++ // sampleIndex
+		const eventType   = events[i++]
+		const delay       = currentTime - previousTime
+		duration += delay
+		switch (eventType)
+		{
+		case AUDIO_EVENT_LOOP:
+			i++ // loopStart
+			i++ // loopEnd
+			break
+		case AUDIO_EVENT_PLAY:
+			break
+		case AUDIO_EVENT_PAUSE:
+			break
+		case AUDIO_EVENT_SPEED:
+			i++ // speed
+			break
+		case AUDIO_EVENT_VOLUME:
+			i++ // volume
+			break
+		default:
+			break
+		}
+	}
+	return duration / 1000
+}
+
+// ------------------------------------------------------------------
+
 export default class AudioPlayer
 {
 	constructor() {
 		this._audios = null
 		this._canvas = null
+		this._context = null
 		this._dispatch = null
 		this._drawing = false
 		this._drawingFrameRequest = null
+		this._duration = 0
 		this._eventCB = e => {
 			if      (e[0] === PLAYER_EVENT_PLAY)  this._dispatch(changePlayerStatus(true))
 			else if (e[0] === PLAYER_EVENT_PAUSE) this._dispatch(changePlayerStatus(false))
 		}
 		this._events = []
 		this._playing = false
+		this._startedAt = 0
 		this._ready = false
 		this.tracks = []
 	}
@@ -44,17 +80,20 @@ export default class AudioPlayer
 			data = b64_to_js(data)
 			console.log('Import Sampling Events', data)
 			const { events, format, tracks } = data
-			if (RECORD_FORMAT === format) {
+			if (RECORD_FORMAT === format && events.length > 0) {
 				this._events = events
 				this.tracks = tracks.map(track => {
 					track.playing = false
 					return track
 				})
 
+				this._duration = getDuration(this._events)
+				console.log(this._duration)
+
 				console.log('Loading audios')
-				const context = new (window.AudioContext || window.webkitAudioContext)()
+				this._context = new (window.AudioContext || window.webkitAudioContext)()
 				this._audios = await Promise.all(this.tracks.map(async (sample, sampleIndex) => {
-					const audio = new CustomAudio(context, sample.preview, e => {
+					const audio = new CustomAudio(this._context, sample.preview, e => {
 						if      (e[0] === AUDIO_EVENT_PLAY)  this._dispatch(changePlayerSampleStatus(sampleIndex, true))
 						else if (e[0] === AUDIO_EVENT_PAUSE) this._dispatch(changePlayerSampleStatus(sampleIndex, false))
 					})
@@ -72,6 +111,7 @@ export default class AudioPlayer
 	async play() {
 		if (this._ready && !this._playing) {
 			this._playing = true
+			this._startedAt = this._context.currentTime
 
 			console.log('Starting')
 			this._eventCB([PLAYER_EVENT_PLAY])
@@ -144,11 +184,9 @@ export default class AudioPlayer
 				if (this._drawingFrameRequest) { // if previous _drawingFrameRequest has been set to null we don't request a new one
 					this._drawingFrameRequest = requestAnimationFrame(draw)
 
-					//  const elapsed = ((this._context.currentTime - this._startedAt) % duration) * width / duration
-
+					const elapsed = ((this._context.currentTime - this._startedAt) % this._duration) * width / this._duration
 					canvasCtx.fillStyle = 'rgb(255, 0, 0)'
-					//canvasCtx.fillRect(0, 0, elapsed, height)
-					canvasCtx.fillRect(0, 0, width, height)
+					canvasCtx.fillRect(0, 0, elapsed, height)
 				}
 			}
 			this._drawingFrameRequest = requestAnimationFrame(draw)
