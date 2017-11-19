@@ -17,7 +17,7 @@ class Player extends Component {
 			return (
 				<div className="player">
 					<div className="player-actions">
-						<button onClick={this.props.onPlay}>Play</button>
+					{this.props.playing ? <button onClick={this.props.onPause}>Pause</button> : <button onClick={this.props.onPlay}>Play</button>}
 					</div>
 					<canvas className="player-timeline" ref={canvas => this.props.onRegisterCanvas(canvas)} width="400" height="50"></canvas>
 					<div className="player-samples">{this.props.tracks.map((sample, sampleIndex) => <PlayerSample key={sampleIndex} index={sampleIndex} />)}</div>
@@ -33,10 +33,12 @@ class Player extends Component {
 // --------------------------------------------------------------
 
 Player.propTypes = {
+	playing: PropTypes.bool,
 	tracks: PropTypes.array,
 	//
 	onLoadPlayer: PropTypes.func,
 	onPlay: PropTypes.func,
+	onPause: PropTypes.func,
 	onRegisterCanvas: PropTypes.func
 }
 

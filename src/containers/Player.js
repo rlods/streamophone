@@ -6,6 +6,7 @@ import Player from '../components/Player'
 // --------------------------------------------------------------
 
 const mapStateToProps = (state, ownProps) => ({
+	playing: state.player.playing,
 	tracks: state.player.tracks
 })
 

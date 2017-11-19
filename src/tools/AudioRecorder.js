@@ -10,12 +10,12 @@ export const RECORD_FORMAT = '1.0'
 export default class AudioRecorder
 {
 	constructor() {
-		this._indexesMapping = {} // originalSampleIndex to newSampleIndex
-		this.data = {
+		this._data = {
 			events: [],
 			format: RECORD_FORMAT,
 			tracks: []
 		}
+		this._indexesMapping = {} // originalSampleIndex to newSampleIndex
 	}
 
 	pushEvent(currentTime, sampleIndex, e, track) {
@@ -23,20 +23,20 @@ export default class AudioRecorder
 		if (e[0] === AUDIO_EVENT_PLAY) {
 			if (!newIndex) {
 				const { id, loopStart, loopEnd, preview, providerId, speed, title, url, volume1, volume2 } = track
-				this._indexesMapping[sampleIndex] = newIndex = this.data.tracks.length
-				this.data.tracks.push({ id, loopStart, loopEnd, preview, providerId, speed, title, url, volume: volume1 * volume2 })
+				this._indexesMapping[sampleIndex] = newIndex = this._data.tracks.length
+				this._data.tracks.push({ id, loopStart, loopEnd, preview, providerId, speed, title, url, volume: volume1 * volume2 })
 			}
 		}
 		if (newIndex !== undefined) {
 			// only record events of tracks which have been already been played
 			// newIndex can be equal to 0
-			this.data.events.push(Math.floor(currentTime * 1000), newIndex)
-			this.data.events.push.apply(this.data.events, e)
+			this._data.events.push(Math.floor(currentTime * 1000), newIndex)
+			this._data.events.push.apply(this._data.events, e)
 		}
 	}
 
 	snapshot() {
-		console.log('Export Sampling Events', this.data)
-		window.open('/#/listen/' + js_to_b64(this.data))
+		console.log('Export Sampling Events', this._data)
+		window.open('/#/listen/' + js_to_b64(this._data))
 	}
 }

@@ -111,7 +111,7 @@ export const handleSocketEvent = message => (dispatch, getState, { app }) => {
 export const registerSampleCanvas = (sampleIndex, canvas) => (dispatch, getState, { app }) => {
 	const audio = app.audioEngine.getAudio(sampleIndex)
 	if (audio)
-		audio.setCanvas(canvas)
+		audio.attachCanvas(canvas)
 }
 
 export const startSample = sampleIndex => async (dispatch, getState, { app }) => {

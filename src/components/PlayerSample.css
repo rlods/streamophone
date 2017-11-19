@@ -9,6 +9,10 @@
 	text-overflow: ellipsis;
 }
 
+.player-sample.playing {
+	background-color: #F00; /* TODO */
+}
+
 .player-sample:first-child {
 	margin-top: 0;
 }

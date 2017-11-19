@@ -61,7 +61,7 @@ export default class CustomAudio
 		}
 	}
 
-	setCanvas(canvas) {
+	attachCanvas(canvas) {
 		this._canvas = canvas
 		if (this._playing)
 			this._startVisualization()

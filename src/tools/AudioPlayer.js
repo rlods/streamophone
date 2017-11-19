@@ -1,4 +1,4 @@
-import { changePlayerStatus } from '../actions/player'
+import { changePlayerSampleStatus, changePlayerStatus } from '../actions/player'
 import CustomAudio, { AUDIO_EVENT_LOOP, AUDIO_EVENT_PLAY, AUDIO_EVENT_PAUSE, AUDIO_EVENT_SPEED, AUDIO_EVENT_VOLUME } from './CustomAudio'
 import { sleep, b64_to_js } from '../tools'
 import { RECORD_FORMAT } from './AudioRecorder'
@@ -13,24 +13,32 @@ export const PLAYER_EVENT_PAUSE  = 2
 export default class AudioPlayer
 {
 	constructor() {
+		this._audios = null
 		this._canvas = null
+		this._dispatch = null
 		this._drawing = false
 		this._drawingFrameRequest = null
 		this._eventCB = e => {
-			if      (e[0] === PLAYER_EVENT_PLAY)  this.dispatch(changePlayerStatus(true))
-			else if (e[0] === PLAYER_EVENT_PAUSE) this.dispatch(changePlayerStatus(false))
+			if      (e[0] === PLAYER_EVENT_PLAY)  this._dispatch(changePlayerStatus(true))
+			else if (e[0] === PLAYER_EVENT_PAUSE) this._dispatch(changePlayerStatus(false))
 		}
 		this._events = []
 		this._playing = false
-		this.dispatch = null
+		this._ready = false
 		this.tracks = []
 	}
 
 	attach(dispatch) {
-		this.dispatch = dispatch
+		this._dispatch = dispatch
 	}
 
-	loadData(data) {
+	attachCanvas(canvas) {
+		this._canvas = canvas
+		if (this._playing)
+			this._startVisualization()
+	}
+
+	async loadData(data) {
 		console.log('Import Sampling Events (b64)', data)
 		if (data) {
 			data = b64_to_js(data)
@@ -38,29 +46,32 @@ export default class AudioPlayer
 			const { events, format, tracks } = data
 			if (RECORD_FORMAT === format) {
 				this._events = events
-				this.tracks = tracks
+				this.tracks = tracks.map(track => {
+					track.playing = false
+					return track
+				})
+
+				console.log('Loading audios')
+				const context = new (window.AudioContext || window.webkitAudioContext)()
+				this._audios = await Promise.all(this.tracks.map(async (sample, sampleIndex) => {
+					const audio = new CustomAudio(context, sample.preview, e => {
+						if      (e[0] === AUDIO_EVENT_PLAY)  this._dispatch(changePlayerSampleStatus(sampleIndex, true))
+						else if (e[0] === AUDIO_EVENT_PAUSE) this._dispatch(changePlayerSampleStatus(sampleIndex, false))
+					})
+					audio.setLoop(sample.loopStart, sample.loopEnd)
+					audio.setVolume(sample.volume)
+					await audio.init()
+					return audio
+				}))
+
+				this._ready = true
 			}
 		}
-
-	}
-
-	setCanvas(canvas) {
-		this._canvas = canvas
 	}
 
 	async play() {
-		if (!this._playing) {
+		if (this._ready && !this._playing) {
 			this._playing = true
-
-			console.log('Loading audios')
-			const context = new (window.AudioContext || window.webkitAudioContext)()
-			const audios = await Promise.all(this.tracks.map(async track => {
-				const audio = new CustomAudio(context, track.preview)
-				audio.setLoop(track.loopStart, track.loopEnd)
-				audio.setVolume(track.volume)
-				await audio.init()
-				return audio
-			}))
 
 			console.log('Starting')
 			this._eventCB([PLAYER_EVENT_PLAY])
@@ -81,21 +92,21 @@ export default class AudioPlayer
 				case AUDIO_EVENT_LOOP:
 					loopStart = this._events[i++]
 					loopEnd   = this._events[i++]
-					audios[sampleIndex].setLoop(loopStart, loopEnd)
+					this._audios[sampleIndex].setLoop(loopStart, loopEnd)
 					break
 				case AUDIO_EVENT_PLAY:
-					audios[sampleIndex].start()
+					this._audios[sampleIndex].start()
 					break
 				case AUDIO_EVENT_PAUSE:
-					audios[sampleIndex].stop()
+					this._audios[sampleIndex].stop()
 					break
 				case AUDIO_EVENT_SPEED:
 					speed = this._events[i++]
-					audios[sampleIndex].setSpeed(speed)
+					this._audios[sampleIndex].setSpeed(speed)
 					break
 				case AUDIO_EVENT_VOLUME:
 					volume = this._events[i++]
-					audios[sampleIndex].setVolume(volume)
+					this._audios[sampleIndex].setVolume(volume)
 					break
 				default:
 					break
@@ -109,8 +120,9 @@ export default class AudioPlayer
 		}
 	}
 
-	pause() { // TODO: stop music
+	pause() {
 		if (this._playing) {
+			alert('TODO: stop music')
 			this._stopVisualization()
 			this._eventCB([PLAYER_EVENT_PAUSE])
 			this._playing = false
