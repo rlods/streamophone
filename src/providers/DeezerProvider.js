@@ -96,7 +96,11 @@ export default class DeezerProvider extends Provider
 			case 'deezer_artist':
 			{
 				const artistTracksData = await this.fetchArtistTracks(sourceId)
-				tracks = artistTracksData.data
+				tracks = artistTracksData.data.map(track => {
+					// In that case we have to enrich each track data with the cover which is available in the album data
+					track.link = 'https://www.deezer.com/track/' + track.id
+					return track
+				})
 				break
 			}
 			case 'deezer_playlist':
@@ -110,6 +114,7 @@ export default class DeezerProvider extends Provider
 				throw new Error(`Unknown deezer source type "${sourceType}"`)
 			}
 		}
+		console.log('DZ', tracks)
 		return tracks.map(track => ({
 			cover: track.album.cover_medium,
 			id: track.id,

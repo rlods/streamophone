@@ -1,15 +1,16 @@
 import { connect } from 'react-redux'
 //
-import AudioRecord from '../tools/AudioRecord'
+import { loadPlayer } from '../actions/player'
 import Listen from '../components/Listen'
 
 // --------------------------------------------------------------
 
 const mapStateToProps = (state, ownProps) => ({
-	record: new AudioRecord(ownProps.match.params.data)
+	record: state.player.record
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
+	onLoadPlayer: () => dispatch(loadPlayer(ownProps.match.params.data))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Listen)

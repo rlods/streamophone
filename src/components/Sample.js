@@ -37,7 +37,7 @@ class Sample extends Component {
 				{info}
 				{meta}
 				{menu}
-				<a href={this.props.url} target="_blank" className="sample-title">{this.props.title}</a>
+				<a href={this.props.url} target="_blank" rel="noopener noreferrer" className="sample-title">{this.props.title}</a>
 			</div>
 		)
 	}

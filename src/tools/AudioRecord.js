@@ -37,10 +37,11 @@ export default class AudioRecord
 				this.data.tracks.push({ id, loopStart, loopEnd, preview, providerId, speed, title, url, volume: volume1 * volume2 })
 			}
 		}
-		if (newIndex !== undefined) { // can be equal to 0
+		if (newIndex !== undefined) {
 			// only record events of tracks which have been already been played
-			e.splice(0, 0, Math.floor(currentTime * 1000), newIndex) // time and index at the beginning of the event (which is an array)
-			this.data.events.push(e)
+			// newIndex can be equal to 0
+			this.data.events.push(Math.floor(currentTime * 1000), newIndex)
+			this.data.events.push.apply(this.data.events, e)
 		}
 	}
 
@@ -54,51 +55,61 @@ export default class AudioRecord
 	}
 
 	async play() {
-		if (this.data && RECORD_FORMAT === this.data.format && this.data.events.length > 0) {
-			console.log('Loading audios')
-			const context = new (window.AudioContext || window.webkitAudioContext)()
-			const audios = await Promise.all(this.data.tracks.map(async track => {
-				const audio = new CustomAudio(context, track.preview)
-				audio.setLoop(track.loopStart, track.loopEnd)
-				audio.setVolume(track.volume)
-				await audio.init()
-				return audio
-			}))
+		if (this.data) {
+			const { events, format, tracks } = this.data
+			if (RECORD_FORMAT === format && events.length > 0) {
 
-			console.log('Starting')
-			this._startVisualization()
-			let previousTime = this.data.events[0][0]
-			await Promise.all(this.data.events.map(async e => {
-				const [ currentTime, sampleIndex, eventType ] = e
-				const delay = currentTime - previousTime
-				if (delay > 0) {
-					await sleep(delay)
-					previousTime = currentTime
-				}
-				switch (eventType)
-				{
-				case AUDIO_EVENT_LOOP:
-					audios[sampleIndex].setLoop(e[3], e[4])
-					break
-				case AUDIO_EVENT_PLAY:
-					audios[sampleIndex].start()
-					break
-				case AUDIO_EVENT_PAUSE:
-					audios[sampleIndex].stop()
-					break
-				case AUDIO_EVENT_SPEED:
-					audios[sampleIndex].setSpeed(e[3])
-					break
-				case AUDIO_EVENT_VOLUME:
-					audios[sampleIndex].setVolume(e[3])
-					break
-				default:
-					break
-				}
-			}))
+				console.log('Loading audios')
+				const context = new (window.AudioContext || window.webkitAudioContext)()
+				const audios = await Promise.all(tracks.map(async track => {
+					const audio = new CustomAudio(context, track.preview)
+					audio.setLoop(track.loopStart, track.loopEnd)
+					audio.setVolume(track.volume)
+					await audio.init()
+					return audio
+				}))
 
-			console.log('Terminated')
-			this._stopVisualization()
+				console.log('Starting')
+				this._startVisualization()
+				let previousTime = events[0], loopStart, loopEnd, speed, volume
+				for (let i = 0; i < events.length; ) {
+					const currentTime = events[i++]
+					const sampleIndex = events[i++]
+					const eventType   = events[i++]
+					const delay       = currentTime - previousTime
+					if (delay > 0) {
+						await sleep(delay)
+						previousTime = currentTime
+					}
+					switch (eventType)
+					{
+					case AUDIO_EVENT_LOOP:
+						loopStart = events[i++]
+						loopEnd   = events[i++]
+						audios[sampleIndex].setLoop(loopStart, loopEnd)
+						break
+					case AUDIO_EVENT_PLAY:
+						audios[sampleIndex].start()
+						break
+					case AUDIO_EVENT_PAUSE:
+						audios[sampleIndex].stop()
+						break
+					case AUDIO_EVENT_SPEED:
+						speed = events[i++]
+						audios[sampleIndex].setSpeed(speed)
+						break
+					case AUDIO_EVENT_VOLUME:
+						volume = events[i++]
+						audios[sampleIndex].setVolume(volume)
+						break
+					default:
+						break
+					}
+				}
+
+				console.log('Terminated')
+				this._stopVisualization()
+			}
 		}
 	}
 

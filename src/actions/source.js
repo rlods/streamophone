@@ -7,7 +7,7 @@ import { transformArray } from '../tools'
 
 export const changeSourceBPM = bpm => dispatch => {
 	sessionStorage.setItem('DEFAULT_SOURCE_BPM', bpm)
-	return dispatch({
+	dispatch({
 		type: 'SOURCE_SET_BPM',
 		data: { bpm }
 	})
@@ -15,7 +15,7 @@ export const changeSourceBPM = bpm => dispatch => {
 
 export const changeSourceId = id => dispatch => {
 	sessionStorage.setItem('DEFAULT_SOURCE_ID', id)
-	return dispatch({
+	dispatch({
 		type: 'SOURCE_SET_ID',
 		data: { id }
 	})
@@ -31,7 +31,7 @@ export const changeSourceTransformation = transformation => dispatch => {
 
 export const changeSourceType = type => dispatch => {
 	sessionStorage.setItem('DEFAULT_SOURCE_TYPE', type)
-	return dispatch({
+	dispatch({
 		type: 'SOURCE_SET_TYPE',
 		data: { type }
 	})

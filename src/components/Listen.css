@@ -7,7 +7,7 @@
 	padding: 10px;
 }
 
-.actions {
+.listen-actions {
 	background-color: #EE0;
 	height: 50px;
 	display: flex;
@@ -17,45 +17,16 @@
 	box-shadow: 5px 5px 10px;
 }
 
-.timeline {
+.listen-timeline {
 	background-color: #E0E;
 	height: 50px;
 	margin-top: 10px;
 	box-shadow: 5px 5px 10px;
 }
 
-.tracks {
+.listen-samples {
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-start;
 	padding: 10px;
 }
-
-.track {
-	display: inline-block;
-	margin-top: 10px;
-	padding: 10px 5px;
-	background-color: #CCC;
-	box-shadow: 5px 5px 10px;
-	overflow: hidden;
-	text-overflow: ellipsis;
-}
-
-.track:first-child {
-	margin-top: 0;
-}
-
-.track a {
-}
-
-.track-title {
-	text-decoration: none;
-	white-space: nowrap;
-}
-
-.track-title:hover {
-	text-decoration: underline;
-}
-
-
-/*MODICY*/
