@@ -1,20 +1,16 @@
 import { connect } from 'react-redux'
 //
-import { handleKeyDown, handleKeyUp } from '../actions/sampling'
-import { createSampling } from '../actions/source'
+import { loadPlayer } from '../actions/player'
 import Player from '../components/Player'
 
 // --------------------------------------------------------------
 
 const mapStateToProps = (state, ownProps) => ({
-	tracks: state.sampling.tracks,
-	samplingStrategyId: state.sampling.strategyId
+	record: state.player.record
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-	onKeyDown: e => !e.repeat && dispatch(handleKeyDown(e.keyCode)),
-	onKeyUp: e => dispatch(handleKeyUp(e.keyCode)),
-	onInit: () => dispatch(createSampling())
+	onLoadPlayer: () => dispatch(loadPlayer(ownProps.match.params.data))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Player)

@@ -1,5 +1,5 @@
 
-.sample {
+.sampler-sample {
 	position: relative;
 	display: flex;
 	margin: 5px;
@@ -8,7 +8,7 @@
 	width: 20vh;
 }
 
-.sample-canvas {
+.sampler-sample-canvas {
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -17,7 +17,7 @@
 	width: calc(20vh - 10px);
 }
 
-.sample-cover {
+.sampler-sample-cover {
 	height: calc(20vh - 10px);
 	width: calc(20vh - 10px);
 	box-shadow: 5px 5px 10px;
@@ -26,12 +26,12 @@
 	pointer-events: none;
 }
 
-.sample.playing .sample-cover {
+.sampler-sample.playing .sampler-sample-cover {
 	opacity: 1.0;
 	box-shadow: 0 0 0;
 }
 
-.sample-title {
+.sampler-sample-title {
 	display: none;
 	position: absolute;
 	top: -30px;
@@ -44,11 +44,11 @@
 	z-index: 10000;
 }
 
-.sample-title:hover {
+.sampler-sample-title:hover {
 	text-decoration: underline;
 }
 
-.sample-info {
+.sampler-sample-info {
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -61,7 +61,7 @@
 	z-index: 1000;
 }
 
-.sample-metas {
+.sampler-sample-metas {
 	border-top-left-radius: 5px;
 	position: absolute;
 	display: flex;
@@ -77,26 +77,26 @@
 	line-height: 10px;
 }
 
-.sample-meta {
+.sampler-sample-meta {
 	padding: 2px;
 }
 
-.sample-meta:first-child {
+.sampler-sample-meta:first-child {
 }
 
-.sample:hover .sample-title {
+.sampler-sample:hover .sampler-sample-title {
 	display: block;
 }
 
-.sample:hover .sample-metas {
+.sampler-sample:hover .sampler-sample-metas {
 	opacity: 1.0;
 }
 
 @media (max-height: 500px), (max-width: 800px) {
-    .sample-metas {
+    .sampler-sample-metas {
         display: none;
     }
-    .sample-title {
+    .sampler-sample-title {
         display: none !important;
     }
 }

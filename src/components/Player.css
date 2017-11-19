@@ -1,113 +1,32 @@
 .player {
 	flex: 1;
 	display: flex;
-	flex-direction: row;
-	flex-wrap: wrap;
-	justify-content: center;
-	align-items: center;
+	flex-direction: column;
 	overflow: hidden; /* to hide scrollbars (eg. when track title is displayed) */
 	font-family: 'Arial';
+	padding: 10px;
 }
 
-.player-info {
-	color: #DDD;
-	margin: 10px 0;
-}
-
-.samples-group-by-col {
-	display: flex;
-	flex-direction: column;
-}
-
-.samples-group-by-row {
+.player-actions {
+	background-color: #EE0;
+	height: 50px;
 	display: flex;
 	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	box-shadow: 5px 5px 10px;
 }
 
-/* --------------------------------------------------------------- */
-/* --------------------------------------------------------------- */
-/* --------------------------------------------------------------- */
-/* --------------------------------------------------------------- */
-
-/*
-KEYBOARD
-BCF2000_MULTISLIDERS
-LIGHTPADBLOCK_16
-CUSTOM_SOCKET_STRATEGY
-*/
-
-/* --------------------------------------------------------------- */
-/* --------------------------------------------------------------- */
-/* --------------------------------------------------------------- */
-/* --------------------------------------------------------------- */
-
-.player.LIGHTPADBLOCK {
-	flex-direction: column-reverse;
+.player-timeline {
+	background-color: #E0E;
+	height: 50px;
+	margin-top: 10px;
+	box-shadow: 5px 5px 10px;
 }
 
-.player.LIGHTPADBLOCK_4 .sample {
-	height: 40vh;
-	width: 40vh;
-}
-
-.player.LIGHTPADBLOCK_4 .sample-cover, .player.LIGHTPADBLOCK_4 .sample-canvas {
-	height: calc(40vh - 10px);
-	width: calc(40vh - 10px);
-}
-
-/* --------------------------------------------------------------- */
-/* --------------------------------------------------------------- */
-/* --------------------------------------------------------------- */
-/* --------------------------------------------------------------- */
-
-.player.KORG_NANOKEY2 {
+.player-samples {
+	display: flex;
 	flex-direction: column;
-	align-items: left;
-}
-
-.player.KORG_NANOKEY2 .samples-group:nth-child(1) .sample:nth-child(1) {
-	margin-left: 12vh;
-}
-
-.player.KORG_NANOKEY2 .samples-group:nth-child(1) .sample:nth-child(3) {
-	margin-left: 24vh;
-}
-
-.player.KORG_NANOKEY2 .samples-group:nth-child(1) .sample:nth-child(6) {
-	margin-left: 24vh;
-}
-
-.player.KORG_NANOKEY2 .samples-group:nth-child(1) .sample:nth-child(8) {
-	margin-left: 24vh;
-}
-
-/* --------------------------------------------------------------- */
-/* --------------------------------------------------------------- */
-/* --------------------------------------------------------------- */
-/* --------------------------------------------------------------- */
-
-.player.KEYBOARD {
-	flex-direction: column;
-}
-
-@media (orientation: portrait) {
-	.player.KEYBOARD .sample {
-		height: 7.5vw;
-		width: 7.5vw;
-	}
-	.player.KEYBOARD .sample-cover, .player.KEYBOARD .sample-canvas {
-		height: calc(7.5vw - 10px);
-		width: calc(7.5vw - 10px);
-	}
-}
-
-@media (orientation: landscape) {
-	.player.KEYBOARD .sample {
-		height: 8.5vw;
-		width: 8.5vw;
-	}
-	.player.KEYBOARD .sample-cover, .player.KEYBOARD .sample-canvas {
-		height: calc(8.5vw - 10px);
-		width: calc(8.5vw - 10px);
-	}
+	justify-content: flex-start;
+	padding: 10px;
 }

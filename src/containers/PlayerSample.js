@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 //
-import ListenSample from '../components/ListenSample'
+import PlayerSample from '../components/PlayerSample'
 
 // --------------------------------------------------------------
 
@@ -16,4 +16,4 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch, ownProps) => ({
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(ListenSample)
+export default connect(mapStateToProps, mapDispatchToProps)(PlayerSample)

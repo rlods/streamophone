@@ -1,0 +1,113 @@
+.sampler {
+	flex: 1;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+	overflow: hidden; /* to hide scrollbars (eg. when track title is displayed) */
+	font-family: 'Arial';
+}
+
+.sampler-info {
+	color: #DDD;
+	margin: 10px 0;
+}
+
+.samples-group-by-col {
+	display: flex;
+	flex-direction: column;
+}
+
+.samples-group-by-row {
+	display: flex;
+	flex-direction: row;
+}
+
+/* --------------------------------------------------------------- */
+/* --------------------------------------------------------------- */
+/* --------------------------------------------------------------- */
+/* --------------------------------------------------------------- */
+
+/*
+KEYBOARD
+BCF2000_MULTISLIDERS
+LIGHTPADBLOCK_16
+CUSTOM_SOCKET_STRATEGY
+*/
+
+/* --------------------------------------------------------------- */
+/* --------------------------------------------------------------- */
+/* --------------------------------------------------------------- */
+/* --------------------------------------------------------------- */
+
+.sampler.LIGHTPADBLOCK {
+	flex-direction: column-reverse;
+}
+
+.sampler.LIGHTPADBLOCK_4 .sample {
+	height: 40vh;
+	width: 40vh;
+}
+
+.sampler.LIGHTPADBLOCK_4 .sample-cover, .sampler.LIGHTPADBLOCK_4 .sample-canvas {
+	height: calc(40vh - 10px);
+	width: calc(40vh - 10px);
+}
+
+/* --------------------------------------------------------------- */
+/* --------------------------------------------------------------- */
+/* --------------------------------------------------------------- */
+/* --------------------------------------------------------------- */
+
+.sampler.KORG_NANOKEY2 {
+	flex-direction: column;
+	align-items: left;
+}
+
+.sampler.KORG_NANOKEY2 .samples-group:nth-child(1) .sample:nth-child(1) {
+	margin-left: 12vh;
+}
+
+.sampler.KORG_NANOKEY2 .samples-group:nth-child(1) .sample:nth-child(3) {
+	margin-left: 24vh;
+}
+
+.sampler.KORG_NANOKEY2 .samples-group:nth-child(1) .sample:nth-child(6) {
+	margin-left: 24vh;
+}
+
+.sampler.KORG_NANOKEY2 .samples-group:nth-child(1) .sample:nth-child(8) {
+	margin-left: 24vh;
+}
+
+/* --------------------------------------------------------------- */
+/* --------------------------------------------------------------- */
+/* --------------------------------------------------------------- */
+/* --------------------------------------------------------------- */
+
+.sampler.KEYBOARD {
+	flex-direction: column;
+}
+
+@media (orientation: portrait) {
+	.sampler.KEYBOARD .sample {
+		height: 7.5vw;
+		width: 7.5vw;
+	}
+	.sampler.KEYBOARD .sample-cover, .sampler.KEYBOARD .sample-canvas {
+		height: calc(7.5vw - 10px);
+		width: calc(7.5vw - 10px);
+	}
+}
+
+@media (orientation: landscape) {
+	.sampler.KEYBOARD .sample {
+		height: 8.5vw;
+		width: 8.5vw;
+	}
+	.sampler.KEYBOARD .sample-cover, .sampler.KEYBOARD .sample-canvas {
+		height: calc(8.5vw - 10px);
+		width: calc(8.5vw - 10px);
+	}
+}

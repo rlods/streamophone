@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 //
 import { registerSampleCanvas, startSample, stopSample } from '../actions/sampling'
-import Sample from '../components/Sample'
+import SamplerSample from '../components/SamplerSample'
 
 // --------------------------------------------------------------
 
@@ -56,4 +56,4 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 	}
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Sample)
+export default connect(mapStateToProps, mapDispatchToProps)(SamplerSample)

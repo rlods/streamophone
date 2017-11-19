@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Route, Switch } from 'react-router-dom'
 //
-import Listen from '../containers/Listen'
 import Player from '../containers/Player'
+import Sampler from '../containers/Sampler'
 import Splash from '../containers/Splash'
 import './App.css'
 
@@ -14,8 +14,8 @@ class App extends Component {
 		return (
 			<Switch>
 				<Route exact path="/" component={Splash} />
-				<Route exact path="/create" component={Player} />
-				<Route exact path="/listen/:data" component={Listen} />
+				<Route exact path="/create" component={Sampler} />
+				<Route exact path="/listen/:data" component={Player} />
 			</Switch>
 		)
 	}
