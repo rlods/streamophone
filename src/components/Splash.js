@@ -73,15 +73,15 @@ class Splash extends Component {
 				<SelectField
 					name="Sample Controller"
 					items={Object.entries(config.STRATEGIES)}
-					value={this.props.samplingStrategyId}
-					onChange={this.props.onChangeSamplingStrategy}
+					value={this.props.samplerStrategyId}
+					onChange={this.props.onChangeSamplerStrategy}
 					getValue={([strategyId, strategyDefinition]) => strategyId}
 					getText={([strategyId, strategyDefinition]) => strategyDefinition.label} />
 				<SelectField
 					name="Sample Duration"
 					items={DURATIONS}
-					value={this.props.samplingDefaultDuration}
-					onChange={this.props.onChangeSamplingDefaultDuration}
+					value={this.props.samplerDefaultDuration}
+					onChange={this.props.onChangeSamplerDefaultDuration}
 					getValue={duration => duration.value}
 					getText={duration => duration.label} />
 				<SelectField
@@ -126,15 +126,15 @@ class Splash extends Component {
 // --------------------------------------------------------------
 
 Splash.propTypes = {
-	samplingDefaultDuration: PropTypes.number,
-	samplingStrategyId: PropTypes.string,
+	samplerDefaultDuration: PropTypes.number,
+	samplerStrategyId: PropTypes.string,
 	sourceBPM: PropTypes.number,
 	sourceId: PropTypes.string,
 	sourceTransformation: PropTypes.string,
 	sourceType: PropTypes.string,
 	onChangeCurated: PropTypes.func,
-	onChangeSamplingDefaultDuration: PropTypes.func,
-	onChangeSamplingStrategy: PropTypes.func,
+	onChangeSamplerDefaultDuration: PropTypes.func,
+	onChangeSamplerStrategy: PropTypes.func,
 	onChangeSourceBPM: PropTypes.func,
 	onChangeSourceId: PropTypes.func,
 	onChangeSourceTransformation: PropTypes.func,

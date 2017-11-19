@@ -1,16 +1,16 @@
 
 export const changeSampleDefaultDuration = defaultDuration => dispatch => {
-	sessionStorage.setItem('DEFAULT_SAMPLING_DURATION', defaultDuration)
+	sessionStorage.setItem('DEFAULT_SAMPLER_DURATION', defaultDuration)
 	dispatch({
-		type: 'SAMPLING_SET_DEFAULT_DURATION',
+		type: 'SAMPLER_SET_DEFAULT_DURATION',
 		data: { defaultDuration }
 	})
 }
 
-export const changeSamplingStrategy = strategyId => dispatch => {
-	sessionStorage.setItem('DEFAULT_SAMPLING_STRATEGY', strategyId)
+export const changeSamplerStrategy = strategyId => dispatch => {
+	sessionStorage.setItem('DEFAULT_SAMPLER_STRATEGY', strategyId)
 	dispatch({
-		type: 'SAMPLING_SET_STRATEGY',
+		type: 'SAMPLER_SET_STRATEGY',
 		data: { strategyId }
 	})
 }
@@ -18,32 +18,32 @@ export const changeSamplingStrategy = strategyId => dispatch => {
 // --------------------------------------------------------------
 
 export const changeSampleAudioReady = (sampleIndex) => (dispatch, getState) => {
-	const { sampling } = getState()
-	if (sampling.tracks && sampleIndex >= 0 && sampleIndex < sampling.tracks.length) {
+	const { sampler } = getState()
+	if (sampler.tracks && sampleIndex >= 0 && sampleIndex < sampler.tracks.length) {
 		dispatch({
-			type: 'SAMPLING_SET_SAMPLE_READY',
+			type: 'SAMPLER_SET_SAMPLE_READY',
 			data: { sampleIndex }
 		})
 	}
 }
 
 export const changeSampleBPM = (sampleIndex, bpm) => (dispatch, getState) => {
-	const { sampling } = getState()
-	if (sampling.tracks && sampleIndex >= 0 && sampleIndex < sampling.tracks.length) {
+	const { sampler } = getState()
+	if (sampler.tracks && sampleIndex >= 0 && sampleIndex < sampler.tracks.length) {
 		dispatch({
-			type: 'SAMPLING_SET_SAMPLE_BPM',
+			type: 'SAMPLER_SET_SAMPLE_BPM',
 			data: { sampleIndex, bpm }
 		})
 	}
 }
 
 export const changeSampleNormalizationVolume = (sampleIndex, volume) => (dispatch, getState, { app }) => {
-	const { sampling } = getState()
+	const { sampler } = getState()
 	const audio = app.audioEngine.getAudio(sampleIndex)
 	if (audio) {
-		audio.setVolume(volume * sampling.tracks[sampleIndex].volume2)
+		audio.setVolume(volume * sampler.tracks[sampleIndex].volume2)
 		dispatch({
-			type: 'SAMPLING_SET_SAMPLE_NORMALIZATION_VOLUME',
+			type: 'SAMPLER_SET_SAMPLE_NORMALIZATION_VOLUME',
 			data: { sampleIndex, volume }
 		})
 	}
@@ -54,19 +54,19 @@ export const changeSampleSpeed = (sampleIndex, speed) => (dispatch, getState, { 
 	if (audio) {
 		audio.setSpeed(speed)
 		dispatch({
-			type: 'SAMPLING_SET_SAMPLE_SPEED',
+			type: 'SAMPLER_SET_SAMPLE_SPEED',
 			data: { sampleIndex, speed }
 		})
 	}
 }
 
 export const changeSampleVolume = (sampleIndex, volume) => (dispatch, getState, { app }) => {
-	const { sampling } = getState()
+	const { sampler } = getState()
 	const audio = app.audioEngine.getAudio(sampleIndex)
 	if (audio) {
-		audio.setVolume(sampling.tracks[sampleIndex].volume1 * volume)
+		audio.setVolume(sampler.tracks[sampleIndex].volume1 * volume)
 		dispatch({
-			type: 'SAMPLING_SET_SAMPLE_VOLUME',
+			type: 'SAMPLER_SET_SAMPLE_VOLUME',
 			data: { sampleIndex, volume }
 		})
 	}
@@ -77,7 +77,7 @@ export const changeSampleStatus = (sampleIndex, playing) => (dispatch, getState,
 	if (audio) {
 		if (playing) audio.start()
 		dispatch({
-			type: 'SAMPLING_SET_SAMPLE_STATUS',
+			type: 'SAMPLER_SET_SAMPLE_STATUS',
 			data: { playing, sampleIndex }
 		})
 	}
@@ -91,7 +91,7 @@ export const registerSampleCanvas = (sampleIndex, canvas) => (dispatch, getState
 
 export const changeSamples = tracks => (dispatch, getState) => {
 	dispatch({
-		type: 'SAMPLING_SET_SAMPLES',
+		type: 'SAMPLER_SET_SAMPLES',
 		data: { tracks }
 	})
 }

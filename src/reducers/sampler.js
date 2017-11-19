@@ -5,8 +5,8 @@ import { getSearchParam } from '../tools'
 
 const INITIAL_STATE = {
 	tracks: null,
-	defaultDuration: getSearchParam('sampling_duration') || sessionStorage.getItem('DEFAULT_SAMPLING_DURATION') || config.DEFAULT.SAMPLING_DURATION,
-	strategyId: getSearchParam('sampling_strategy') || sessionStorage.getItem('DEFAULT_SAMPLING_STRATEGY') || config.DEFAULT.SAMPLING_STRATEGY
+	defaultDuration: getSearchParam('sampler_duration') || sessionStorage.getItem('DEFAULT_SAMPLER_DURATION') || config.DEFAULT.SAMPLER_DURATION,
+	strategyId: getSearchParam('sampler_strategy') || sessionStorage.getItem('DEFAULT_SAMPLER_STRATEGY') || config.DEFAULT.SAMPLER_STRATEGY
 }
 
 if (typeof INITIAL_STATE.defaultDuration === 'string') INITIAL_STATE.defaultDuration = parseInt(INITIAL_STATE.defaultDuration, 10)
@@ -45,23 +45,23 @@ const setStrategy = (state, { strategyId }) =>
 export default (state = INITIAL_STATE, action) => {
 	switch (action.type)
 	{
-	case 'SAMPLING_SET_SAMPLE_BPM':
+	case 'SAMPLER_SET_SAMPLE_BPM':
 		return setSampleBPM(state, action.data)
-	case 'SAMPLING_SET_DEFAULT_DURATION':
+	case 'SAMPLER_SET_DEFAULT_DURATION':
 		return setSampleDefaultDuration(state, action.data)
-	case 'SAMPLING_SET_SAMPLE_NORMALIZATION_VOLUME':
+	case 'SAMPLER_SET_SAMPLE_NORMALIZATION_VOLUME':
 		return setSampleNormalizationVolume(state, action.data)
-	case 'SAMPLING_SET_SAMPLE_READY':
+	case 'SAMPLER_SET_SAMPLE_READY':
 		return setSampleReady(state, action.data)
-	case 'SAMPLING_SET_SAMPLE_SPEED':
+	case 'SAMPLER_SET_SAMPLE_SPEED':
 		return setSampleSpeed(state, action.data)
-	case 'SAMPLING_SET_SAMPLE_STATUS':
+	case 'SAMPLER_SET_SAMPLE_STATUS':
 		return setSampleStatus(state, action.data)
-	case 'SAMPLING_SET_SAMPLE_VOLUME':
+	case 'SAMPLER_SET_SAMPLE_VOLUME':
 		return setSampleVolume(state, action.data)
-	case 'SAMPLING_SET_SAMPLES':
+	case 'SAMPLER_SET_SAMPLES':
 		return setSamples(state, action.data)
-	case 'SAMPLING_SET_STRATEGY':
+	case 'SAMPLER_SET_STRATEGY':
 		return setStrategy(state, action.data)
 	default:
 		return state

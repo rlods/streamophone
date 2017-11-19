@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 //
-import { registerSampleCanvas, startSample, stopSample } from '../actions/sampling'
+import { registerSampleCanvas, startSample, stopSample } from '../actions/sampler'
 import SamplerSample from '../components/SamplerSample'
 
 // --------------------------------------------------------------
@@ -10,7 +10,7 @@ const SOUND_IMG = require('../assets/sound.png')
 // --------------------------------------------------------------
 
 const mapStateToProps = (state, ownProps) => {
-	const track = state.sampling.tracks[ownProps.index]
+	const track = state.sampler.tracks[ownProps.index]
 	return {
 		bpm: Math.floor(track.bpm),
 		cover: track.cover || SOUND_IMG,

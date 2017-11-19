@@ -1,7 +1,7 @@
 import io from 'socket.io-client'
 //
 import Driver from './Driver'
-import { handleSocketEvent } from '../actions/sampling'
+import { handleSocketEvent } from '../actions/sampler'
 
 // --------------------------------------------------------------
 

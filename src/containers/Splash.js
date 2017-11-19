@@ -1,14 +1,14 @@
 import { connect } from 'react-redux'
 //
-import { changeSampleDefaultDuration, changeSamplingStrategy } from '../actions/sampling'
-import { changeSourceBPM, changeSourceId, changeSourceTransformation, changeSourceType, goToSampling } from '../actions/source'
+import { changeSampleDefaultDuration, changeSamplerStrategy } from '../actions/sampler'
+import { changeSourceBPM, changeSourceId, changeSourceTransformation, changeSourceType, goToSampler } from '../actions/source'
 import Splash from '../components/Splash'
 
 // --------------------------------------------------------------
 
 const mapStateToProps = (state, ownProps) => ({
-	samplingDefaultDuration: state.sampling.defaultDuration,
-	samplingStrategyId: state.sampling.strategyId,
+	samplerDefaultDuration: state.sampler.defaultDuration,
+	samplerStrategyId: state.sampler.strategyId,
 	sourceBPM: state.source.bpm,
 	sourceId: state.source.id,
 	sourceTransformation: state.source.transformation,
@@ -21,15 +21,15 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 		dispatch(changeSourceId(sourceId))
 		dispatch(changeSourceType(sourceType))
 	},
-	onChangeSamplingDefaultDuration: e => dispatch(changeSampleDefaultDuration(parseInt(e.target.value, 10))),
-	onChangeSamplingStrategy: e        => dispatch(changeSamplingStrategy(e.target.value)),
+	onChangeSamplerDefaultDuration: e => dispatch(changeSampleDefaultDuration(parseInt(e.target.value, 10))),
+	onChangeSamplerStrategy: e        => dispatch(changeSamplerStrategy(e.target.value)),
 	onChangeSourceBPM: e               => dispatch(changeSourceBPM(parseInt(e.target.value, 10))),
 	onChangeSourceId: e                => dispatch(changeSourceId(e.target.value)),
 	onChangeSourceTransformation: e    => dispatch(changeSourceTransformation(e.target.value)),
 	onChangeSourceType: e              => dispatch(changeSourceType(e.target.value)),
 	onCreate: e                        => {
 		e.preventDefault()
-		dispatch(goToSampling(ownProps.history))
+		dispatch(goToSampler(ownProps.history))
 	},
 })
 

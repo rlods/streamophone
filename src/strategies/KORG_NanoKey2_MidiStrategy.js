@@ -1,4 +1,4 @@
-import { startSample, stopSample, changeSampleVolume } from '../actions/sampling'
+import { startSample, stopSample, changeSampleVolume } from '../actions/sampler'
 import MidiStrategy from './MidiStrategy'
 
 // --------------------------------------------------------------

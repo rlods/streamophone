@@ -1,4 +1,4 @@
-import { startSample, stopSample } from '../actions/sampling'
+import { startSample, stopSample } from '../actions/sampler'
 import Strategy from './Strategy'
 import { KEY_ORDER_AZERTY, KEY_ORDER_QWERTY } from '../tools'
 

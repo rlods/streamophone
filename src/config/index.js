@@ -22,8 +22,8 @@ const Config = {
 	],
 
 	DEFAULT: {
-		SAMPLING_DURATION: -1, // do not shortened
-		SAMPLING_STRATEGY: 'KEYBOARD_AZERTY',
+		SAMPLER_DURATION: -1, // do not shortened
+		SAMPLER_STRATEGY: 'KEYBOARD_AZERTY',
 		SOURCE_BPM: -1, // do not adjust BPM
 		SOURCE_ID: '791313621',
 		SOURCE_TRANSFORMATION: 'shuffle',

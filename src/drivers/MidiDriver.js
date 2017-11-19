@@ -1,4 +1,4 @@
-import { handleMidiEvent } from '../actions/sampling'
+import { handleMidiEvent } from '../actions/sampler'
 import Driver from './Driver'
 
 // --------------------------------------------------------------

@@ -1,4 +1,4 @@
-import { changeSampleAudioReady, changeSampleStatus } from '../actions/sampling'
+import { changeSampleAudioReady, changeSampleStatus } from '../actions/sampler'
 import AudioRecord from './AudioRecord'
 import CustomAudio, { AUDIO_EVENT_PLAY, AUDIO_EVENT_PAUSE } from './CustomAudio'
 

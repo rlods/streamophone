@@ -1,4 +1,4 @@
-import { changeSampleBPM, changeSampleSpeed, changeSampleNormalizationVolume, changeSamples } from './sampling'
+import { changeSampleBPM, changeSampleSpeed, changeSampleNormalizationVolume, changeSamples } from './sampler'
 import { createProvider } from '../providers'
 import { createStrategy } from '../strategies'
 import { transformArray } from '../tools'
@@ -41,20 +41,20 @@ export const changeSourceType = type => dispatch => {
 
 const validateTrack = track => !!track.preview && track.readable // readable means the track is available in current country
 
-export const goToSampling = history => async (dispatch, getState, { app }) => {
-	const { sampling, source } = getState()
-	history.push(`/create?sampling_duration=${sampling.defaultDuration}&sampling_strategy=${sampling.strategyId}&source_bpm=${source.bpm}&source_id=${source.id}&source_transformation=${source.transformation}&source_type=${source.type}`)
+export const goToSampler = history => async (dispatch, getState, { app }) => {
+	const { sampler, source } = getState()
+	history.push(`/create?sampler_duration=${sampler.defaultDuration}&sampler_strategy=${sampler.strategyId}&source_bpm=${source.bpm}&source_id=${source.id}&source_transformation=${source.transformation}&source_type=${source.type}`)
 	dispatch(changeSamples(null)) // TODO: we should stop loading tracks (for ex soundcloud tracks are slow to download)
 }
 
-export const createSampling = () => async (dispatch, getState, { app }) => {
-	const { sampling, source } = getState()
+export const createSampler = () => async (dispatch, getState, { app }) => {
+	const { sampler, source } = getState()
 	try {
 		// Stop all previously loaded audios
 		app.audioEngine.stopAll()
 
 		// Create strategy
-		app.strategy = createStrategy(sampling.strategyId)
+		app.strategy = createStrategy(sampler.strategyId)
 
 		// Fetch tracks
 		const providerId = source.type.split('_')[0]
@@ -62,7 +62,7 @@ export const createSampling = () => async (dispatch, getState, { app }) => {
 		const tracks = transformArray(await provider.fetchTracks(source.type, source.id), app.strategy.samplesCount, source.transformation, validateTrack)
 		tracks.forEach(track => {
 			track.loopStart = 0
-			track.loopEnd = sampling.defaultDuration > 0 ? track.loopStart + (sampling.defaultDuration / 1000.0) : 0
+			track.loopEnd = sampler.defaultDuration > 0 ? track.loopStart + (sampler.defaultDuration / 1000.0) : 0
 			track.playing = false
 			track.providerId = providerId
 			track.ready = false
