@@ -7,15 +7,14 @@
 	margin-top: 10px;
 	padding: 10px;
 	background-color: #CCC;
+	opacity: 0.5;
 	box-shadow: 5px 5px 10px;
+	transition: opacity 0.5s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 
 .player-sample.playing {
-	background-color: #F00; /* TODO */
-}
-
-.player-sample:first-child {
-	margin-top: 0;
+	opacity: 1.0;
+	box-shadow: 0 0 0;
 }
 
 .player-sample a {

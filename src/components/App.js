@@ -14,8 +14,8 @@ class App extends Component {
 		return (
 			<Switch>
 				<Route exact path="/" component={Splash} />
-				<Route exact path="/create" component={Sampler} />
-				<Route exact path="/listen/:data" component={Player} />
+				<Route exact path="/make" component={Sampler} />
+				<Route exact path="/play/:data" component={Player} />
 			</Switch>
 		)
 	}

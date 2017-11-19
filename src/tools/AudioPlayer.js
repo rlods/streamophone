@@ -10,7 +10,7 @@ export const PLAYER_EVENT_PAUSE  = 2
 
 // ------------------------------------------------------------------
 
-const getStatistics = events => { // TODO: extract duration by tracks
+const processStatistics = events => { // TODO: extract duration by tracks
 	let duration = 0, previousTime = events[0]
 	let durationsPerTrack = {}, samplesStarts = {}
 	for (let i = 0; i < events.length; ) {
@@ -31,6 +31,7 @@ const getStatistics = events => { // TODO: extract duration by tracks
 			break
 		case AUDIO_EVENT_PAUSE:
 			durationsPerTrack[sampleIndex] = (durationsPerTrack[sampleIndex] || 0) + currentTime - samplesStarts[sampleIndex]
+			delete samplesStarts[sampleIndex]
 			break
 		case AUDIO_EVENT_SPEED:
 			i++ // speed
@@ -42,6 +43,14 @@ const getStatistics = events => { // TODO: extract duration by tracks
 			break
 		}
 	}
+
+	// Forcing stop of unstopped samples
+	Object.entries(samplesStarts).forEach(([sampleIndex, track]) => {
+		console.log('Forcing stop of', sampleIndex)
+		durationsPerTrack[sampleIndex] = (durationsPerTrack[sampleIndex] || 0) + previousTime - samplesStarts[sampleIndex]
+		events.push(previousTime, sampleIndex, AUDIO_EVENT_PAUSE)
+	})
+
 	return {
 		duration,
 		durationsPerTrack
@@ -90,7 +99,7 @@ export default class AudioPlayer
 			if (RECORD_FORMAT === format && events.length > 0) {
 				this._events = events
 
-				const { duration, durationsPerTrack } = getStatistics(this._events)
+				const { duration, durationsPerTrack } = processStatistics(this._events)
 				this._duration = duration / 1000
 
 				this.tracks = tracks.map((track, sampleIndex) => {

@@ -37,6 +37,6 @@ export default class AudioRecorder
 
 	snapshot() {
 		console.log('Export Sampling Events', this._data)
-		window.open('/#/listen/' + js_to_b64(this._data))
+		window.open('/#/play/' + js_to_b64(this._data))
 	}
 }

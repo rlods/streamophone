@@ -43,7 +43,7 @@ const validateTrack = track => !!track.preview && track.readable // readable mea
 
 export const goToSampler = history => async (dispatch, getState, { app }) => {
 	const { sampler, source } = getState()
-	history.push(`/create?sampler_duration=${sampler.defaultDuration}&sampler_strategy=${sampler.strategyId}&source_bpm=${source.bpm}&source_id=${source.id}&source_transformation=${source.transformation}&source_type=${source.type}`)
+	history.push(`/make?sampler_duration=${sampler.defaultDuration}&sampler_strategy=${sampler.strategyId}&source_bpm=${source.bpm}&source_id=${source.id}&source_transformation=${source.transformation}&source_type=${source.type}`)
 	dispatch(changeSamples(null)) // TODO: we should stop loading tracks (for ex soundcloud tracks are slow to download)
 }
 
