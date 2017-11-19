@@ -70,17 +70,11 @@ export const changeSampleVolume = (sampleIndex, volume) => (dispatch, getState, 
 	}
 }
 
-export const changeSampleStatus = (sampleIndex, playing) => (dispatch, getState, { app }) => {
+export const changeSampleStatus = (sampleIndex, playing) => dispatch => {
 	dispatch({
 		type: 'SAMPLER_SET_SAMPLE_STATUS',
 		data: { playing, sampleIndex }
 	})
-}
-
-export const registerSampleCanvas = (sampleIndex, canvas) => (dispatch, getState, { app }) => {
-	const audio = app.audioEngine.getAudio(sampleIndex)
-	if (audio)
-		audio.setCanvas(canvas)
 }
 
 export const changeSamples = tracks => (dispatch, getState) => {
@@ -114,7 +108,11 @@ export const handleSocketEvent = message => (dispatch, getState, { app }) => {
 		app.strategy.handleSocketMessage(dispatch, message)
 }
 
-// --------------------------------------------------------------
+export const registerSampleCanvas = (sampleIndex, canvas) => (dispatch, getState, { app }) => {
+	const audio = app.audioEngine.getAudio(sampleIndex)
+	if (audio)
+		audio.setCanvas(canvas)
+}
 
 export const startSample = sampleIndex => async (dispatch, getState, { app }) => {
 	const audio = app.audioEngine.getAudio(sampleIndex)

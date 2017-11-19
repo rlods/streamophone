@@ -1,5 +1,5 @@
 
-export const changePlayerStatus = playing => (dispatch, getState, { app }) => {
+export const changePlayerStatus = playing => dispatch => {
 	dispatch({
 		type: 'PLAYER_SET_STATUS',
 		data: { playing }
