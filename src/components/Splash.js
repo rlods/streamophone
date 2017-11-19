@@ -78,7 +78,7 @@ class Splash extends Component {
 					getValue={([strategyId, strategyDefinition]) => strategyId}
 					getText={([strategyId, strategyDefinition]) => strategyDefinition.label} />
 				<SelectField
-					name="Sample Duration"
+					name="Sample Default Duration"
 					items={DURATIONS}
 					value={this.props.samplerDefaultDuration}
 					onChange={this.props.onChangeSamplerDefaultDuration}
@@ -116,7 +116,7 @@ class Splash extends Component {
 					value={this.props.sourceId}
 					onChange={this.props.onChangeSourceId} />
 				<div className="app-menu-field">
-					<button className="app-menu-action" onClick={this.props.onCreate}>Play</button>
+					<button className="app-menu-action" onClick={this.props.onCreate}><i class="fa fa-music" aria-hidden="true"></i></button>
 				</div>
 			</form>
 		)

@@ -1,3 +1,6 @@
+import { AUDIO_CONTEXT } from './'
+
+// ------------------------------------------------------------------
 
 const CURRENT_TIME_COLOR = 'rgba(0, 0, 0, 0.5)'
 
@@ -22,10 +25,9 @@ export const AUDIO_EVENT_LOOP   = 5
 
 export default class CustomAudio
 {
-	constructor(context, url, eventCB) {
+	constructor(url, eventCB) {
 		this._audioBuffer = null
 		this._canvas = null
-		this._context = context
 		this._drawingFrameRequest = null
 		this._eventCB = eventCB
 		this._loop = true
@@ -38,11 +40,11 @@ export default class CustomAudio
 		this._startedAt = 0
 		this._url = url
 
-		this._gainNode = this._context.createGain()
+		this._gainNode = AUDIO_CONTEXT.createGain()
 		this._gainNode.gain.value = 1.0
-		this._gainNode.connect(this._context.destination)
+		this._gainNode.connect(AUDIO_CONTEXT.destination)
 
-		this._analyserNode = this._context.createAnalyser()
+		this._analyserNode = AUDIO_CONTEXT.createAnalyser()
 		this._analyserNode.fftSize = VISU_STYLE === 0 ? WAVE_FFT_SIZE : BAR_FFT_SIZE
 		this._analyserNode.minDecibels = -90
 		this._analyserNode.maxDecibels = -10
@@ -95,7 +97,7 @@ export default class CustomAudio
 	start() {
 		if (this._ready && !this._playing) {
 			this._playing = true
-			this._sourceNode = this._context.createBufferSource()
+			this._sourceNode = AUDIO_CONTEXT.createBufferSource()
 			this._sourceNode.buffer = this._audioBuffer
 			this._sourceNode.loop = this._loop
 			this._sourceNode.loopStart = this._loopStart
@@ -104,7 +106,7 @@ export default class CustomAudio
 			this._sourceNode.playbackRate.value = this._speed
 			this._sourceNode.connect(this._analyserNode)
 			this._sourceNode.start() // A new BufferSource must be created for each start
-			this._startedAt = this._context.currentTime
+			this._startedAt = AUDIO_CONTEXT.currentTime
 			if (this._eventCB) 
 				this._eventCB([AUDIO_EVENT_PLAY])
 			this._startVisualization()
@@ -129,7 +131,7 @@ export default class CustomAudio
 			const req = new XMLHttpRequest()
 			req.open('GET', this._url, true)
 			req.responseType = 'arraybuffer'
-			req.onload = () => this._context.decodeAudioData(req.response, buffer => resolve(buffer), error => reject(error))
+			req.onload = () => AUDIO_CONTEXT.decodeAudioData(req.response, buffer => resolve(buffer), error => reject(error))
 			req.send()
 		})
 	}
@@ -156,7 +158,7 @@ export default class CustomAudio
 					this._drawingFrameRequest = requestAnimationFrame(draw)
 
 					const duration = (this._sourceNode.loopEnd || this._audioBuffer.duration) - this._sourceNode.loopStart
-					const elapsed = ((this._context.currentTime - this._startedAt) % duration) * width / duration
+					const elapsed = ((AUDIO_CONTEXT.currentTime - this._startedAt) % duration) * width / duration
 					canvasCtx.fillStyle = CURRENT_TIME_COLOR
 					canvasCtx.fillRect(0, 0, elapsed, height)
 

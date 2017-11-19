@@ -1,6 +1,7 @@
 import { changeSampleAudioReady, changeSampleStatus } from '../actions/sampler'
 import AudioRecorder from './AudioRecorder'
 import CustomAudio, { AUDIO_EVENT_PLAY, AUDIO_EVENT_PAUSE } from './CustomAudio'
+import { AUDIO_CONTEXT} from './'
 
 // ------------------------------------------------------------------
 
@@ -8,16 +9,15 @@ export default class AudioEngine
 {
 	constructor() {
 		this._audios = null
-		this._context = new (window.AudioContext || window.webkitAudioContext)()
 		this.recorder = new AudioRecorder()
 	}
 
 	loadAudios(dispatch, tracks) {
 		this._audios = tracks.map((track, sampleIndex) => {
-			const audio = new CustomAudio(this._context, track.preview, e => {
+			const audio = new CustomAudio(track.preview, e => {
 				if      (e[0] === AUDIO_EVENT_PLAY)  dispatch(changeSampleStatus(sampleIndex, true))
 				else if (e[0] === AUDIO_EVENT_PAUSE) dispatch(changeSampleStatus(sampleIndex, false))
-				this.recorder.pushEvent(this._context.currentTime, sampleIndex, e, track)
+				this.recorder.pushEvent(AUDIO_CONTEXT.currentTime, sampleIndex, e, track)
 			})
 			audio.setLoop(track.loopStart, track.loopEnd)
 			audio.setVolume(track.volume1 * track.volume2)

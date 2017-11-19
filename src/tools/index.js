@@ -3,6 +3,10 @@ export const KEY_ORDER_QWERTY   = 'qwertyuiopasdfghjklzxcvbnm'
 
 // ------------------------------------------------------------------
 
+export const AUDIO_CONTEXT = new (window.AudioContext || window.webkitAudioContext)()
+
+// ------------------------------------------------------------------
+
 // https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/btoa
 
 const STR_TO_BASE64_MAPPING = { '+':'-', '/':'_', '=':'.' }
@@ -19,7 +23,41 @@ export const b64_to_js = b64 => JSON.parse(b64_to_str(b64))
 
 // ------------------------------------------------------------------
 
+export const fmtMSS = s => (s - (s %= 60)) / 60 + (9 < s ? ':' : ':0') + s
+
+// ------------------------------------------------------------------
+
 export const sleep = delay => new Promise(resolve => setTimeout(resolve, delay))
+
+export class Sleeper
+{
+	constructor() {
+		this._resolve = null
+		this._timer = null
+	}
+
+	sleep(delay) {
+		if (!this._timer) {
+			return new Promise(resolve => {
+				this._resolve = resolve
+				this._timer = setTimeout(() => {
+					this._timer = null
+					this._resolve()
+				}, delay)
+			})
+		}
+	}
+
+	stop() {
+		if (this._timer) {
+			clearTimeout(this._timer)
+			this._timer = null
+			this._resolve()
+		}
+	}
+
+
+}
 
 // ------------------------------------------------------------------
 

@@ -95,7 +95,7 @@ class Sampler extends Component {
 			}
 
 			const info = false ? null : (
-				<div className="sampler-info">"space" to replay your creation</div>
+				<div className="sampler-info">Press SPACE to listen and share</div>
 			)
 
 			return (

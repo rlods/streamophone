@@ -1,12 +1,14 @@
 import { changePlayerSampleStatus, changePlayerStatus } from '../actions/player'
 import CustomAudio, { AUDIO_EVENT_LOOP, AUDIO_EVENT_PLAY, AUDIO_EVENT_PAUSE, AUDIO_EVENT_SPEED, AUDIO_EVENT_VOLUME } from './CustomAudio'
-import { sleep, b64_to_js } from '../tools'
+import { AUDIO_CONTEXT, b64_to_js, Sleeper } from '../tools'
 import { RECORD_FORMAT } from './AudioRecorder'
 
 // ------------------------------------------------------------------
 
 export const PLAYER_EVENT_PLAY   = 1
 export const PLAYER_EVENT_PAUSE  = 2
+
+const FORCED_STOP_DELAY = 2000 // 2s
 
 // ------------------------------------------------------------------
 
@@ -45,12 +47,15 @@ const processStatistics = events => { // TODO: extract duration by tracks
 	}
 
 	// Forcing stop of unstopped samples
-	const FORCED_STOP_DELAY = 2000 // 2s
-	Object.entries(samplesStarts).forEach(([sampleIndex, track]) => {
-		console.log('Forcing stop of', sampleIndex)
-		durationsPerTrack[sampleIndex] = (durationsPerTrack[sampleIndex] || 0) + previousTime + FORCED_STOP_DELAY - samplesStarts[sampleIndex]
-		events.push(previousTime + FORCED_STOP_DELAY, sampleIndex, AUDIO_EVENT_PAUSE)
-	})
+	const startedSamples = Object.entries(samplesStarts)
+	if (startedSamples.length > 0) {
+		startedSamples.forEach(([sampleIndex, track]) => {
+			console.log('Forcing stop of', sampleIndex)
+			durationsPerTrack[sampleIndex] = (durationsPerTrack[sampleIndex] || 0) + previousTime + FORCED_STOP_DELAY - samplesStarts[sampleIndex]
+			events.push(previousTime + FORCED_STOP_DELAY, sampleIndex, AUDIO_EVENT_PAUSE)
+		})
+		duration += FORCED_STOP_DELAY
+	}
 
 	return {
 		duration,
@@ -65,7 +70,6 @@ export default class AudioPlayer
 	constructor() {
 		this._audios = null
 		this._canvas = null
-		this._context = null
 		this._dispatch = null
 		this._drawing = false
 		this._drawingFrameRequest = null
@@ -76,8 +80,9 @@ export default class AudioPlayer
 		}
 		this._events = []
 		this._playing = false
-		this._startedAt = 0
 		this._ready = false
+		this._sleeper = new Sleeper()
+		this._startedAt = 0
 		this.tracks = []
 	}
 
@@ -110,9 +115,8 @@ export default class AudioPlayer
 				})
 
 				console.log('Loading audios')
-				this._context = new (window.AudioContext || window.webkitAudioContext)()
 				this._audios = await Promise.all(this.tracks.map(async (sample, sampleIndex) => {
-					const audio = new CustomAudio(this._context, sample.preview, e => {
+					const audio = new CustomAudio(sample.preview, e => {
 						if      (e[0] === AUDIO_EVENT_PLAY)  this._dispatch(changePlayerSampleStatus(sampleIndex, true))
 						else if (e[0] === AUDIO_EVENT_PAUSE) this._dispatch(changePlayerSampleStatus(sampleIndex, false))
 					})
@@ -130,61 +134,66 @@ export default class AudioPlayer
 	async play() {
 		if (this._ready && !this._playing) {
 			this._playing = true
-			this._startedAt = this._context.currentTime
+			this._startedAt = AUDIO_CONTEXT.currentTime
 
 			console.log('Starting')
 			this._eventCB([PLAYER_EVENT_PLAY])
 			this._startVisualization()
 
 			let previousTime = this._events[0], loopStart, loopEnd, speed, volume
-			for (let i = 0; i < this._events.length; ) {
+			for (let i = 0; i < this._events.length && this._playing; ) {
 				const currentTime = this._events[i++]
 				const sampleIndex = this._events[i++]
 				const eventType   = this._events[i++]
 				const delay       = currentTime - previousTime
 				if (delay > 0) {
-					await sleep(delay)
+					await this._sleeper.sleep(delay)
 					previousTime = currentTime
 				}
-				switch (eventType)
-				{
-				case AUDIO_EVENT_LOOP:
-					loopStart = this._events[i++]
-					loopEnd   = this._events[i++]
-					this._audios[sampleIndex].setLoop(loopStart, loopEnd)
-					break
-				case AUDIO_EVENT_PLAY:
-					this._audios[sampleIndex].start()
-					break
-				case AUDIO_EVENT_PAUSE:
-					this._audios[sampleIndex].stop()
-					break
-				case AUDIO_EVENT_SPEED:
-					speed = this._events[i++]
-					this._audios[sampleIndex].setSpeed(speed)
-					break
-				case AUDIO_EVENT_VOLUME:
-					volume = this._events[i++]
-					this._audios[sampleIndex].setVolume(volume)
-					break
-				default:
-					break
+				if (this._playing) {
+					switch (eventType)
+					{
+					case AUDIO_EVENT_LOOP:
+						loopStart = this._events[i++]
+						loopEnd   = this._events[i++]
+						this._audios[sampleIndex].setLoop(loopStart, loopEnd)
+						break
+					case AUDIO_EVENT_PLAY:
+						this._audios[sampleIndex].start()
+						break
+					case AUDIO_EVENT_PAUSE:
+						this._audios[sampleIndex].stop()
+						break
+					case AUDIO_EVENT_SPEED:
+						speed = this._events[i++]
+						this._audios[sampleIndex].setSpeed(speed)
+						break
+					case AUDIO_EVENT_VOLUME:
+						volume = this._events[i++]
+						this._audios[sampleIndex].setVolume(volume)
+						break
+					default:
+						break
+					}
 				}
 			}
-
+			
 			console.log('Terminated')
-			this._stopVisualization()
-			this._eventCB([PLAYER_EVENT_PAUSE])
-			this._playing = false
+			this._audios.forEach(audio => audio.stop()) // Stopping remaining audio (which can occur if playing has been stopped)
+			if (this._playing) {
+				this._stopVisualization()
+				this._eventCB([PLAYER_EVENT_PAUSE])
+				this._playing = false
+			}
 		}
 	}
 
 	pause() {
 		if (this._playing) {
-			alert('TODO: stop music')
 			this._stopVisualization()
 			this._eventCB([PLAYER_EVENT_PAUSE])
 			this._playing = false
+			this._sleeper.stop()
 		}
 	}
 
@@ -203,7 +212,7 @@ export default class AudioPlayer
 				if (this._drawingFrameRequest) { // if previous _drawingFrameRequest has been set to null we don't request a new one
 					this._drawingFrameRequest = requestAnimationFrame(draw)
 
-					const elapsed = ((this._context.currentTime - this._startedAt) % this._duration) * width / this._duration
+					const elapsed = ((AUDIO_CONTEXT.currentTime - this._startedAt) % this._duration) * width / this._duration
 					canvasCtx.fillStyle = 'rgb(255, 0, 0)'
 					canvasCtx.fillRect(0, 0, elapsed, height)
 				}
