@@ -1,6 +1,8 @@
 
 .player-sample {
-	display: inline-block;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
 	margin-top: 10px;
 	padding: 10px;
 	background-color: #CCC;
@@ -28,4 +30,8 @@
 
 .player-sample-title:hover {
 	text-decoration: underline;
+}
+
+.player-sample-xxxDuration {
+
 }

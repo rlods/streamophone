@@ -10,13 +10,15 @@ export const PLAYER_EVENT_PAUSE  = 2
 
 // ------------------------------------------------------------------
 
-const getDuration = events => {
+const getStatistics = events => { // TODO: extract duration by tracks
 	let duration = 0, previousTime = events[0]
+	let durationsPerTrack = {}, samplesStarts = {}
 	for (let i = 0; i < events.length; ) {
 		const currentTime = events[i++]
-		i++ // sampleIndex
+		const sampleIndex = events[i++]
 		const eventType   = events[i++]
 		const delay       = currentTime - previousTime
+		previousTime = currentTime
 		duration += delay
 		switch (eventType)
 		{
@@ -25,8 +27,10 @@ const getDuration = events => {
 			i++ // loopEnd
 			break
 		case AUDIO_EVENT_PLAY:
+			samplesStarts[sampleIndex] = currentTime
 			break
 		case AUDIO_EVENT_PAUSE:
+			durationsPerTrack[sampleIndex] = (durationsPerTrack[sampleIndex] || 0) + currentTime - samplesStarts[sampleIndex]
 			break
 		case AUDIO_EVENT_SPEED:
 			i++ // speed
@@ -38,7 +42,10 @@ const getDuration = events => {
 			break
 		}
 	}
-	return duration / 1000
+	return {
+		duration,
+		durationsPerTrack
+	}
 }
 
 // ------------------------------------------------------------------
@@ -70,8 +77,8 @@ export default class AudioPlayer
 
 	attachCanvas(canvas) {
 		this._canvas = canvas
-		if (this._playing)
-			this._startVisualization()
+		// if (this._playing) // commented because it would continue to display visualization forevent ... maybe something to cleanup to be similar to CustomAudio attachCanvas
+		//	this._startVisualization()
 	}
 
 	async loadData(data) {
@@ -82,13 +89,15 @@ export default class AudioPlayer
 			const { events, format, tracks } = data
 			if (RECORD_FORMAT === format && events.length > 0) {
 				this._events = events
-				this.tracks = tracks.map(track => {
+
+				const { duration, durationsPerTrack } = getStatistics(this._events)
+				this._duration = duration / 1000
+
+				this.tracks = tracks.map((track, sampleIndex) => {
 					track.playing = false
+					track.xxxDuration = durationsPerTrack[sampleIndex] / 1000
 					return track
 				})
-
-				this._duration = getDuration(this._events)
-				console.log(this._duration)
 
 				console.log('Loading audios')
 				this._context = new (window.AudioContext || window.webkitAudioContext)()

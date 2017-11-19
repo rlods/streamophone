@@ -11,6 +11,7 @@ class PlayerSample extends Component {
 		return (
 			<div className={classNames('player-sample', { playing: this.props.playing })}>
 				<a className="player-sample-title" target="_blank" rel="noopener noreferrer" href={this.props.url}>{this.props.title}</a>
+				<span className="player-sample-xxxDuration" >{this.props.xxxDuration}</span>
 			</div>
 		)
 	}
@@ -21,7 +22,8 @@ class PlayerSample extends Component {
 PlayerSample.propTypes = {
 	playing: PropTypes.bool,
 	title: PropTypes.string,
-	url: PropTypes.string
+	url: PropTypes.string,
+	xxxDuration: PropTypes.number
 }
 
 export default PlayerSample
