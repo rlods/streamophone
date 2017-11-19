@@ -45,10 +45,11 @@ const processStatistics = events => { // TODO: extract duration by tracks
 	}
 
 	// Forcing stop of unstopped samples
+	const FORCED_STOP_DELAY = 2000 // 2s
 	Object.entries(samplesStarts).forEach(([sampleIndex, track]) => {
 		console.log('Forcing stop of', sampleIndex)
-		durationsPerTrack[sampleIndex] = (durationsPerTrack[sampleIndex] || 0) + previousTime - samplesStarts[sampleIndex]
-		events.push(previousTime, sampleIndex, AUDIO_EVENT_PAUSE)
+		durationsPerTrack[sampleIndex] = (durationsPerTrack[sampleIndex] || 0) + previousTime + FORCED_STOP_DELAY - samplesStarts[sampleIndex]
+		events.push(previousTime + FORCED_STOP_DELAY, sampleIndex, AUDIO_EVENT_PAUSE)
 	})
 
 	return {

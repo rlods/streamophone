@@ -18,8 +18,8 @@ class Player extends Component {
 				<div className="player">
 					<div className="player-actions">
 					{this.props.playing
-						? <button onClick={this.props.onPause}><i class="fa fa-pause" aria-hidden="true"></i></button>
-						: <button onClick={this.props.onPlay}><i class="fa fa-play" aria-hidden="true"></i></button>}
+						? <button onClick={this.props.onPause}><i className="fa fa-pause" aria-hidden="true"></i></button>
+						: <button onClick={this.props.onPlay}><i className="fa fa-play" aria-hidden="true"></i></button>}
 					</div>
 					<canvas className="player-timeline" ref={canvas => this.props.onRegisterCanvas(canvas)} width="400" height="50"></canvas>
 					<div className="player-samples">{this.props.tracks.map((sample, sampleIndex) => <PlayerSample key={sampleIndex} index={sampleIndex} />)}</div>
