@@ -23,11 +23,11 @@ export const AUDIO_EVENT_LOOP   = 5
 export default class CustomAudio
 {
 	constructor(context, url, eventCB) {
-		this._animationFrameRequest = null
 		this._audioBuffer = null
 		this._canvas = null
-		this._eventCB = eventCB
 		this._context = context
+		this._drawingFrameRequest = null
+		this._eventCB = eventCB
 		this._loop = true
 		this._loopEnd = 0
 		this._loopStart = 0
@@ -136,6 +136,10 @@ export default class CustomAudio
 		})
 	}
 
+	// --------------------------------------------------------------
+	// --------------------------------------------------------------
+	// --------------------------------------------------------------
+	
 	// https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API#Audio_Workers
 	_startVisualization() { // TODO: move outside of CustomAudio class
 		const width = this._canvas.width
@@ -144,15 +148,13 @@ export default class CustomAudio
 		const bufferLength = this._analyserNode.frequencyBinCount // half the FFT value
 		const dataArray = new Uint8Array(bufferLength)
 		const sliceWidth = width * 1.0 / bufferLength
-
 		canvasCtx.lineWidth = WAVE_WIDTH
 		canvasCtx.strokeStyle = WAVE_COLOR
 
 		const draw = () => {
-			if (this._playing) {
-				this._animationFrameRequest = requestAnimationFrame(draw)
-
-				canvasCtx.clearRect(0, 0, width, height)
+			canvasCtx.clearRect(0, 0, width, height)
+			if (this._drawingFrameRequest) { // if previous _drawingFrameRequest has been set to null we don't request a new one
+				this._drawingFrameRequest = requestAnimationFrame(draw)
 
 				const duration = (this._sourceNode.loopEnd || this._audioBuffer.duration) - this._sourceNode.loopStart
 				const elapsed = ((this._context.currentTime - this._startedAt) % duration) * width / duration
@@ -187,13 +189,10 @@ export default class CustomAudio
 				}
 			}
 		}
-		this._animationFrameRequest = requestAnimationFrame(draw)
+		this._drawingFrameRequest = requestAnimationFrame(draw)
 	}
 
 	_stopVisualization() {
-		if (null !== this._animationFrameRequest) {
-			window.cancelAnimationFrame(this._animationFrameRequest)
-			this._animationFrameRequest = null
-		}
+		this._drawingFrameRequest = null
 	}
 }

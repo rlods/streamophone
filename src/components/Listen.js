@@ -13,11 +13,11 @@ class Listen extends Component {
 				<div className="actions">
 					<button onClick={this.props.record.play.bind(this.props.record)}>LISTEN</button>
 				</div>
-				<canvas className="timeline" ref={canvas => this.props.record.setCanvas(canvas)}></canvas>
+				<canvas className="timeline" ref={canvas => this.props.record.setCanvas(canvas)} width="400" height="50"></canvas>
 				<div className="tracks">
 				{
-					Object.values(this.props.record.data.tracks).map(track => (
-						<div className="track">
+					Object.entries(this.props.record.data.tracks).map(([sampleIndex, track]) => (
+						<div key={sampleIndex} className="track">
 							<a className="track-title" href={track.url}>{track.title}</a>
 						</div>
 					))
