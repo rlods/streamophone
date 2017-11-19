@@ -1,20 +1,20 @@
 
 const INITIAL_STATE = {
-	record: null
+	tracks: null
 }
 
 // ------------------------------------------------------------------
 
-const setRecord = (state, { record }) =>
-	({ ...state, record })
+const setTracks = (state, { tracks }) =>
+	({ ...state, tracks })
 
 // ------------------------------------------------------------------
 
 export default (state = INITIAL_STATE, action) => {
 	switch (action.type)
 	{
-	case 'PLAYER_SET_RECORD':
-		return setRecord(state, action.data)
+	case 'PLAYER_SET_TRACKS':
+		return setTracks(state, action.data)
 	default:
 		return state
 	}

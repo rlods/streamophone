@@ -13,7 +13,7 @@ class Sampler extends Component {
 	componentWillMount() {
 		document.addEventListener('keydown', this.props.onKeyDown.bind(this))
 		document.addEventListener('keyup', this.props.onKeyUp.bind(this))
-		if (!this.props.tracks)	
+		if (null === this.props.tracks)	
 			this.props.onInit() // Because user directly opened the page directly not from the splash screen
 	}
 

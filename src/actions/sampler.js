@@ -15,8 +15,6 @@ export const changeSamplerStrategy = strategyId => dispatch => {
 	})
 }
 
-// --------------------------------------------------------------
-
 export const changeSampleAudioReady = (sampleIndex) => (dispatch, getState) => {
 	const { sampler } = getState()
 	if (sampler.tracks && sampleIndex >= 0 && sampleIndex < sampler.tracks.length) {
@@ -73,14 +71,10 @@ export const changeSampleVolume = (sampleIndex, volume) => (dispatch, getState, 
 }
 
 export const changeSampleStatus = (sampleIndex, playing) => (dispatch, getState, { app }) => {
-	const audio = app.audioEngine.getAudio(sampleIndex)
-	if (audio) {
-		if (playing) audio.start()
-		dispatch({
-			type: 'SAMPLER_SET_SAMPLE_STATUS',
-			data: { playing, sampleIndex }
-		})
-	}
+	dispatch({
+		type: 'SAMPLER_SET_SAMPLE_STATUS',
+		data: { playing, sampleIndex }
+	})
 }
 
 export const registerSampleCanvas = (sampleIndex, canvas) => (dispatch, getState, { app }) => {
@@ -100,7 +94,7 @@ export const changeSamples = tracks => (dispatch, getState) => {
 
 export const handleKeyDown = keyCode => async (dispatch, getState, { app }) => {
 	if (keyCode === 32) // SPACE
-		app.audioEngine.record.snapshot()
+		app.audioEngine.recorder.snapshot()
 	else if (app.strategy)
 		app.strategy.handleKeyDown(dispatch, keyCode)
 }

@@ -13,12 +13,14 @@ import App from './containers/App'
 import { createDrivers } from './drivers'
 import config from './config'
 import AudioEngine from './tools/AudioEngine'
+import AudioPlayer from './tools/AudioPlayer'
 import './index.css'
 
 // --------------------------------------------------------------
 
 const app = {
 	audioEngine: new AudioEngine(),
+	audioPlayer: new AudioPlayer(),
 	drivers: createDrivers(),
 	strategy: null
 }
@@ -31,6 +33,10 @@ const middlewares = [
 ].filter(middleware => !!middleware)
 
 const store = createStore(rootReducer, {}, applyMiddleware(...middlewares))
+
+// --------------------------------------------------------------
+
+app.audioPlayer.attach(store.dispatch.bind(this))
 Object.values(app.drivers).forEach(driver => driver.attach(store.dispatch.bind(this)))
 
 // --------------------------------------------------------------

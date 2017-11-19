@@ -63,9 +63,8 @@ export default class CustomAudio
 
 	setCanvas(canvas) {
 		this._canvas = canvas
-		if (canvas && this._playing) {
+		if (this._playing)
 			this._startVisualization()
-		}
 	}
 	
 	setLoop(loopStart, loopEnd) {
@@ -95,6 +94,7 @@ export default class CustomAudio
 
 	start() {
 		if (this._ready && !this._playing) {
+			this._playing = true
 			this._sourceNode = this._context.createBufferSource()
 			this._sourceNode.buffer = this._audioBuffer
 			this._sourceNode.loop = this._loop
@@ -104,12 +104,10 @@ export default class CustomAudio
 			this._sourceNode.playbackRate.value = this._speed
 			this._sourceNode.connect(this._analyserNode)
 			this._sourceNode.start() // A new BufferSource must be created for each start
-			this._playing = true
 			this._startedAt = this._context.currentTime
 			if (this._eventCB) 
 				this._eventCB([AUDIO_EVENT_PLAY])
-			if (this._canvas)
-				this._startVisualization()
+			this._startVisualization()
 		}
 	}
 
@@ -142,54 +140,56 @@ export default class CustomAudio
 	
 	// https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API#Audio_Workers
 	_startVisualization() { // TODO: move outside of CustomAudio class
-		const width = this._canvas.width
-		const height = this._canvas.width
-		const canvasCtx = this._canvas.getContext('2d')
-		const bufferLength = this._analyserNode.frequencyBinCount // half the FFT value
-		const dataArray = new Uint8Array(bufferLength)
-		const sliceWidth = width * 1.0 / bufferLength
-		canvasCtx.lineWidth = WAVE_WIDTH
-		canvasCtx.strokeStyle = WAVE_COLOR
+		if (this._canvas) {
+			const width = this._canvas.width
+			const height = this._canvas.width
+			const canvasCtx = this._canvas.getContext('2d')
+			const bufferLength = this._analyserNode.frequencyBinCount // half the FFT value
+			const dataArray = new Uint8Array(bufferLength)
+			const sliceWidth = width * 1.0 / bufferLength
+			canvasCtx.lineWidth = WAVE_WIDTH
+			canvasCtx.strokeStyle = WAVE_COLOR
 
-		const draw = () => {
-			canvasCtx.clearRect(0, 0, width, height)
-			if (this._drawingFrameRequest) { // if previous _drawingFrameRequest has been set to null we don't request a new one
-				this._drawingFrameRequest = requestAnimationFrame(draw)
+			const draw = () => {
+				canvasCtx.clearRect(0, 0, width, height)
+				if (this._drawingFrameRequest) { // if previous _drawingFrameRequest has been set to null we don't request a new one
+					this._drawingFrameRequest = requestAnimationFrame(draw)
 
-				const duration = (this._sourceNode.loopEnd || this._audioBuffer.duration) - this._sourceNode.loopStart
-				const elapsed = ((this._context.currentTime - this._startedAt) % duration) * width / duration
-				canvasCtx.fillStyle = CURRENT_TIME_COLOR
-				canvasCtx.fillRect(0, 0, elapsed, height)
+					const duration = (this._sourceNode.loopEnd || this._audioBuffer.duration) - this._sourceNode.loopStart
+					const elapsed = ((this._context.currentTime - this._startedAt) % duration) * width / duration
+					canvasCtx.fillStyle = CURRENT_TIME_COLOR
+					canvasCtx.fillRect(0, 0, elapsed, height)
 
-				if (VISU_STYLE === 0) {
-					// WAVE
-					this._analyserNode.getByteTimeDomainData(dataArray)
-					canvasCtx.beginPath()
-					for (let i = 0, x = 0, v, y; i < bufferLength; ++i, x += sliceWidth) {
-						v = dataArray[i] / 128.0
-						y = v * height / 2
+					if (VISU_STYLE === 0) {
+						// WAVE
+						this._analyserNode.getByteTimeDomainData(dataArray)
+						canvasCtx.beginPath()
+						for (let i = 0, x = 0, v, y; i < bufferLength; ++i, x += sliceWidth) {
+							v = dataArray[i] / 128.0
+							y = v * height / 2
 
-						if (i === 0)
-							canvasCtx.moveTo(x, y)
-						else
-							canvasCtx.lineTo(x, y)
+							if (i === 0)
+								canvasCtx.moveTo(x, y)
+							else
+								canvasCtx.lineTo(x, y)
+						}
+						canvasCtx.lineTo(width, height / 2)
+						canvasCtx.stroke()
 					}
-					canvasCtx.lineTo(width, height / 2)
-					canvasCtx.stroke()
-				}
-				else {
-					// OSCI https://developer.mozilla.org/fr/docs/Web/API/AnalyserNode/minDecibels
-					this._analyserNode.getByteFrequencyData(dataArray)
-					const wbar = (width / bufferLength) * 2.5
-					for (let i = 0, x = 0, hbar; i < bufferLength; ++i, x += wbar + BAR_MARGIN) {
-						hbar = dataArray[i]
-						canvasCtx.fillStyle = 'rgba(' + (hbar + 100) + ', 0, 0, 0.5)'
-						canvasCtx.fillRect(x, height - hbar / 2, wbar, hbar / 2)
+					else {
+						// OSCI https://developer.mozilla.org/fr/docs/Web/API/AnalyserNode/minDecibels
+						this._analyserNode.getByteFrequencyData(dataArray)
+						const wbar = (width / bufferLength) * 2.5
+						for (let i = 0, x = 0, hbar; i < bufferLength; ++i, x += wbar + BAR_MARGIN) {
+							hbar = dataArray[i]
+							canvasCtx.fillStyle = 'rgba(' + (hbar + 100) + ', 0, 0, 0.5)'
+							canvasCtx.fillRect(x, height - hbar / 2, wbar, hbar / 2)
+						}
 					}
 				}
 			}
+			this._drawingFrameRequest = requestAnimationFrame(draw)
 		}
-		this._drawingFrameRequest = requestAnimationFrame(draw)
 	}
 
 	_stopVisualization() {
