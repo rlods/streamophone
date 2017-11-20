@@ -22,6 +22,7 @@ export default class AudioRecorder
 	pushEvent(currentTime, sampleIndex, e, track) {
 		let newIndex = this._indexesMapping[sampleIndex]
 		if (newIndex === undefined && e[0] === AUDIO_EVENT_PLAY) {
+			// TODO: handle speed and gain properly (speed is always 1 in that case)
 			const { id, loopStart, loopEnd, preview, providerId, speed, title, url, volume1, volume2 } = track
 			this._indexesMapping[sampleIndex] = newIndex = this._data.tracks.length
 			this._data.tracks.push({ id, loopStart, loopEnd, preview, providerId, speed, title, url, volume: volume1 * volume2 })

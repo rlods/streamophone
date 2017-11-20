@@ -102,14 +102,14 @@ export default class AudioSampler
 			enrichedTracks.forEach((enrichedTrack, index) => {
 				const sampleIndex = baseIndex + index
 
-				// Update normalization volume
+				// Update normalization volume (TODO: apply that also in the Player)
 				if (enrichedTrack.gain) {
 					let volume = 0.5 * Math.pow(10, ((-12 - enrichedTrack.gain) / 20))
 					if (volume > 1.0) volume = 1.0
 					this._dispatch(changeSamplerSampleNormalizationVolume(sampleIndex, volume))
 				}
 
-				// Update BPM
+				// Update BPM (TODO: apply that also in the Player)
 				if (enrichedTrack.bpm) {
 					if (sourceBPM > 0)
 						this._dispatch(changeSamplerSampleSpeed(sampleIndex, sourceBPM / enrichedTrack.bpm))
