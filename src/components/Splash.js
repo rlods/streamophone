@@ -23,15 +23,6 @@ const DURATIONS = [
 	{ value: -1,    label: 'Full' }
 ]
 
-const SOURCE_TYPES = {
-	deezer_album: 'Deezer Album',
-	deezer_artist: 'Deezer Artist',
-	deezer_playlist: 'Deezer Playlist',
-	freesound_pack: 'Freesound Pack',
-	spotify_album: 'Spotify Album',
-	spotify_artist: 'Spotify Artist'
-}
-
 const TRANSFORMATIONS = {
 	none: 'None',
 	shuffle: 'Shuffle'
@@ -89,7 +80,7 @@ class Splash extends Component {
 					items={config.CURATED_SOURCES.sort((a, b) => a.title.localeCompare(b.title))}
 					value={`${this.props.sourceType}:${this.props.sourceId}`} onChange={this.props.onChangeCurated}
 					getValue={curated => `${curated.sourceType}:${curated.sourceId}`}
-					getText={curated => `${curated.title} (${SOURCE_TYPES[curated.sourceType]})`} />
+					getText={curated => `${curated.title} (${config.SOURCE_TYPES[curated.sourceType]})`} />
 				<SelectField
 					name="Source BPM"
 					items={BPMS}
@@ -106,7 +97,7 @@ class Splash extends Component {
 					getText={([transformationType, transformationLabel]) => transformationLabel} />
 				<SelectField
 					name="Source Type"
-					items={Object.entries(SOURCE_TYPES)}
+					items={Object.entries(config.SOURCE_TYPES)}
 					value={this.props.sourceType} onChange={this.props.onChangeSourceType}
 					getValue={([sourceType, sourceLabel]) => sourceType}
 					getText={([sourceType, sourceLabel]) => sourceLabel}

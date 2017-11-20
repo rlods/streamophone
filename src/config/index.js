@@ -93,6 +93,16 @@ const Config = {
 		//}
 	},
 
+	SOURCE_TYPES: {
+		deezer_album: 'Deezer Album',
+		deezer_artist: 'Deezer Artist',
+		deezer_playlist: 'Deezer Playlist',
+		freesound_pack: 'Freesound Pack',
+		spotify_album: 'Spotify Album',
+		spotify_artist: 'Spotify Artist',
+		test_test: 'Test'
+	},
+
 	TMP: {
 		FREESOUND: 'aGhZQh3Ishqc7OvoqC7pWupWHsjalJuxIzURKVqt', // TODO: replace by oauth
 		SPOTIFY: 'be156e1e10de43b2b4e3f73b2f40d1dc' // clientId for oauth

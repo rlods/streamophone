@@ -114,7 +114,6 @@ export default class DeezerProvider extends Provider
 				throw new Error(`Unknown deezer source type "${sourceType}"`)
 			}
 		}
-		console.log('DZ', tracks)
 		return tracks.map(track => ({
 			cover: track.album.cover_medium,
 			id: track.id,
