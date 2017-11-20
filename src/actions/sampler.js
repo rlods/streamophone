@@ -56,7 +56,7 @@ export const changeSamplerSampleBPM = (sampleIndex, bpm) => dispatch => {
 }
 
 export const changeSamplerSampleNormalizationVolume = (sampleIndex, volume) => (dispatch, getState, { app }) => {
-	const audio = app.audioEngine.getAudio(sampleIndex)
+	const audio = app.audioSampler.getAudio(sampleIndex)
 	if (audio) {
 		audio.setVolume(volume * getState().sampler.tracks[sampleIndex].volume2)
 		dispatch({
@@ -67,7 +67,7 @@ export const changeSamplerSampleNormalizationVolume = (sampleIndex, volume) => (
 }
 
 export const changeSamplerSampleSpeed = (sampleIndex, speed) => (dispatch, getState, { app }) => {
-	const audio = app.audioEngine.getAudio(sampleIndex)
+	const audio = app.audioSampler.getAudio(sampleIndex)
 	if (audio) {
 		audio.setSpeed(speed)
 		dispatch({
@@ -78,7 +78,7 @@ export const changeSamplerSampleSpeed = (sampleIndex, speed) => (dispatch, getSt
 }
 
 export const changeSamplerSampleVolume = (sampleIndex, volume) => (dispatch, getState, { app }) => {
-	const audio = app.audioEngine.getAudio(sampleIndex)
+	const audio = app.audioSampler.getAudio(sampleIndex)
 	if (audio) {
 		audio.setVolume(getState().sampler.tracks[sampleIndex].volume1 * volume)
 		dispatch({
@@ -103,7 +103,7 @@ export const changeSamplerSampleStatus = (sampleIndex, playing) => (dispatch, ge
 
 export const handleKeyDown = keyCode => async (dispatch, getState, { app }) => {
 	if (keyCode === KEY_SPACE)
-		app.audioEngine.getRecorder().snapshot()
+		app.audioSampler.getRecorder().snapshot()
 	else if (app.strategy)
 		app.strategy.handleKeyDown(dispatch, keyCode)
 }
@@ -126,19 +126,19 @@ export const handleSocketEvent = message => (dispatch, getState, { app }) => {
 // --------------------------------------------------------------
 
 export const registerSampleCanvas = (sampleIndex, canvas) => (dispatch, getState, { app }) => {
-	const audio = app.audioEngine.getAudio(sampleIndex)
+	const audio = app.audioSampler.getAudio(sampleIndex)
 	if (audio)
 		audio.attachCanvas(canvas)
 }
 
 export const startSample = sampleIndex => async (dispatch, getState, { app }) => {
-	const audio = app.audioEngine.getAudio(sampleIndex)
+	const audio = app.audioSampler.getAudio(sampleIndex)
 	if (audio)
 		audio.start()
 }
 
 export const stopSample = sampleIndex => async (dispatch, getState, { app }) => {
-	const audio = app.audioEngine.getAudio(sampleIndex)
+	const audio = app.audioSampler.getAudio(sampleIndex)
 	if (audio)
 		audio.stop()
 }
@@ -157,7 +157,7 @@ export const loadSampler = () => async (dispatch, getState, { app }) => {
 	const { sampler, source } = getState()
 	try {
 		// Stop previously loaded audios
-		app.audioEngine.dispose()
+		app.audioSampler.dispose()
 
 		// Create strategy
 		app.strategy = createStrategy(sampler.strategyId)
@@ -181,7 +181,7 @@ export const loadSampler = () => async (dispatch, getState, { app }) => {
 		})
 
 		// Load audios
-		app.audioEngine.init(tracks)
+		app.audioSampler.init(tracks)
 		
 		// Start enrichment
 		provider.enrichTracks(tracks, (baseIndex, enrichedTracks) => {
@@ -205,7 +205,6 @@ export const loadSampler = () => async (dispatch, getState, { app }) => {
 			})
 		})
 
-		dispatch(changeSamplerSamples(tracks))
 	}
 	catch (error) {
 		console.log('Cannot load sampler', error)

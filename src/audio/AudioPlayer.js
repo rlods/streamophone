@@ -1,4 +1,4 @@
-import { changePlayerSampleReady, changePlayerSampleStatus, changePlayerStatus } from '../actions/player'
+import { changePlayerSampleReady, changePlayerSampleStatus, changePlayerStatus, changePlayerSamples } from '../actions/player'
 import CustomAudio, { AUDIO_EVENT_LOOP, AUDIO_EVENT_PLAY, AUDIO_EVENT_PAUSE, AUDIO_EVENT_SPEED, AUDIO_EVENT_VOLUME } from './CustomAudio'
 import { b64_to_js, Sleeper } from '../tools'
 import { AUDIO_CONTEXT } from './'
@@ -31,7 +31,6 @@ export default class AudioPlayer
 		this._ready = false
 		this._sleeper = new Sleeper()
 		this._startedAt = 0
-		this.tracks = []
 	}
 
 	attachDispatcher(dispatch) {
@@ -41,40 +40,43 @@ export default class AudioPlayer
 	// --------------------------------------------------------------
 
 	init(data) {
+		if (null !== this._audios)
+			throw new Error('Player is already initialized')
+
+		if (null === data)
+			throw new Error('Invalid player data')
+
 		console.log('Import Sampling Events (b64)', data)
-		if (data) {
-			data = b64_to_js(data)
-			console.log('Import Sampling Events', data)
-			const { events, format, tracks } = data
-			if (RECORD_FORMAT === format && events.length > 0) {
-				this._events = events
+		const { events, format, tracks } = b64_to_js(data)
+		if (RECORD_FORMAT !== format)
+			throw new Error('Invalid player data format')
 
-				const { duration, durationsPerTrack } = this._processStatistics()
-				this._duration = duration / 1000
+		this._events = events
 
-				this.tracks = tracks.map((track, sampleIndex) => {
-					track.playing = false
-					track.ready = false
-					track.totalDuration = durationsPerTrack[sampleIndex] / 1000
-					return track
-				})
+		const { duration, durationsPerSample } = this._processStatistics()
+		this._duration = duration / 1000
 
-				console.log('Loading audios')
-				this._audios = this.tracks.map((sample, sampleIndex) => {
-					const audio = new CustomAudio(sample.preview, e => {
-						if      (e[0] === AUDIO_EVENT_PLAY)  this._dispatch(changePlayerSampleStatus(sampleIndex, true))
-						else if (e[0] === AUDIO_EVENT_PAUSE) this._dispatch(changePlayerSampleStatus(sampleIndex, false))
-					})
-					audio.setLoop(sample.loopStart, sample.loopEnd)
-					audio.setVolume(sample.volume)
-					audio.init().then(() => this._dispatch(changePlayerSampleReady(sampleIndex)))
-					return audio
-				})
+		console.log('Loading audios')
+		this._audios = tracks.map((sample, sampleIndex) => {
+			sample.playing = false
+			sample.ready = false
+			sample.totalDuration = durationsPerSample[sampleIndex] / 1000
 
-				this._ready = true
-			}
-		}
+			const audio = new CustomAudio(sample.preview, e => {
+				if      (e[0] === AUDIO_EVENT_PLAY)  this._dispatch(changePlayerSampleStatus(sampleIndex, true))
+				else if (e[0] === AUDIO_EVENT_PAUSE) this._dispatch(changePlayerSampleStatus(sampleIndex, false))
+			})
+			audio.setLoop(sample.loopStart, sample.loopEnd)
+			audio.setVolume(sample.volume)
+			audio.init().then(() => this._dispatch(changePlayerSampleReady(sampleIndex)))
+			return audio
+		})
+
+		this._dispatch(changePlayerSamples(tracks))
+		this._ready = true
 	}
+
+	// --------------------------------------------------------------
 
 	async play() {
 		if (this._ready && !this._playing) {
@@ -148,7 +150,7 @@ export default class AudioPlayer
 
 	_processStatistics() {
 		let duration = 0, previousTime = this._events[0]
-		let durationsPerTrack = {}, samplesStarts = {}
+		let durationsPerSample = {}, samplesStarts = {}
 		for (let i = 0; i < this._events.length; ) {
 			const currentTime = this._events[i++]
 			const sampleIndex = this._events[i++]
@@ -166,7 +168,7 @@ export default class AudioPlayer
 				samplesStarts[sampleIndex] = currentTime
 				break
 			case AUDIO_EVENT_PAUSE:
-				durationsPerTrack[sampleIndex] = (durationsPerTrack[sampleIndex] || 0) + currentTime - samplesStarts[sampleIndex]
+				durationsPerSample[sampleIndex] = (durationsPerSample[sampleIndex] || 0) + currentTime - samplesStarts[sampleIndex]
 				delete samplesStarts[sampleIndex]
 				break
 			case AUDIO_EVENT_SPEED:
@@ -185,7 +187,7 @@ export default class AudioPlayer
 		if (startedSamples.length > 0) {
 			startedSamples.forEach(([sampleIndex, track]) => {
 				console.log('Forcing stop of', sampleIndex)
-				durationsPerTrack[sampleIndex] = (durationsPerTrack[sampleIndex] || 0) + previousTime + FORCED_STOP_DELAY - samplesStarts[sampleIndex]
+				durationsPerSample[sampleIndex] = (durationsPerSample[sampleIndex] || 0) + previousTime + FORCED_STOP_DELAY - samplesStarts[sampleIndex]
 				this._events.push(previousTime + FORCED_STOP_DELAY, sampleIndex, AUDIO_EVENT_PAUSE)
 			})
 			duration += FORCED_STOP_DELAY
@@ -193,7 +195,7 @@ export default class AudioPlayer
 
 		return {
 			duration,
-			durationsPerTrack
+			durationsPerSample
 		}
 	}
 

@@ -34,7 +34,6 @@ export const changePlayerSampleStatus = (sampleIndex, playing) => dispatch => {
 export const loadPlayer = data => async (dispatch, getState, { app }) => {
 	try {
 		app.audioPlayer.init(data)
-		dispatch(changePlayerSamples(app.audioPlayer.tracks))
 	}
 	catch (error) {
 		console.log('Cannot load player', error)

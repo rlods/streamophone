@@ -10,8 +10,8 @@ import thunk from 'redux-thunk'
 import rootReducer from './reducers'
 //import registerServiceWorker from './registerServiceWorker'
 import App from './containers/App'
-import AudioEngine from './audio/AudioEngine'
 import AudioPlayer from './audio/AudioPlayer'
+import AudioSampler from './audio/AudioSampler'
 import { createDrivers } from './drivers'
 import config from './config'
 import './index.css'
@@ -19,8 +19,8 @@ import './index.css'
 // --------------------------------------------------------------
 
 const app = {
-	audioEngine: new AudioEngine(),
 	audioPlayer: new AudioPlayer(),
+	audioSampler: new AudioSampler(),
 	drivers: createDrivers(),
 	strategy: null
 }
@@ -36,8 +36,8 @@ const store = createStore(rootReducer, {}, applyMiddleware(...middlewares))
 
 // --------------------------------------------------------------
 
-app.audioEngine.attachDispatcher(store.dispatch.bind(this))
 app.audioPlayer.attachDispatcher(store.dispatch.bind(this))
+app.audioSampler.attachDispatcher(store.dispatch.bind(this))
 Object.values(app.drivers).forEach(driver => driver.attachDispatcher(store.dispatch.bind(this)))
 
 // --------------------------------------------------------------

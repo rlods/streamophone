@@ -1,11 +1,11 @@
-import { changeSamplerSampleReady, changeSamplerSampleStatus } from '../actions/sampler'
+import { changeSamplerSampleReady, changeSamplerSampleStatus, changeSamplerSamples } from '../actions/sampler'
 import AudioRecorder from './AudioRecorder'
 import CustomAudio, { AUDIO_EVENT_PLAY, AUDIO_EVENT_PAUSE } from './CustomAudio'
 import { AUDIO_CONTEXT} from './'
 
 // ------------------------------------------------------------------
 
-export default class AudioEngine
+export default class AudioSampler
 {
 	constructor() {
 		this._audios = null
@@ -31,7 +31,7 @@ export default class AudioEngine
 
 	init(tracks) {
 		if (null !== this._audios)
-			throw new Error('Engine is already started')
+			throw new Error('Engine is already initialized')
 
 		this._recorder = new AudioRecorder()
 		this._audios = tracks.map((track, sampleIndex) => {
@@ -45,6 +45,7 @@ export default class AudioEngine
 			audio.init().then(() => this._dispatch(changeSamplerSampleReady(sampleIndex)))
 			return audio
 		})
+		this._dispatch(changeSamplerSamples(tracks))
 	}
 
 	dispose() {
