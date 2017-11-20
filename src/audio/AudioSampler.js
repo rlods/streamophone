@@ -69,9 +69,7 @@ export default class AudioSampler
 		const provider = createProvider(sourceProviderId)
 
 		// Fetch tracks
-		let tracks = await provider.fetchTracks(sourceType, sourceId)
-		tracks = transformArray(tracks, this._strategy.samplesCount, sourceTransformation, validateTrack)
-		tracks.forEach(track => {
+		const tracks = transformArray(await provider.fetchTracks(sourceType, sourceId), this._strategy.samplesCount, sourceTransformation, validateTrack).map(track => {
 			track.loopStart = 0
 			track.loopEnd = samplerDefaultDuration > 0 ? track.loopStart + (samplerDefaultDuration / 1000.0) : 0
 			track.playing = false
@@ -80,6 +78,7 @@ export default class AudioSampler
 			track.speed = 1.0
 			track.volume1 = 0.5
 			track.volume2 = 1.0
+			return track
 		})
 
 		this._recorder = new AudioRecorder()
