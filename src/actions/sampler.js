@@ -1,3 +1,6 @@
+import { displayMessage } from './messages'
+
+// ------------------------------------------------------------------
 
 export const changeSampleDefaultDuration = defaultDuration => dispatch => {
 	sessionStorage.setItem('DEFAULT_SAMPLER_DURATION', defaultDuration)
@@ -70,7 +73,12 @@ export const changeSampleVolume = (sampleIndex, volume) => (dispatch, getState, 
 	}
 }
 
-export const changeSampleStatus = (sampleIndex, playing) => dispatch => {
+export const changeSampleStatus = (sampleIndex, playing) => (dispatch, getState) => {
+	const { sampler } = getState()
+	if (!sampler.started) {
+		dispatch(displayMessage('info', 'Press SPACE to listen and share'))
+		dispatch(changeSamplerStatus(true))
+	}
 	dispatch({
 		type: 'SAMPLER_SET_SAMPLE_STATUS',
 		data: { playing, sampleIndex }
@@ -81,6 +89,13 @@ export const changeSamples = tracks => (dispatch, getState) => {
 	dispatch({
 		type: 'SAMPLER_SET_SAMPLES',
 		data: { tracks }
+	})
+}
+
+export const changeSamplerStatus = started => dispatch => {
+	dispatch({
+		type: 'SAMPLER_SET_STATUS',
+		data: { started }
 	})
 }
 

@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Route, Switch } from 'react-router-dom'
+import classNames from 'classnames'
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 //
 import Player from '../containers/Player'
 import Sampler from '../containers/Sampler'
@@ -12,11 +14,21 @@ import './App.css'
 class App extends Component {
 	render() {
 		return (
-			<Switch>
-				<Route exact path="/" component={Splash} />
-				<Route exact path="/make" component={Sampler} />
-				<Route exact path="/play/:data" component={Player} />
-			</Switch>
+			<div className="app">
+				<div className="app-messages">
+					<ReactCSSTransitionGroup
+						transitionName="app-message"
+						transitionEnterTimeout={500}
+						transitionLeaveTimeout={500}>
+						{this.props.messages.map(message => <div key={message.id} className={classNames('app-message', 'app-message-' + message.type)}>{message.text}</div>)}
+					</ReactCSSTransitionGroup>
+				</div>
+				<Switch>
+					<Route exact path="/" component={Splash} />
+					<Route exact path="/make" component={Sampler} />
+					<Route exact path="/play/:data" component={Player} />
+				</Switch>
+			</div>
 		)
 	}
 }
@@ -24,6 +36,7 @@ class App extends Component {
 // --------------------------------------------------------------
 
 App.propTypes = {
+	messages: PropTypes.array,
 	ready: PropTypes.bool
 }
 

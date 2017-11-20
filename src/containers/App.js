@@ -5,6 +5,7 @@ import App from '../components/App'
 // --------------------------------------------------------------
 
 const mapStateToProps = (state, ownProps) => ({
+	messages: state.messages,
 	ready: !!state.sampler.tracks // So that the App component is re-evaluated when needed
 })
 

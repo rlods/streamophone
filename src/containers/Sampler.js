@@ -7,8 +7,8 @@ import Sampler from '../components/Sampler'
 // --------------------------------------------------------------
 
 const mapStateToProps = (state, ownProps) => ({
-	tracks: state.sampler.tracks,
-	samplerStrategyId: state.sampler.strategyId
+	strategyId: state.sampler.strategyId,
+	tracks: state.sampler.tracks
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({

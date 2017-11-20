@@ -4,6 +4,7 @@ import { getSearchParam } from '../tools'
 // ------------------------------------------------------------------
 
 const INITIAL_STATE = {
+	started: false,
 	tracks: null,
 	defaultDuration: getSearchParam('sampler_duration') || sessionStorage.getItem('DEFAULT_SAMPLER_DURATION') || config.DEFAULT.SAMPLER_DURATION,
 	strategyId: getSearchParam('sampler_strategy') || sessionStorage.getItem('DEFAULT_SAMPLER_STRATEGY') || config.DEFAULT.SAMPLER_STRATEGY
@@ -37,6 +38,9 @@ const setSampleVolume = (state, { sampleIndex, volume }) => // TODO
 const setSamples = (state, { tracks }) =>
 	({ ...state, tracks })
 
+const setSamplerStatus = (state, { started }) =>
+	({ ...state, started })
+
 const setStrategy = (state, { strategyId }) =>
 	({ ...state, strategyId })
 
@@ -61,6 +65,8 @@ export default (state = INITIAL_STATE, action) => {
 		return setSampleVolume(state, action.data)
 	case 'SAMPLER_SET_SAMPLES':
 		return setSamples(state, action.data)
+	case 'SAMPLER_SET_STATUS':
+		return setSamplerStatus(state, action.data)
 	case 'SAMPLER_SET_STRATEGY':
 		return setStrategy(state, action.data)
 	default:

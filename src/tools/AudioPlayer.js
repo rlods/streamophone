@@ -198,11 +198,10 @@ export default class AudioPlayer
 	// --------------------------------------------------------------
 
 	attachCanvas(canvas) {
-		if (!this._canvas) { // if already registered to not register again which could happen if react renders the component several times
-			this._canvas = canvas
-			if (this._playing)
-				this._startVisualization()
-		}
+		this._canvas = canvas
+		// Do not start visualization else it would loop forever (TODO: understand why)
+		// if (this._playing)
+		//	this._startVisualization()
 	}
 
 	_startVisualization() { // TODO: move outside of AudioPlayer class

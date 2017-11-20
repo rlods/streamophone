@@ -134,12 +134,10 @@ export default class CustomAudio
 	// --------------------------------------------------------------
 	// --------------------------------------------------------------
 	
-	attachCanvas(canvas) {
-		if (!this._canvas) { // if already registered to not register again which could happen if react renders the component several times
-			this._canvas = canvas
-			if (this._playing)
-				this._startVisualization()
-		}
+	attachCanvas(canvas) { // must be reattached each time a track is played
+		this._canvas = canvas
+		if (this._playing)
+			this._startVisualization()
 	}
 	
 	// https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API#Audio_Workers

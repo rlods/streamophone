@@ -3,7 +3,6 @@
 	display: flex;
 	flex-direction: column;
 	overflow: hidden; /* to hide scrollbars (eg. when track title is displayed) */
-	font-family: 'Arial';
 	padding: 10px;
 }
 

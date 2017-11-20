@@ -24,12 +24,12 @@ class Sampler extends Component {
 
 	render() {
 		if (null !== this.props.tracks) {
-			let chunkSize, body, layoutClassName = this.props.samplerStrategyId
-			switch (this.props.samplerStrategyId)
+			let chunkSize, body, layoutClassName = this.props.strategyId
+			switch (this.props.strategyId)
 			{
 				case 'KEYBOARD_AZERTY':
 				case 'KEYBOARD_QWERTY':
-					const keys = (this.props.samplerStrategyId === 'KEYBOARD_AZERTY' ? KEY_ORDER_AZERTY : KEY_ORDER_QWERTY).toUpperCase()
+					const keys = (this.props.strategyId === 'KEYBOARD_AZERTY' ? KEY_ORDER_AZERTY : KEY_ORDER_QWERTY).toUpperCase()
 					layoutClassName = 'KEYBOARD'
 					body = [
 						this.props.tracks.slice(0, 10),
@@ -94,12 +94,10 @@ class Sampler extends Component {
 					break
 			}
 
-			const info = false ? null : (
-				<div className="sampler-info">Press SPACE to listen and share</div>
-			)
+			const info = true ? null : <div className="sampler-info">...</div>
 
 			return (
-				<div className={classNames('sampler', this.props.samplerStrategyId, layoutClassName)}>
+				<div className={classNames('sampler', this.props.strategyId, layoutClassName)}>
 					{info}
 					{body}
 				</div>
@@ -114,9 +112,8 @@ class Sampler extends Component {
 // --------------------------------------------------------------
 
 Sampler.propTypes = {
-	audios: PropTypes.array,
+	strategyId: PropTypes.string,
 	tracks: PropTypes.array,
-	samplerStrategyId: PropTypes.string,
 	//
 	onKeyDown: PropTypes.func,
 	onKeyUp: PropTypes.func,
