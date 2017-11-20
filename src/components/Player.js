@@ -9,7 +9,7 @@ import './Player.css'
 class Player extends Component {
 	componentWillMount() {
 		if (null === this.props.tracks)	
-			this.props.onLoadPlayer()
+			this.props.onInit()
 	}
 
 	render() {
@@ -27,7 +27,7 @@ class Player extends Component {
 			)
 		}
 		else {
-			return null // onLoadPlayer will be called if needed
+			return null // onInit will be called if needed
 		}
 	}
 }
@@ -38,7 +38,7 @@ Player.propTypes = {
 	playing: PropTypes.bool,
 	tracks: PropTypes.array,
 	//
-	onLoadPlayer: PropTypes.func,
+	onInit: PropTypes.func,
 	onPlay: PropTypes.func,
 	onPause: PropTypes.func,
 	onRegisterCanvas: PropTypes.func

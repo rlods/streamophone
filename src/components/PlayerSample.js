@@ -12,7 +12,10 @@ class PlayerSample extends Component {
 		return (
 			<div className={classNames('player-sample', { playing: this.props.playing })}>
 				<a className="player-sample-title" target="_blank" rel="noopener noreferrer" href={this.props.url}>{this.props.title}</a>
-				<span className="player-sample-totalDuration">{fmtMSS(this.props.totalDuration)}</span>
+				<div className="player-sample-metas">
+					{this.props.ready ? null : <i className="fa fa-exclamation-triangle player-sample-meta player-sample-meta-notready" title="not ready"></i>}
+				</div>
+				<div className="player-sample-totalDuration">{fmtMSS(this.props.totalDuration)}</div>
 			</div>
 		)
 	}
@@ -22,6 +25,7 @@ class PlayerSample extends Component {
 
 PlayerSample.propTypes = {
 	playing: PropTypes.bool,
+	ready: PropTypes.bool,
 	title: PropTypes.string,
 	totalDuration: PropTypes.number,
 	url: PropTypes.string

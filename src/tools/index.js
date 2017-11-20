@@ -3,10 +3,6 @@ export const KEY_ORDER_QWERTY   = 'qwertyuiopasdfghjklzxcvbnm'
 
 // ------------------------------------------------------------------
 
-export const AUDIO_CONTEXT = new (window.AudioContext || window.webkitAudioContext)()
-
-// ------------------------------------------------------------------
-
 // https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/btoa
 
 const STR_TO_BASE64_MAPPING = { '+':'-', '/':'_', '=':'.' }

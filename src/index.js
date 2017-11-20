@@ -10,10 +10,10 @@ import thunk from 'redux-thunk'
 import rootReducer from './reducers'
 //import registerServiceWorker from './registerServiceWorker'
 import App from './containers/App'
+import AudioEngine from './audio/AudioEngine'
+import AudioPlayer from './audio/AudioPlayer'
 import { createDrivers } from './drivers'
 import config from './config'
-import AudioEngine from './tools/AudioEngine'
-import AudioPlayer from './tools/AudioPlayer'
 import './index.css'
 
 // --------------------------------------------------------------

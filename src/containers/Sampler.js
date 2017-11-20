@@ -1,7 +1,6 @@
 import { connect } from 'react-redux'
 //
-import { handleKeyDown, handleKeyUp } from '../actions/sampler'
-import { createSampler } from '../actions/source'
+import { handleKeyDown, handleKeyUp, loadSampler } from '../actions/sampler'
 import Sampler from '../components/Sampler'
 
 // --------------------------------------------------------------
@@ -13,8 +12,8 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
 	onKeyDown: e => !e.repeat && dispatch(handleKeyDown(e.keyCode)),
-	onKeyUp: e => dispatch(handleKeyUp(e.keyCode)),
-	onInit: () => dispatch(createSampler())
+	onKeyUp: e   => dispatch(handleKeyUp(e.keyCode)),
+	onInit: ()   => dispatch(loadSampler())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Sampler)

@@ -1,7 +1,8 @@
 import { connect } from 'react-redux'
 //
-import { changeSampleDefaultDuration, changeSamplerStrategy } from '../actions/sampler'
-import { changeSourceBPM, changeSourceId, changeSourceTransformation, changeSourceType, goToSampler } from '../actions/source'
+import { changeSamplerDefaultDuration, changeSamplerStrategy } from '../actions/sampler'
+import { changeSourceBPM, changeSourceId, changeSourceTransformation, changeSourceType } from '../actions/source'
+import { goToSampler } from '../actions/sampler'
 import Splash from '../components/Splash'
 
 // --------------------------------------------------------------
@@ -21,13 +22,13 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 		dispatch(changeSourceId(sourceId))
 		dispatch(changeSourceType(sourceType))
 	},
-	onChangeSamplerDefaultDuration: e => dispatch(changeSampleDefaultDuration(parseInt(e.target.value, 10))),
+	onChangeSamplerDefaultDuration: e => dispatch(changeSamplerDefaultDuration(parseInt(e.target.value, 10))),
 	onChangeSamplerStrategy: e        => dispatch(changeSamplerStrategy(e.target.value)),
-	onChangeSourceBPM: e               => dispatch(changeSourceBPM(parseInt(e.target.value, 10))),
-	onChangeSourceId: e                => dispatch(changeSourceId(e.target.value)),
-	onChangeSourceTransformation: e    => dispatch(changeSourceTransformation(e.target.value)),
-	onChangeSourceType: e              => dispatch(changeSourceType(e.target.value)),
-	onCreate: e                        => {
+	onChangeSourceBPM: e              => dispatch(changeSourceBPM(parseInt(e.target.value, 10))),
+	onChangeSourceId: e               => dispatch(changeSourceId(e.target.value)),
+	onChangeSourceTransformation: e   => dispatch(changeSourceTransformation(e.target.value)),
+	onChangeSourceType: e             => dispatch(changeSourceType(e.target.value)),
+	onCreate: e                       => {
 		e.preventDefault()
 		dispatch(goToSampler(ownProps.history))
 	},

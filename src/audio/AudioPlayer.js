@@ -1,6 +1,7 @@
-import { changePlayerSampleStatus, changePlayerStatus } from '../actions/player'
+import { changePlayerSampleReady, changePlayerSampleStatus, changePlayerStatus } from '../actions/player'
 import CustomAudio, { AUDIO_EVENT_LOOP, AUDIO_EVENT_PLAY, AUDIO_EVENT_PAUSE, AUDIO_EVENT_SPEED, AUDIO_EVENT_VOLUME } from './CustomAudio'
-import { AUDIO_CONTEXT, b64_to_js, Sleeper } from '../tools'
+import { b64_to_js, Sleeper } from '../tools'
+import { AUDIO_CONTEXT } from './'
 import { RECORD_FORMAT } from './AudioRecorder'
 
 // ------------------------------------------------------------------
@@ -36,8 +37,10 @@ export default class AudioPlayer
 	attachDispatcher(dispatch) {
 		this._dispatch = dispatch
 	}
+	
+	// --------------------------------------------------------------
 
-	async init(data) {
+	init(data) {
 		console.log('Import Sampling Events (b64)', data)
 		if (data) {
 			data = b64_to_js(data)
@@ -51,21 +54,22 @@ export default class AudioPlayer
 
 				this.tracks = tracks.map((track, sampleIndex) => {
 					track.playing = false
+					track.ready = false
 					track.totalDuration = durationsPerTrack[sampleIndex] / 1000
 					return track
 				})
 
 				console.log('Loading audios')
-				this._audios = await Promise.all(this.tracks.map(async (sample, sampleIndex) => {
+				this._audios = this.tracks.map((sample, sampleIndex) => {
 					const audio = new CustomAudio(sample.preview, e => {
 						if      (e[0] === AUDIO_EVENT_PLAY)  this._dispatch(changePlayerSampleStatus(sampleIndex, true))
 						else if (e[0] === AUDIO_EVENT_PAUSE) this._dispatch(changePlayerSampleStatus(sampleIndex, false))
 					})
 					audio.setLoop(sample.loopStart, sample.loopEnd)
 					audio.setVolume(sample.volume)
-					await audio.init()
+					audio.init().then(() => this._dispatch(changePlayerSampleReady(sampleIndex)))
 					return audio
-				}))
+				})
 
 				this._ready = true
 			}

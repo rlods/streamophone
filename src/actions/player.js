@@ -1,8 +1,8 @@
 
-export const changePlayerSampleStatus = (sampleIndex, playing) => dispatch => {
+export const changePlayerSamples = tracks => dispatch => {
 	dispatch({
-		type: 'PLAYER_SET_SAMPLE_STATUS',
-		data: { playing, sampleIndex }
+		type: 'PLAYER_SET_SAMPLES',
+		data: { tracks }
 	})
 }
 
@@ -15,12 +15,30 @@ export const changePlayerStatus = playing => dispatch => {
 
 // ------------------------------------------------------------------
 
-export const loadPlayer = data => async (dispatch, getState, { app }) => {
-	await app.audioPlayer.init(data)
+export const changePlayerSampleReady = sampleIndex => dispatch => {
 	dispatch({
-		type: 'PLAYER_SET_TRACKS',
-		data: { tracks: app.audioPlayer.tracks }
+		type: 'PLAYER_SET_SAMPLE_READY',
+		data: { sampleIndex }
 	})
+}
+
+export const changePlayerSampleStatus = (sampleIndex, playing) => dispatch => {
+	dispatch({
+		type: 'PLAYER_SET_SAMPLE_STATUS',
+		data: { playing, sampleIndex }
+	})
+}
+
+// ------------------------------------------------------------------
+
+export const loadPlayer = data => async (dispatch, getState, { app }) => {
+	try {
+		app.audioPlayer.init(data)
+		dispatch(changePlayerSamples(app.audioPlayer.tracks))
+	}
+	catch (error) {
+		console.log('Cannot load player', error)
+	}
 }
 
 export const play = () => (dispatch, getState, { app }) => {

@@ -22,6 +22,7 @@
 }
 
 .player-sample-title {
+	flex: 1;
 	text-decoration: none;
 	white-space: nowrap;
 	overflow: hidden;
@@ -30,4 +31,13 @@
 
 .player-sample-title:hover {
 	text-decoration: underline;
+}
+
+.player-sample-metas {
+	flex-shrink: 1;
+	margin: 0 10px;
+}
+
+.player-sample-totalDuration {
+	flex-shrink: 1;
 }

@@ -1,4 +1,4 @@
-import { changeSampleAudioReady, changeSampleStatus } from '../actions/sampler'
+import { changeSamplerSampleReady, changeSamplerSampleStatus } from '../actions/sampler'
 import AudioRecorder from './AudioRecorder'
 import CustomAudio, { AUDIO_EVENT_PLAY, AUDIO_EVENT_PAUSE } from './CustomAudio'
 import { AUDIO_CONTEXT} from './'
@@ -17,6 +17,8 @@ export default class AudioEngine
 		this._dispatch = dispatch
 	}
 
+	// --------------------------------------------------------------
+
 	getAudio(sampleIndex) {
 		return this._audios && sampleIndex >= 0 && sampleIndex < this._audios.length ? this._audios[sampleIndex] : null
 	}
@@ -24,26 +26,28 @@ export default class AudioEngine
 	getRecorder() {
 		return this._recorder
 	}
+	
+	// --------------------------------------------------------------
 
-	start(tracks) {
+	init(tracks) {
 		if (null !== this._audios)
 			throw new Error('Engine is already started')
 
 		this._recorder = new AudioRecorder()
 		this._audios = tracks.map((track, sampleIndex) => {
 			const audio = new CustomAudio(track.preview, e => {
-				if      (e[0] === AUDIO_EVENT_PLAY)  this._dispatch(changeSampleStatus(sampleIndex, true))
-				else if (e[0] === AUDIO_EVENT_PAUSE) this._dispatch(changeSampleStatus(sampleIndex, false))
+				if      (e[0] === AUDIO_EVENT_PLAY)  this._dispatch(changeSamplerSampleStatus(sampleIndex, true))
+				else if (e[0] === AUDIO_EVENT_PAUSE) this._dispatch(changeSamplerSampleStatus(sampleIndex, false))
 				this._recorder.pushEvent(AUDIO_CONTEXT.currentTime, sampleIndex, e, track)
 			})
 			audio.setLoop(track.loopStart, track.loopEnd)
 			audio.setVolume(track.volume1 * track.volume2)
-			audio.init().then(() => this._dispatch(changeSampleAudioReady(sampleIndex)))
+			audio.init().then(() => this._dispatch(changeSamplerSampleReady(sampleIndex)))
 			return audio
 		})
 	}
 
-	stop() {
+	dispose() {
 		if (this._audios) {
 			this._audios.forEach(audio => audio.stop())
 			this._audios = null

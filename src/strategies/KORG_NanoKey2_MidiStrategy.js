@@ -1,4 +1,4 @@
-import { startSample, stopSample, changeSampleVolume } from '../actions/sampler'
+import { startSample, stopSample, changeSamplerSampleVolume } from '../actions/sampler'
 import MidiStrategy from './MidiStrategy'
 
 // --------------------------------------------------------------
@@ -28,7 +28,7 @@ export default class KORG_NanoKey2_MidiStrategy extends MidiStrategy {
             } else if (c === keyUp) {
                 dispatch(stopSample(sample))
             }
-            dispatch(changeSampleVolume(sample, v / 128))
+            dispatch(changeSamplerSampleVolume(sample, v / 128))
 		}
 	}
 }

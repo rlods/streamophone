@@ -11,7 +11,7 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-	onLoadPlayer: ()         => dispatch(loadPlayer(ownProps.match.params.data)),
+	onInit: ()               => dispatch(loadPlayer(ownProps.match.params.data)),
 	onPlay: ()               => dispatch(play()),
 	onPause: ()              => dispatch(pause()),
 	onRegisterCanvas: canvas => dispatch(registerPlayerCanvas(canvas))
