@@ -9,8 +9,8 @@ const mapStateToProps = (state, ownProps) => {
 	return {
 		playing: track.playing,
 		title: track.title,
-		url: track.url,
-		xxxDuration: track.xxxDuration
+		totalDuration: track.totalDuration,
+		url: track.url
 	}
 }
 

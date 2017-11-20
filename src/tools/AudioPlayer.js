@@ -51,7 +51,7 @@ export default class AudioPlayer
 
 				this.tracks = tracks.map((track, sampleIndex) => {
 					track.playing = false
-					track.xxxDuration = durationsPerTrack[sampleIndex] / 1000
+					track.totalDuration = durationsPerTrack[sampleIndex] / 1000
 					return track
 				})
 
