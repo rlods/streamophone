@@ -10,11 +10,10 @@ export const RECORD_FORMAT = '1.0'
 
 export default class AudioRecorder
 {
-	constructor(provider) {
+	constructor() {
 		this._data = {
 			events: [],
 			format: RECORD_FORMAT,
-			provider,
 			tracks: []
 		}
 		this._indexesMapping = {} // originalSampleIndex to newSampleIndex

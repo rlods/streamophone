@@ -72,7 +72,7 @@ export const createSampler = () => async (dispatch, getState, { app }) => {
 		})
 
 		// Load audios (asynchronously)
-		/* await */ app.audioEngine.start(tracks, providerId)
+		/* await */ app.audioEngine.start(tracks)
 		
 		// Start enrichment
 		provider.enrichTracks(tracks, (baseIndex, enrichedTracks) => {

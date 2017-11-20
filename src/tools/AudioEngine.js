@@ -13,7 +13,7 @@ export default class AudioEngine
 		this._recorder = null
 	}
 
-	attach(dispatch) {
+	attachDispatcher(dispatch) {
 		this._dispatch = dispatch
 	}
 
@@ -25,11 +25,11 @@ export default class AudioEngine
 		return this._recorder
 	}
 
-	start(tracks, provider) {
+	start(tracks) {
 		if (null !== this._audios)
 			throw new Error('Engine is already started')
 
-		this._recorder = new AudioRecorder(provider)
+		this._recorder = new AudioRecorder()
 		this._audios = tracks.map((track, sampleIndex) => {
 			const audio = new CustomAudio(track.preview, e => {
 				if      (e[0] === AUDIO_EVENT_PLAY)  this._dispatch(changeSampleStatus(sampleIndex, true))

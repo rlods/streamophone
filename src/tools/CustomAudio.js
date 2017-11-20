@@ -63,12 +63,6 @@ export default class CustomAudio
 		}
 	}
 
-	attachCanvas(canvas) {
-		this._canvas = canvas
-		if (this._playing)
-			this._startVisualization()
-	}
-	
 	setLoop(loopStart, loopEnd) {
 		if (this._eventCB)
 			this._eventCB([AUDIO_EVENT_LOOP, loopStart, loopEnd])
@@ -139,6 +133,14 @@ export default class CustomAudio
 	// --------------------------------------------------------------
 	// --------------------------------------------------------------
 	// --------------------------------------------------------------
+	
+	attachCanvas(canvas) {
+		if (!this._canvas) { // if already registered to not register again which could happen if react renders the component several times
+			this._canvas = canvas
+			if (this._playing)
+				this._startVisualization()
+		}
+	}
 	
 	// https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API#Audio_Workers
 	_startVisualization() { // TODO: move outside of CustomAudio class

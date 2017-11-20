@@ -33,22 +33,16 @@ export default class AudioPlayer
 		this.tracks = []
 	}
 
-	attach(dispatch) {
+	attachDispatcher(dispatch) {
 		this._dispatch = dispatch
 	}
 
-	attachCanvas(canvas) {
-		this._canvas = canvas
-		// if (this._playing) // commented because it would continue to display visualization forevent ... maybe something to cleanup to be similar to CustomAudio attachCanvas
-		//	this._startVisualization()
-	}
-
-	async loadData(data) {
+	async init(data) {
 		console.log('Import Sampling Events (b64)', data)
 		if (data) {
 			data = b64_to_js(data)
 			console.log('Import Sampling Events', data)
-			const { events, format, provider, tracks } = data
+			const { events, format, tracks } = data
 			if (RECORD_FORMAT === format && events.length > 0) {
 				this._events = events
 
@@ -202,6 +196,14 @@ export default class AudioPlayer
 	// --------------------------------------------------------------
 	// --------------------------------------------------------------
 	// --------------------------------------------------------------
+
+	attachCanvas(canvas) {
+		if (!this._canvas) { // if already registered to not register again which could happen if react renders the component several times
+			this._canvas = canvas
+			if (this._playing)
+				this._startVisualization()
+		}
+	}
 
 	_startVisualization() { // TODO: move outside of AudioPlayer class
 		if (this._canvas) {

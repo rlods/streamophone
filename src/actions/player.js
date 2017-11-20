@@ -16,7 +16,7 @@ export const changePlayerStatus = playing => dispatch => {
 // ------------------------------------------------------------------
 
 export const loadPlayer = data => async (dispatch, getState, { app }) => {
-	await app.audioPlayer.loadData(data)
+	await app.audioPlayer.init(data)
 	dispatch({
 		type: 'PLAYER_SET_TRACKS',
 		data: { tracks: app.audioPlayer.tracks }

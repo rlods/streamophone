@@ -36,9 +36,9 @@ const store = createStore(rootReducer, {}, applyMiddleware(...middlewares))
 
 // --------------------------------------------------------------
 
-app.audioEngine.attach(store.dispatch.bind(this))
-app.audioPlayer.attach(store.dispatch.bind(this))
-Object.values(app.drivers).forEach(driver => driver.attach(store.dispatch.bind(this)))
+app.audioEngine.attachDispatcher(store.dispatch.bind(this))
+app.audioPlayer.attachDispatcher(store.dispatch.bind(this))
+Object.values(app.drivers).forEach(driver => driver.attachDispatcher(store.dispatch.bind(this)))
 
 // --------------------------------------------------------------
 

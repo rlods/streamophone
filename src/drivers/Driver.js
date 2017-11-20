@@ -5,7 +5,7 @@ export default class Driver {
 		this.type = type
 	}
 
-	attach(dispatch) {
+	attachDispatcher(dispatch) {
 		this.dispatch = dispatch
 	}
 }
