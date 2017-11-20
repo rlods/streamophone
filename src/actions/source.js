@@ -43,7 +43,7 @@ const validateTrack = track => !!track.preview && track.readable // readable mea
 
 export const goToSampler = history => async (dispatch, getState, { app }) => {
 	const { sampler, source } = getState()
-	history.push(`/make?sampler_duration=${sampler.defaultDuration}&sampler_strategy=${sampler.strategyId}&source_bpm=${source.bpm}&source_id=${source.id}&source_transformation=${source.transformation}&source_type=${source.type}`)
+	history.push(`make?sampler_duration=${sampler.defaultDuration}&sampler_strategy=${sampler.strategyId}&source_bpm=${source.bpm}&source_id=${source.id}&source_transformation=${source.transformation}&source_type=${source.type}`)
 	dispatch(changeSamples(null)) // TODO: we should stop loading tracks (for ex soundcloud tracks are slow to download)
 }
 
@@ -51,7 +51,7 @@ export const createSampler = () => async (dispatch, getState, { app }) => {
 	const { sampler, source } = getState()
 	try {
 		// Stop all previously loaded audios
-		app.audioEngine.stopAll()
+		app.audioEngine.stop()
 
 		// Create strategy
 		app.strategy = createStrategy(sampler.strategyId)
@@ -72,7 +72,7 @@ export const createSampler = () => async (dispatch, getState, { app }) => {
 		})
 
 		// Load audios (asynchronously)
-		/* await */ app.audioEngine.loadAudios(dispatch, tracks)
+		/* await */ app.audioEngine.start(tracks, providerId)
 		
 		// Start enrichment
 		provider.enrichTracks(tracks, (baseIndex, enrichedTracks) => {

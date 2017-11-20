@@ -1,6 +1,8 @@
 
 const Config = {
 
+	BASE_URL: 'http://localhost:8080',
+
 	CURATED_SOURCES: [
 		{ sourceType: 'deezer_playlist', sourceId: '1083902971',             title: 'Hits 2017' },
 		{ sourceType: 'deezer_playlist', sourceId: '791313621',              title: 'The Greatest Piano Classics' },

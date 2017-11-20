@@ -116,7 +116,7 @@ class Splash extends Component {
 					value={this.props.sourceId}
 					onChange={this.props.onChangeSourceId} />
 				<div className="app-menu-field">
-					<button className="app-menu-action" onClick={this.props.onCreate}><i class="fa fa-music" aria-hidden="true"></i></button>
+					<button className="app-menu-action" onClick={this.props.onCreate}><i className="fa fa-music" aria-hidden="true"></i></button>
 				</div>
 			</form>
 		)

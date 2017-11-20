@@ -12,59 +12,6 @@ const FORCED_STOP_DELAY = 2000 // 2s
 
 // ------------------------------------------------------------------
 
-const processStatistics = events => { // TODO: extract duration by tracks
-	let duration = 0, previousTime = events[0]
-	let durationsPerTrack = {}, samplesStarts = {}
-	for (let i = 0; i < events.length; ) {
-		const currentTime = events[i++]
-		const sampleIndex = events[i++]
-		const eventType   = events[i++]
-		const delay       = currentTime - previousTime
-		previousTime = currentTime
-		duration += delay
-		switch (eventType)
-		{
-		case AUDIO_EVENT_LOOP:
-			i++ // loopStart
-			i++ // loopEnd
-			break
-		case AUDIO_EVENT_PLAY:
-			samplesStarts[sampleIndex] = currentTime
-			break
-		case AUDIO_EVENT_PAUSE:
-			durationsPerTrack[sampleIndex] = (durationsPerTrack[sampleIndex] || 0) + currentTime - samplesStarts[sampleIndex]
-			delete samplesStarts[sampleIndex]
-			break
-		case AUDIO_EVENT_SPEED:
-			i++ // speed
-			break
-		case AUDIO_EVENT_VOLUME:
-			i++ // volume
-			break
-		default:
-			break
-		}
-	}
-
-	// Forcing stop of unstopped samples
-	const startedSamples = Object.entries(samplesStarts)
-	if (startedSamples.length > 0) {
-		startedSamples.forEach(([sampleIndex, track]) => {
-			console.log('Forcing stop of', sampleIndex)
-			durationsPerTrack[sampleIndex] = (durationsPerTrack[sampleIndex] || 0) + previousTime + FORCED_STOP_DELAY - samplesStarts[sampleIndex]
-			events.push(previousTime + FORCED_STOP_DELAY, sampleIndex, AUDIO_EVENT_PAUSE)
-		})
-		duration += FORCED_STOP_DELAY
-	}
-
-	return {
-		duration,
-		durationsPerTrack
-	}
-}
-
-// ------------------------------------------------------------------
-
 export default class AudioPlayer
 {
 	constructor() {
@@ -101,11 +48,11 @@ export default class AudioPlayer
 		if (data) {
 			data = b64_to_js(data)
 			console.log('Import Sampling Events', data)
-			const { events, format, tracks } = data
+			const { events, format, provider, tracks } = data
 			if (RECORD_FORMAT === format && events.length > 0) {
 				this._events = events
 
-				const { duration, durationsPerTrack } = processStatistics(this._events)
+				const { duration, durationsPerTrack } = this._processStatistics()
 				this._duration = duration / 1000
 
 				this.tracks = tracks.map((track, sampleIndex) => {
@@ -194,6 +141,61 @@ export default class AudioPlayer
 			this._eventCB([PLAYER_EVENT_PAUSE])
 			this._playing = false
 			this._sleeper.stop()
+		}
+	}
+
+	// --------------------------------------------------------------
+	// --------------------------------------------------------------
+	// --------------------------------------------------------------
+
+	_processStatistics() {
+		let duration = 0, previousTime = this._events[0]
+		let durationsPerTrack = {}, samplesStarts = {}
+		for (let i = 0; i < this._events.length; ) {
+			const currentTime = this._events[i++]
+			const sampleIndex = this._events[i++]
+			const eventType   = this._events[i++]
+			const delay       = currentTime - previousTime
+			previousTime = currentTime
+			duration += delay
+			switch (eventType)
+			{
+			case AUDIO_EVENT_LOOP:
+				i++ // loopStart
+				i++ // loopEnd
+				break
+			case AUDIO_EVENT_PLAY:
+				samplesStarts[sampleIndex] = currentTime
+				break
+			case AUDIO_EVENT_PAUSE:
+				durationsPerTrack[sampleIndex] = (durationsPerTrack[sampleIndex] || 0) + currentTime - samplesStarts[sampleIndex]
+				delete samplesStarts[sampleIndex]
+				break
+			case AUDIO_EVENT_SPEED:
+				i++ // speed
+				break
+			case AUDIO_EVENT_VOLUME:
+				i++ // volume
+				break
+			default:
+				break
+			}
+		}
+
+		// Forcing stop of unstopped samples
+		const startedSamples = Object.entries(samplesStarts)
+		if (startedSamples.length > 0) {
+			startedSamples.forEach(([sampleIndex, track]) => {
+				console.log('Forcing stop of', sampleIndex)
+				durationsPerTrack[sampleIndex] = (durationsPerTrack[sampleIndex] || 0) + previousTime + FORCED_STOP_DELAY - samplesStarts[sampleIndex]
+				this._events.push(previousTime + FORCED_STOP_DELAY, sampleIndex, AUDIO_EVENT_PAUSE)
+			})
+			duration += FORCED_STOP_DELAY
+		}
+
+		return {
+			duration,
+			durationsPerTrack
 		}
 	}
 

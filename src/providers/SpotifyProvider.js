@@ -66,7 +66,7 @@ export default class SpotifyProvider extends Provider
 	}
 
 	refreshAuthentication() {
-		document.location = `https://accounts.spotify.com/authorize?client_id=${config.TMP.SPOTIFY}&response_type=token&state=spotify&redirect_uri=http://localhost:8080`
+		document.location = `https://accounts.spotify.com/authorize?client_id=${config.TMP.SPOTIFY}&response_type=token&state=spotify&redirect_uri=${config.BASE_URL}`
 	}
 
 	async fetchAPI(url) {
