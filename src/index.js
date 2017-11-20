@@ -21,8 +21,7 @@ import './index.css'
 const app = {
 	audioPlayer: new AudioPlayer(),
 	audioSampler: new AudioSampler(),
-	drivers: createDrivers(),
-	strategy: null
+	drivers: createDrivers()
 }
 
 // --------------------------------------------------------------

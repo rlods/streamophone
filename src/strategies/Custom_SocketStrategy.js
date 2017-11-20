@@ -13,7 +13,7 @@ export default class Custom_SocketStrategy extends Strategy {
 			this.currentSamplesIndexes.push(0)
 	}
 
-	handleSocketMessage(dispatch, { id, type, x, y }) {
+	handleSocketMessage({ id, type, x, y }) {
 		if (type === 'position') {
 			y = Math.floor((y * 10 + 10) / 2)
 			console.log(id, y)
@@ -25,7 +25,7 @@ export default class Custom_SocketStrategy extends Strategy {
 				40
 			const sampleIndex = base + y
 			// TODO : dispatch(stopSample(this.currentSamplesIndexes[index]))
-			dispatch(startSample(sampleIndex))
+			this._dispatch(startSample(sampleIndex))
 		}
 	}
 }

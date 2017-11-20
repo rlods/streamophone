@@ -1,18 +1,23 @@
 
 export default class Strategy {
 	constructor() {
+		this._dispatch = null
 		this.samplesCount = 0
 	}
 
-	handleKeyDown(dispatch, keyCode) {
+	attachDispatcher(dispatch) {
+		this._dispatch = dispatch
 	}
 
-	handleKeyUp(dispatch, keyCode) {
+	handleKeyDown(keyCode) {
 	}
 
-	handleMidiEvent(dispatch, channel, key, velocity) {
+	handleKeyUp(keyCode) {
 	}
 
-	handleSocketMessage(dispatch, message) {
+	handleMidiEvent(channel, key, velocity) {
+	}
+
+	handleSocketMessage(message) {
 	}
 }

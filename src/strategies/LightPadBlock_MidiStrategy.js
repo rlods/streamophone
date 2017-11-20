@@ -10,17 +10,17 @@ class LightPadBlock_MidiStrategy extends MidiStrategy {
 		this.samplesCount = samplesCount
 	}
 
-	handleMidiEvent(dispatch, c, k, v) {
+	handleMidiEvent(c, k, v) {
 		// messages are given four by four
 		if (k >= 48 && k <= 63 && c < 209) {
 			console.log("k", k, "c", c, "v", v)
 			const m = this.mapping[k]
 			if (m !== undefined) {
 				if (c >= 145 && c < 160) {
-					dispatch(startSample(m))
+					this._dispatch(startSample(m))
 				}
 				else if (c < 145 && c >= 129) {
-					dispatch(stopSample(m))
+					this._dispatch(stopSample(m))
 				}
 			}
 		}

@@ -15,7 +15,7 @@ export default class KORG_NanoKey2_MidiStrategy extends MidiStrategy {
 		this.samplesCount = 25
 	}
 
-	handleMidiEvent(dispatch, c, k, v) {
+	handleMidiEvent(c, k, v) {
 		// the key is between 48 and 72
 		// c 144 is key down and 128 keyup
 		// velocity works
@@ -24,11 +24,11 @@ export default class KORG_NanoKey2_MidiStrategy extends MidiStrategy {
             console.log(k, c)
             if (c === keyDown) {
                 console.log("start sample", sample)
-                dispatch(startSample(sample))
+                this._dispatch(startSample(sample))
             } else if (c === keyUp) {
-                dispatch(stopSample(sample))
+                this._dispatch(stopSample(sample))
             }
-            dispatch(changeSamplerSampleVolume(sample, v / 128))
+            this._dispatch(changeSamplerSampleVolume(sample, v / 128))
 		}
 	}
 }

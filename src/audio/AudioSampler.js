@@ -1,7 +1,14 @@
-import { changeSamplerSampleReady, changeSamplerSampleStatus, changeSamplerSamples } from '../actions/sampler'
+import { changeSamplerSampleBPM, changeSamplerSampleNormalizationVolume, changeSamplerSampleReady, changeSamplerSampleSpeed, changeSamplerSampleStatus, changeSamplerSamples } from '../actions/sampler'
+import { createProvider } from '../providers'
+import { createStrategy } from '../strategies'
 import AudioRecorder from './AudioRecorder'
 import CustomAudio, { AUDIO_EVENT_PLAY, AUDIO_EVENT_PAUSE } from './CustomAudio'
 import { AUDIO_CONTEXT} from './'
+import { transformArray } from '../tools'
+
+// ------------------------------------------------------------------
+
+const validateTrack = track => !!track.preview && track.readable // readable means the track is available in current country
 
 // ------------------------------------------------------------------
 
@@ -11,6 +18,7 @@ export default class AudioSampler
 		this._audios = null
 		this._dispatch = null
 		this._recorder = null
+		this._strategy = null
 	}
 
 	attachDispatcher(dispatch) {
@@ -26,14 +34,53 @@ export default class AudioSampler
 	getRecorder() {
 		return this._recorder
 	}
-	
+		
+	handleKeyDown(keyCode) {
+		if (this._strategy)
+			this._strategy.handleKeyDown(keyCode)
+	}
+
+	handleKeyUp(keyCode) {
+		if (this._strategy)
+			this._strategy.handleKeyUp(keyCode)
+	}
+
+	handleMidiEvent(channel, key, velocity) {
+		if (this._strategy)
+			this._strategy.handleMidiEvent(channel, key, velocity)
+	}
+
+	handleSocketEvent(message) {
+		if (this._strategy)
+			this._strategy.handleSocketMessage(message)
+	}
+
 	// --------------------------------------------------------------
 
-	init(tracks) {
+	async init(samplerStrategyId, samplerDefaultDuration, sourceBPM, sourceId, sourceProviderId, sourceTransformation, sourceType) {
 		if (null !== this._audios)
 			throw new Error('Sampler is already initialized')
-		if (null === tracks || !(tracks instanceof Array))
-			throw new Error('Invalid sampler samples')
+
+		// Create strategy
+		this._strategy = createStrategy(samplerStrategyId)
+		this._strategy.attachDispatcher(this._dispatch)
+
+		// Create provider
+		const provider = createProvider(sourceProviderId)
+
+		// Fetch tracks
+		let tracks = await provider.fetchTracks(sourceType, sourceId)
+		tracks = transformArray(tracks, this._strategy.samplesCount, sourceTransformation, validateTrack)
+		tracks.forEach(track => {
+			track.loopStart = 0
+			track.loopEnd = samplerDefaultDuration > 0 ? track.loopStart + (samplerDefaultDuration / 1000.0) : 0
+			track.playing = false
+			track.providerId = sourceProviderId
+			track.ready = false
+			track.speed = 1.0
+			track.volume1 = 0.5
+			track.volume2 = 1.0
+		})
 
 		this._recorder = new AudioRecorder()
 		this._audios = tracks.map((track, sampleIndex) => {
@@ -48,6 +95,28 @@ export default class AudioSampler
 			return audio
 		})
 		this._dispatch(changeSamplerSamples(tracks))
+		
+		// Start enrichment
+		provider.enrichTracks(tracks, (baseIndex, enrichedTracks) => {
+			console.log(`${enrichedTracks.length} tracks have been enriched`)
+			enrichedTracks.forEach((enrichedTrack, index) => {
+				const sampleIndex = baseIndex + index
+
+				// Update normalization volume
+				if (enrichedTrack.gain) {
+					let volume = 0.5 * Math.pow(10, ((-12 - enrichedTrack.gain) / 20))
+					if (volume > 1.0) volume = 1.0
+					this._dispatch(changeSamplerSampleNormalizationVolume(sampleIndex, volume))
+				}
+
+				// Update BPM
+				if (enrichedTrack.bpm) {
+					if (sourceBPM > 0)
+						this._dispatch(changeSamplerSampleSpeed(sampleIndex, sourceBPM / enrichedTrack.bpm))
+					this._dispatch(changeSamplerSampleBPM(sampleIndex, enrichedTrack.bpm))
+				}
+			})
+		})
 	}
 
 	dispose() {
@@ -56,5 +125,6 @@ export default class AudioSampler
 			this._audios = null
 		}
 		this._recorder = null
+		this._strategy = null
 	}
 }

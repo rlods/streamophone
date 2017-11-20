@@ -9,11 +9,11 @@ export default class Buttons_MidiStrategy extends MidiStrategy {
 		this.samplesCount = 8
 	}
 
-	handleMidiEvent(dispatch, c, k, v) {
+	handleMidiEvent(c, k, v) {
 		if (c === 176 && k >= 1 && k <= 8) {
 			// change volume of k-1
 			console.log("Change volume of ", k-1, " to ", v/127)
-			dispatch(changeSamplerSampleVolume(k-1, v/127))
+			this._dispatch(changeSamplerSampleVolume(k-1, v/127))
 		}
 		else {
 			// start one sample
@@ -52,10 +52,10 @@ export default class Buttons_MidiStrategy extends MidiStrategy {
 			if (sample!==-1) {
 				if (v === 0) {
 					console.log("stop sample ", sample)
-					dispatch(stopSample(sample))
+					this._dispatch(stopSample(sample))
 				} else if (v === 127) {
 					console.log("start sample ", sample)
-					dispatch(startSample(sample))
+					this._dispatch(startSample(sample))
 				}
 			}
 		}

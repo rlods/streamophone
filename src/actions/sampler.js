@@ -1,7 +1,4 @@
-import { createProvider } from '../providers'
-import { createStrategy } from '../strategies'
 import { displayMessage } from './messages'
-import { transformArray } from '../tools'
 
 // ------------------------------------------------------------------
 
@@ -104,23 +101,20 @@ export const changeSamplerSampleStatus = (sampleIndex, playing) => (dispatch, ge
 export const handleKeyDown = keyCode => async (dispatch, getState, { app }) => {
 	if (keyCode === KEY_SPACE)
 		app.audioSampler.getRecorder().snapshot()
-	else if (app.strategy)
-		app.strategy.handleKeyDown(dispatch, keyCode)
+	else
+		app.audioSampler.handleKeyDown(keyCode)
 }
 
 export const handleKeyUp = keyCode => (dispatch, getState, { app }) => {
-	if (app.strategy)
-		app.strategy.handleKeyUp(dispatch, keyCode)
+	app.audioSampler.handleKeyUp(keyCode)
 }
 
 export const handleMidiEvent = (channel, key, velocity) => (dispatch, getState, { app }) => {
-	if (app.strategy)
-		app.strategy.handleMidiEvent(dispatch, channel, key, velocity)
+	app.audioSampler.handleMidiEvent(channel, key, velocity)
 }
 
 export const handleSocketEvent = message => (dispatch, getState, { app }) => {
-	if (app.strategy)
-		app.strategy.handleSocketMessage(dispatch, message)
+	app.audioSampler.handleSocketMessage(message)
 }
 
 // --------------------------------------------------------------
@@ -151,60 +145,18 @@ export const goToSampler = history => async (dispatch, getState, { app }) => {
 
 // --------------------------------------------------------------
 
-const validateTrack = track => !!track.preview && track.readable // readable means the track is available in current country
-
 export const loadSampler = () => async (dispatch, getState, { app }) => {
 	const { sampler, source } = getState()
 	try {
-		// Stop previously loaded audios
 		app.audioSampler.dispose()
-
-		// Create strategy
-		app.strategy = createStrategy(sampler.strategyId)
-
-		// Create provider
-		const providerId = source.type.split('_')[0]
-		const provider = createProvider(providerId)
-
-		// Fetch tracks
-		let tracks = await provider.fetchTracks(source.type, source.id)
-		tracks = transformArray(tracks, app.strategy.samplesCount, source.transformation, validateTrack)
-		tracks.forEach(track => {
-			track.loopStart = 0
-			track.loopEnd = sampler.defaultDuration > 0 ? track.loopStart + (sampler.defaultDuration / 1000.0) : 0
-			track.playing = false
-			track.providerId = providerId
-			track.ready = false
-			track.speed = 1.0
-			track.volume1 = 0.5
-			track.volume2 = 1.0
-		})
-
-		// Load audios
-		app.audioSampler.init(tracks)
-		
-		// Start enrichment
-		provider.enrichTracks(tracks, (baseIndex, enrichedTracks) => {
-			console.log(`${enrichedTracks.length} tracks have been enriched`)
-			enrichedTracks.forEach((enrichedTrack, index) => {
-				const sampleIndex = baseIndex + index
-
-				// Update normalization volume
-				if (enrichedTrack.gain) {
-					let volume = 0.5 * Math.pow(10, ((-12 - enrichedTrack.gain) / 20))
-					if (volume > 1.0) volume = 1.0
-					dispatch(changeSamplerSampleNormalizationVolume(sampleIndex, volume))
-				}
-
-				// Update BPM
-				if (enrichedTrack.bpm) {
-					if (source.bpm > 0)
-						dispatch(changeSamplerSampleSpeed(sampleIndex, source.bpm / enrichedTrack.bpm))
-					dispatch(changeSamplerSampleBPM(sampleIndex, enrichedTrack.bpm))
-				}
-			})
-		})
-
+		await app.audioSampler.init(
+			sampler.strategyId,
+			sampler.defaultDuration,
+			source.bpm,
+			source.id,
+			source.type.split('_')[0],
+			source.transformation,
+			source.type)
 	}
 	catch (error) {
 		console.log('Cannot load sampler', error)

@@ -16,11 +16,11 @@ export default class MultiSliders_MidiStrategy extends MidiStrategy {
 			this.currentSamples.push(0)
 	}
 
-	handleMidiEvent(dispatch, c, k, v) {
+	handleMidiEvent(c, k, v) {
 		const sample = (k * this.samplesCountPerSlider) - Math.floor(v * this.samplesCountPerSlider / this.slidersSteps) - 1
 		if (v === 0) {
 			console.log("stop column")
-			dispatch(stopSample(this.oldSample))
+			this._dispatch(stopSample(this.oldSample))
 			this.currentSamples[k-1] = -1
 			return
 		}
@@ -29,8 +29,8 @@ export default class MultiSliders_MidiStrategy extends MidiStrategy {
 			if (sample !== this.oldSample) {
 				// change sample
 				console.log("Start sample ", sample)
-				dispatch(stopSample(this.oldSample))
-				dispatch(startSample(sample))
+				this._dispatch(stopSample(this.oldSample))
+				this._dispatch(startSample(sample))
 				this.currentSamples[k-1] = sample
 			}
 		}

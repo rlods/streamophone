@@ -16,16 +16,16 @@ class Keyboard_BasicStrategy extends Strategy {
 		this.samplesCount = 26
 	}
 
-	handleKeyDown(dispatch, keyCode) {
+	handleKeyDown(keyCode) {
 		const alphabetIndex = Math.abs(keyCode - A_CHAR_CODE)
 		if (alphabetIndex >= 0 && alphabetIndex < 26)
-			dispatch(startSample(this.keys.indexOf(KEY_ORDER_ALPHABET[alphabetIndex])))
+			this._dispatch(startSample(this.keys.indexOf(KEY_ORDER_ALPHABET[alphabetIndex])))
 	}
 
-	handleKeyUp(dispatch, keyCode) {
+	handleKeyUp(keyCode) {
 		const alphabetIndex = Math.abs(keyCode - A_CHAR_CODE)
 		if (alphabetIndex >= 0 && alphabetIndex < 26)
-			dispatch(stopSample(this.keys.indexOf(KEY_ORDER_ALPHABET[alphabetIndex])))
+			this._dispatch(stopSample(this.keys.indexOf(KEY_ORDER_ALPHABET[alphabetIndex])))
 	}
 }
 
