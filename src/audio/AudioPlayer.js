@@ -42,9 +42,9 @@ export default class AudioPlayer
 	init(events, tracks) {
 		if (null !== this._audios)
 			throw new Error('Player is already initialized')
-		if (null === events)
+		if (null === events || !(events instanceof Array))
 			throw new Error('Invalid player events')
-		if (null === tracks)
+		if (null === tracks || !(tracks instanceof Array))
 			throw new Error('Invalid player samples')
 
 		this._events = events

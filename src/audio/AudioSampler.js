@@ -32,6 +32,8 @@ export default class AudioSampler
 	init(tracks) {
 		if (null !== this._audios)
 			throw new Error('Sampler is already initialized')
+		if (null === tracks || !(tracks instanceof Array))
+			throw new Error('Invalid sampler samples')
 
 		this._recorder = new AudioRecorder()
 		this._audios = tracks.map((track, sampleIndex) => {
