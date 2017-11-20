@@ -52,17 +52,17 @@ export default class AudioPlayer
 		this._duration = duration / 1000
 
 		console.log('Loading audios')
-		this._audios = tracks.map((sample, sampleIndex) => {
-			sample.playing = false
-			sample.ready = false
-			sample.totalDuration = durationsPerSample[sampleIndex] / 1000
+		this._audios = tracks.map((track, sampleIndex) => {
+			track.playing = false
+			track.ready = false
+			track.totalDuration = durationsPerSample[sampleIndex] / 1000
 
-			const audio = new CustomAudio(sample.preview, e => {
+			const audio = new CustomAudio(track.preview, e => {
 				if      (e[0] === AUDIO_EVENT_PLAY)  this._dispatch(changePlayerSampleStatus(sampleIndex, true))
 				else if (e[0] === AUDIO_EVENT_PAUSE) this._dispatch(changePlayerSampleStatus(sampleIndex, false))
 			})
-			audio.setLoop(sample.loopStart, sample.loopEnd)
-			audio.setVolume(sample.volume)
+			audio.setLoop(track.loopStart, track.loopEnd)
+			audio.setVolume(track.volume)
 			audio.init().then(() => this._dispatch(changePlayerSampleReady(sampleIndex)))
 			return audio
 		})
