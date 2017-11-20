@@ -31,7 +31,7 @@ export default class AudioSampler
 
 	init(tracks) {
 		if (null !== this._audios)
-			throw new Error('Engine is already initialized')
+			throw new Error('Sampler is already initialized')
 
 		this._recorder = new AudioRecorder()
 		this._audios = tracks.map((track, sampleIndex) => {

@@ -39,21 +39,16 @@ export default class AudioPlayer
 	
 	// --------------------------------------------------------------
 
-	init(data) {
+	init(events, tracks) {
 		if (null !== this._audios)
 			throw new Error('Player is already initialized')
-
-		if (null === data)
-			throw new Error('Invalid player data')
-
-		console.log('Import Sampling Events (b64)', data)
-		const { events, format, tracks } = b64_to_js(data)
-		if (RECORD_FORMAT !== format)
-			throw new Error('Invalid player data format')
+		if (null === events)
+			throw new Error('Invalid player events')
+		if (null === tracks)
+			throw new Error('Invalid player samples')
 
 		this._events = events
-
-		const { duration, durationsPerSample } = this._processStatistics()
+		const { duration, durationsPerSample } = this._processStatistics() // Need this._events to have been set
 		this._duration = duration / 1000
 
 		console.log('Loading audios')
@@ -74,6 +69,17 @@ export default class AudioPlayer
 
 		this._dispatch(changePlayerSamples(tracks))
 		this._ready = true
+	}
+
+	initFromData(data) {
+		if (null === data)
+			throw new Error('Invalid player data')
+
+		const { events, format, tracks } = b64_to_js(data)
+		if (RECORD_FORMAT !== format)
+			throw new Error('Invalid player data format')
+
+		this.init(events, tracks)
 	}
 
 	// --------------------------------------------------------------
