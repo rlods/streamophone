@@ -54,11 +54,12 @@ export default class SpotifyProvider extends Provider
 				throw new Error(`Unknown spotify source type "${sourceType}"`)
 			}
 		}
-		return tracks.map(track => ({
+		return tracks
+		.filter(track => !!track.preview_url)
+		.map(track => ({
 			cover: track.cover,
 			id: track.id,
 			preview: track.preview_url,
-			readable: !!track.preview_url,
 			title: track.name,
 			url: track.external_urls.spotify
 		}))

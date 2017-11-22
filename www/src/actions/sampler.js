@@ -148,15 +148,16 @@ export const goToSampler = history => async (dispatch, getState, { app }) => {
 export const loadSampler = () => async (dispatch, getState, { app }) => {
 	const { sampler, source } = getState()
 	try {
+		const [ resourceProviderId, resourceType ] = source.type.split('_')
 		app.audioSampler.dispose()
 		await app.audioSampler.init(
 			sampler.strategyId,
 			sampler.defaultDuration,
-			source.bpm,
+			resourceProviderId,
+			resourceType,
 			source.id,
-			source.type.split('_')[0],
-			source.transformation,
-			source.type)
+			source.bpm,
+			source.transformation)
 	}
 	catch (error) {
 		console.log('Cannot load sampler', error)

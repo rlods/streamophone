@@ -8,7 +8,6 @@ import logger from 'redux-logger'
 import thunk from 'redux-thunk'
 // ...
 import rootReducer from './reducers'
-//import registerServiceWorker from './registerServiceWorker'
 import App from './containers/App'
 import AudioPlayer from './audio/AudioPlayer'
 import AudioSampler from './audio/AudioSampler'
@@ -17,6 +16,8 @@ import config from './config'
 import './index.css'
 
 // --------------------------------------------------------------
+
+console.log('CONFIG', config)
 
 const app = {
 	audioPlayer: new AudioPlayer(),
@@ -49,5 +50,3 @@ ReactDOM.render(
 	</Provider>,
 	document.getElementById('root')
 )
-
-//registerServiceWorker()

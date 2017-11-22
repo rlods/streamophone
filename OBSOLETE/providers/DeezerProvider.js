@@ -83,7 +83,7 @@ export default class DeezerProvider extends Provider
 		let tracks
 		switch (sourceType)
 		{
-			case 'deezer_album':
+			case 'album':
 			{
 				const albumData = await this.fetchAlbum(sourceId)
 				tracks = albumData.tracks.data.map(track => {
@@ -93,7 +93,7 @@ export default class DeezerProvider extends Provider
 				})
 				break
 			}
-			case 'deezer_artist':
+			case 'artist':
 			{
 				const artistTracksData = await this.fetchArtistTracks(sourceId)
 				tracks = artistTracksData.data.map(track => {
@@ -103,7 +103,7 @@ export default class DeezerProvider extends Provider
 				})
 				break
 			}
-			case 'deezer_playlist':
+			case 'playlist':
 			{
 				const playlistData = await this.fetchPlaylist(sourceId)
 				tracks = playlistData.tracks.data

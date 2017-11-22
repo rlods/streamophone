@@ -11,7 +11,7 @@ const ENRICHMENT_DELAY = 500
 
 // ------------------------------------------------------------------
 
-class EnrichmentProcessor
+class EnrichmentProcessor // TODO re-enable
 {
 	constructor(provider) {
 		this.baseIndex = 0
@@ -109,11 +109,12 @@ export default class DeezerProvider extends Provider
 				throw new Error(`Unknown deezer source type "${sourceType}"`)
 			}
 		}
-		return tracks.map(track => ({
+		return tracks
+		.filter(track => !!track.preview && track.readable)
+		.map(track => ({
 			cover: track.album.cover_medium,
 			id: track.id,
 			preview: track.preview,
-			readable: track.readable,
 			title: track.title,
 			url: track.link
 		}))

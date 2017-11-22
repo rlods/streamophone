@@ -1,9 +1,9 @@
 {
   "name": "streamophone-api",
   "version": "0.1.0",
-  "description": "",
+  "description": "Streamophone API",
   "main": "src/index.js",
-  "author": "",
+  "author": "rlods",
   "license": "ISC",
   "scripts": {
     "dev": "NODE_ENV=development nodemon src/index.js --exec babel-node",
@@ -15,6 +15,7 @@
     "body-parser": "^1.18.2",
     "cors": "^2.8.4",
     "express": "^4.16.2",
+    "ioredis": "^3.2.1",
     "promise-retry": "^1.1.1"
   },
   "devDependencies": {

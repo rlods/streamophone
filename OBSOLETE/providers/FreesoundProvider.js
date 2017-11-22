@@ -36,7 +36,7 @@ export default class FreesoundProvider extends Provider
 		let tracks
 		switch (sourceType)
 		{
-			case 'freesound_pack':
+			case 'pack':
 				tracks = (await this.fetchPackSounds(sourceId)).results.map(track => {
 					const preview = track.previews ? track.previews['preview-lq-mp3'] : null
 					return {

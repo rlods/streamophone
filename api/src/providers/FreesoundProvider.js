@@ -38,7 +38,6 @@ export default class FreesoundProvider extends Provider
 						cover: track.images.waveform_m,
 						id: track.id,
 						preview,
-						readable: !!preview && preview.endsWith('.mp3'),
 						title: track.name,
 						url: track.url
 					}
@@ -47,7 +46,7 @@ export default class FreesoundProvider extends Provider
 			default:
 				throw new Error(`Unknown freesound source type "${sourceType}"`)
 		}
-		return await Promise.all(tracks)
+		return (await Promise.all(tracks)).filter(track => !!track.preview && preview.endsWith('.mp3'))
 	}
 
 	async fetchPackSounds(packId) {

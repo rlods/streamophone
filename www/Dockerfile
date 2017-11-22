@@ -2,11 +2,17 @@ FROM node:8-alpine
 
 COPY public /app/public/
 COPY src /app/src/
-COPY package.json /app/
+COPY package.json package-lock.json /app/
 
 WORKDIR /app
 
-RUN npm install && \
-	npm run prod:build
+# Adding Custom Environment Variables using process.env.REACT_APP_*
+# https://github.com/facebookincubator/create-react-app/tree/master/packages/react-scripts/template
+ARG STREAMOPHONE_API_URL
+ARG STREAMOPHONE_WWW_URL
+ENV REACT_APP_STREAMOPHONE_API_URL=${STREAMOPHONE_API_URL}
+ENV REACT_APP_STREAMOPHONE_WWW_URL=${STREAMOPHONE_WWW_URL}
+
+RUN npm install && npm run prod:build
 
 CMD npm run prod:start

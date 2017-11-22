@@ -3,9 +3,12 @@ import cors from 'cors'
 import express from 'express'
 //
 import config from './config'
+import { initCache } from './helpers/cache'
 import { initRoutes } from './controllers/'
 
 // ------------------------------------------------------------------
+
+console.log('CONFIG', config)
 
 const createApp = () => {
 	const app = express()
@@ -18,13 +21,17 @@ const createApp = () => {
 	// initCache()
 	// console.log('Cache initialized')
 
+	console.log('Initializing cache')
+	initCache()
+	console.log('Cache initialized')
+
 	console.log('Initializing authentication')
 	initRoutes(app)
 	console.log('Authentication initialized')
 
-	app.listen(config.APP.PORT)
+	app.listen(config.API.PORT)
 	app.emit('appReady') // for tests
-	console.log(`Listening on ${config.APP.PORT}`)
+	console.log(`Listening on ${config.API.PORT}`)
 
 	return app
 }

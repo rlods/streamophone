@@ -1,14 +1,14 @@
 {
   "name": "streamophone-www",
   "version": "0.1.0",
-  "description": "",
+  "description": "Streamophone Web Client",
   "main": "src/index.js",
-  "author": "",
+  "author": "rlods",
   "license": "ISC",
   "scripts": {
-    "dev": "PORT=8080 react-scripts start",
+    "dev": "PORT=${STREAMOPHONE_WWW_PORT} react-scripts start",
     "prod:build": "react-scripts build",
-    "prod:start": "serve -s build -p 8080"
+    "prod:start": "serve -s build -p ${STREAMOPHONE_WWW_PORT}"
   },
   "dependencies": {
     "axios": "^0.17.1",

@@ -1,0 +1,84 @@
+version: '3.2'
+
+services:
+
+  # Connect with CLI using:
+  # docker run -it --network dzfone_data --rm redis:4-alpine redis-cli -h streamophone_cache_1 -a PWD
+  cache:
+    image: redis:4-alpine
+    command: [
+      "redis-server",
+      "--appendonly", "yes",
+      "--port", "${STREAMOPHONE_CACHE_PORT}",
+      "--requirepass", "${STREAMOPHONE_CACHE_PASSWORD}"
+    ]
+    networks:
+      - data
+    sysctls:
+      - net.core.somaxconn=511 # https://github.com/docker-library/redis/issues/35
+    volumes:
+      - ${STREAMOPHONE_CACHE_VOLUME}:/data
+    ports:
+      - ${STREAMOPHONE_CACHE_PORT}:${STREAMOPHONE_CACHE_PORT}
+    restart: on-failure
+      
+  api:
+    build:
+      context: api
+    networks:
+      - backend
+      - data
+    environment:
+      - STREAMOPHONE_API_PORT
+      - STREAMOPHONE_CACHE_HOST
+      - STREAMOPHONE_CACHE_PORT
+      - STREAMOPHONE_CACHE_PASSWORD
+      - STREAMOPHONE_FREESOUND_TOKEN
+      - STREAMOPHONE_SPOTIFY_CLIENT_ID
+      - STREAMOPHONE_SPOTIFY_CLIENT_SECRET
+      - STREAMOPHONE_TEST_ASSETS_URL
+    depends_on:
+      - cache
+    ports:
+      - ${STREAMOPHONE_API_PORT}:${STREAMOPHONE_API_PORT}
+    read_only: true
+    restart: on-failure
+
+  www:
+    build:
+      context: www
+      args:
+        - STREAMOPHONE_API_URL
+        - STREAMOPHONE_WWW_URL
+    environment:
+      - STREAMOPHONE_WWW_PORT
+    networks:
+      - backend
+      - frontend
+    depends_on:
+      - api
+    ports:
+      - ${STREAMOPHONE_WWW_PORT}:${STREAMOPHONE_WWW_PORT}
+    read_only: true
+    restart: on-failure
+
+  #proxy:
+  #  image: haproxy:1.7-alpine
+  #  restart: on-failure
+  #  networks:
+  #    - frontend
+  #  depends_on:
+  #    - api
+  #    - www
+  #  ports:
+  #    - 80:80 # TODO: in prod we should expose 80 & 443
+  #  volumes:
+  #    - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
+
+networks:
+  backend:
+    driver: bridge
+  data:
+    driver: bridge
+  frontend:
+    driver: bridge

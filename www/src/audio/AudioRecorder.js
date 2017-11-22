@@ -37,6 +37,6 @@ export default class AudioRecorder
 
 	snapshot() {
 		console.log('Export Sampling Events', this._data)
-		window.open(`${config.BASE_URL}/#/play/${js_to_b64(this._data)}`)
+		window.open(`${config.WWW.URL}/#/play/${js_to_b64(this._data)}`) // TODO: remove config.WWW.URL if useless
 	}
 }

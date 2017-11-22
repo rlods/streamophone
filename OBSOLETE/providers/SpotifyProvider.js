@@ -40,12 +40,12 @@ export default class SpotifyProvider extends Provider
 		let tracks
 		switch (sourceType)
 		{
-			case 'spotify_album':
+			case 'album':
 			{
 				tracks = await this.fetchAlbumTracks(sourceId)
 				break
 			}
-			case 'spotify_artist':
+			case 'artist':
 			{
 				tracks = await this.fetchArtistTracks(sourceId)
 				break

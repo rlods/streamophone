@@ -1,7 +1,13 @@
 
 const Config = {
 
-	BASE_URL: 'http://localhost:8080',
+	API: {
+		URL: process.env.REACT_APP_STREAMOPHONE_API_URL,
+	},
+
+	WWW: {
+		URL: process.env.REACT_APP_STREAMOPHONE_WWW_URL,
+	},
 
 	CURATED_SOURCES: [
 		{ sourceType: 'deezer_playlist', sourceId: '1083902971',             title: 'Hits 2017' },
@@ -101,11 +107,6 @@ const Config = {
 		spotify_album: 'Spotify Album',
 		spotify_artist: 'Spotify Artist',
 		test_test: 'Test'
-	},
-
-	TMP: {
-		FREESOUND: 'aGhZQh3Ishqc7OvoqC7pWupWHsjalJuxIzURKVqt', // TODO: replace by oauth
-		SPOTIFY: 'be156e1e10de43b2b4e3f73b2f40d1dc' // clientId for oauth
 	}
 }
 
