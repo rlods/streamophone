@@ -1,0 +1,26 @@
+{
+  "name": "streamophone-api",
+  "version": "0.1.0",
+  "description": "",
+  "main": "src/index.js",
+  "author": "",
+  "license": "ISC",
+  "scripts": {
+    "dev": "NODE_ENV=development nodemon src/index.js --exec babel-node",
+    "prod:build": "babel src -d build/src --source-root src/index.js --copy-files",
+    "prod:start": "NODE_ENV=production node build/src/index.js"
+  },
+  "dependencies": {
+    "axios": "^0.17.1",
+    "body-parser": "^1.18.2",
+    "cors": "^2.8.4",
+    "express": "^4.16.2",
+    "promise-retry": "^1.1.1"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "nodemon": "^1.12.1"
+  }
+}

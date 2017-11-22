@@ -1,7 +1,10 @@
 {
-  "name": "streamophone",
+  "name": "streamophone-www",
   "version": "0.1.0",
-  "private": true,
+  "description": "",
+  "main": "src/index.js",
+  "author": "",
+  "license": "ISC",
   "scripts": {
     "dev": "PORT=8080 react-scripts start",
     "prod:build": "react-scripts build",
