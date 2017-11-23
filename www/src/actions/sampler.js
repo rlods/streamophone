@@ -156,7 +156,7 @@ export const loadSampler = () => async (dispatch, getState, { app }) => {
 			resourceProviderId,
 			resourceType,
 			source.id,
-			source.bpm,
+			// source.bpm,
 			source.transformation)
 	}
 	catch (error) {

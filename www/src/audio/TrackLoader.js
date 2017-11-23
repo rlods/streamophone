@@ -9,6 +9,21 @@ const API_FETCHER = axios.create({ baseURL: config.API.URL })
 
 // ------------------------------------------------------------------
 
+export const fetch = async url => {
+	const response = await API_FETCHER.get(url)
+	const { data } = response
+	if (data && data.error)
+		throw new Error(data.error)
+	return data
+}
+
+// ------------------------------------------------------------------
+
+export const loadTracks = ({ providerId, resourceType, resourceId, samplesCount, samplesTransformation }) =>
+	fetch(`tracks/${providerId}/${resourceType}/${resourceId}?count=${samplesCount}&transformation=${samplesTransformation}`)
+
+// ------------------------------------------------------------------
+
 //	Enrichment // TODO re-enable
 //	provider.enrichTracks(tracks, (baseIndex, enrichedTracks) => {
 //		console.log(`${enrichedTracks.length} tracks have been enriched`)
@@ -28,13 +43,3 @@ const API_FETCHER = axios.create({ baseURL: config.API.URL })
 //			}
 //		})
 //	})
-
-// ------------------------------------------------------------------
-
-export const loadTracks = async (dispatch, providerId, resourceType, resourceId, trackCount, sourceBPM, sourceTransformation) => {
-	const response = await API_FETCHER.get(`tracks/${providerId}/${resourceType}/${resourceId}?count=${trackCount}&transformation=${sourceTransformation}`)
-	const { data } = response
-	if (data && data.error)
-		throw new Error(data.error)
-	return data
-}

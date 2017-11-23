@@ -52,16 +52,23 @@ export default class AudioSampler
 
 	// --------------------------------------------------------------
 
-	async init(samplerStrategyId, samplerDefaultDuration, providerId, resourceType, resourceId, sourceBPM, sourceTransformation) {
+	async init(samplerStrategyId, samplerDefaultDuration, providerId, resourceType, resourceId, samplesTransformation) {
 		if (null !== this._audios)
 			throw new Error('Sampler is already initialized')
 
 		// Create strategy
 		this._strategy = createStrategy(samplerStrategyId)
 		this._strategy.attachDispatcher(this._dispatch)
+		const samplesCount = this._strategy.samplesCount
 
 		// Get tracks
-		const tracks = (await loadTracks(this._dispatch, providerId, resourceType, resourceId, this._strategy.samplesCount, sourceBPM, sourceTransformation)).map(track => {
+		const tracks = (await loadTracks({
+			providerId,
+			resourceType,
+			resourceId,
+			samplesCount,
+			samplesTransformation
+		})).map(track => {
 			track.loopStart = 0
 			track.loopEnd = samplerDefaultDuration > 0 ? track.loopStart + (samplerDefaultDuration / 1000.0) : 0
 			track.playing = false
