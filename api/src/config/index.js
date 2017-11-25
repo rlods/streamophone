@@ -1,7 +1,8 @@
 
 const config = {
 	API: {
-		PORT: process.env.STREAMOPHONE_API_PORT ? parseInt(process.env.STREAMOPHONE_API_PORT, 10) : 4242
+		PORT: process.env.STREAMOPHONE_API_PORT ? parseInt(process.env.STREAMOPHONE_API_PORT, 10) : 4242,
+		URL: process.env.APP_STREAMOPHONE_API_URL
 	},
 
 	/*
