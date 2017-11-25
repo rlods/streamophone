@@ -106,7 +106,7 @@ export default class DeezerProvider extends Provider
 			}
 			default:
 			{
-				throw new Error(`Unknown deezer source type "${sourceType}"`)
+				throw new Error(`Unknown Deezer source type "${sourceType}"`)
 			}
 		}
 		return tracks

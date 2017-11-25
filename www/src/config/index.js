@@ -106,7 +106,8 @@ const Config = {
 		freesound_pack: 'Freesound Pack',
 		spotify_album: 'Spotify Album',
 		spotify_artist: 'Spotify Artist',
-		test_test: 'Test'
+		test_test: 'Test',
+		ina_search: 'INA Search'
 	}
 }
 

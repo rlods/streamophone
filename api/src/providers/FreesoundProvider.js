@@ -44,7 +44,7 @@ export default class FreesoundProvider extends Provider
 				})
 				break
 			default:
-				throw new Error(`Unknown freesound source type "${sourceType}"`)
+				throw new Error(`Unknown Freesound source type "${sourceType}"`)
 		}
 		return (await Promise.all(tracks)).filter(track => !!track.preview && preview.endsWith('.mp3'))
 	}

@@ -30,6 +30,7 @@ services:
       - data
     environment:
       - STREAMOPHONE_API_PORT
+      - STREAMOPHONE_API_URL
       - STREAMOPHONE_CACHE_HOST
       - STREAMOPHONE_CACHE_PORT
       - STREAMOPHONE_CACHE_PASSWORD

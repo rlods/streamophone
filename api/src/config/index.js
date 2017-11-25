@@ -4,11 +4,13 @@ const config = {
 		PORT: process.env.STREAMOPHONE_API_PORT ? parseInt(process.env.STREAMOPHONE_API_PORT, 10) : 4242
 	},
 
+	/*
 	CACHE: {
 		HOST: process.env.STREAMOPHONE_CACHE_HOST || 'localhost',
 		PORT: parseInt(process.env.STREAMOPHONE_CACHE_PORT, 10) || 6379,
 		PASSWORD: process.env.STREAMOPHONE_CACHE_PASSWORD || 'example'
 	},
+	*/
 
 	FAKE: {
 		URL: process.env.STREAMOPHONE_TEST_ASSETS_URL

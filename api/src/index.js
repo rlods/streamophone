@@ -21,9 +21,11 @@ const createApp = () => {
 	// initCache()
 	// console.log('Cache initialized')
 
-	console.log('Initializing cache')
-	initCache()
-	console.log('Cache initialized')
+	if (config.CACHE) {
+		console.log('Initializing cache')
+		initCache()
+		console.log('Cache initialized')
+	}
 
 	console.log('Initializing authentication')
 	initRoutes(app)

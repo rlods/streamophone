@@ -39,7 +39,6 @@ export default class CustomAudio
 		this._speed = 1.0
 		this._startedAt = 0
 		this._url = url
-
 		this._gainNode = AUDIO_CONTEXT.createGain()
 		this._gainNode.gain.value = 1.0
 		this._gainNode.connect(AUDIO_CONTEXT.destination)

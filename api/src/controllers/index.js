@@ -1,4 +1,5 @@
 import bodyParser from 'body-parser'
+import request from 'request' // TODO: remove is not used anymore
 //
 import { createProvider } from '../providers'
 import { transformArray } from '../helpers'
@@ -14,19 +15,18 @@ async function handleTracks(req, res) { // TODO: cache
 	try {
 		const { providerId, resourceType, resourceId } = req.params
 		const { count, transformation } = req.query
-		console.log(req.query)
 		
 		const cache = getCache()
 		const cacheKey = `TRACKS-${providerId}-${resourceType}-${resourceId}`
-
-		let tracks = await cache.get(cacheKey)
+		let tracks = cache ? await cache.get(cacheKey) : null
 		if (null !== tracks) {
 			tracks = JSON.parse(tracks)
 		}
 		else {
 			console.log(`Fetching "${providerId}"`)
 			tracks = await createProvider(providerId).fetchTracks(resourceType, resourceId)
-			cache.set(cacheKey, JSON.stringify(tracks))
+			if (cache)
+				cache.set(cacheKey, JSON.stringify(tracks))
 		}
 
 		if (count > 0 && tracks.length > 0 && tracks.length !== count) {
@@ -53,4 +53,16 @@ async function handleTracks(req, res) { // TODO: cache
 export function initRoutes(app) {
 	console.log('Registering routers')
 	app.get('/tracks/:providerId/:resourceType/:resourceId', BODY_PARSER_MIDDLEWARE, handleTracks)
+
+	app.use('/toto/:providerId/:resourceId', (req, res) => {
+		const { providerId, resourceId } = req.params
+		const url = `http://fresques.ina.fr/jalons/media/video/lire/${resourceId}`
+		try {
+			req.pipe(request(url)).pipe(res)
+		}
+		catch (error) {
+			console.log('PIPE ERROR', error)
+		}
+	})
 }
+

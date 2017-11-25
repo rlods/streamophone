@@ -12,3 +12,9 @@
 - ...
 
 - Inciter la communauté à alimenter elle-même de nouvelles sortes de configuration qu’on aurait pas imaginé : ça nécessite de perfectionner le système de stratégie configurable et dynamique
+
+
+
+
+https://www.html5rocks.com/en/tutorials/webaudio/intro/
+
