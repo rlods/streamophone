@@ -5,9 +5,6 @@ import Provider from './Provider'
 
 // ------------------------------------------------------------------
 
-// https://freesound.org/apiv2/packs/16873/sounds?format=json
-// https://freesound.org/apiv2/sounds/395246?format=json
-
 const API_BASE_URL = 'https://freesound.org/apiv2/'
 const API_FETCHER = axios.create({ baseURL: API_BASE_URL })
 
@@ -15,10 +12,6 @@ const API_FETCHER = axios.create({ baseURL: API_BASE_URL })
 
 export default class FreesoundProvider extends Provider
 {
-	//constructor() {
-	//	super()
-	//}
-
 	async fetchAPI(url) {
 		const response = await API_FETCHER.get(`${url}&format=json&token=${config.TMP.FREESOUND}`)
 		const { data } = response

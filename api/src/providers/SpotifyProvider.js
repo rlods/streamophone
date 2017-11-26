@@ -23,11 +23,6 @@ const ACCOUNT_FETCHER = axios.create({
 
 // ------------------------------------------------------------------
 
-// https://developer.spotify.com/my-applications/
-// https://developer.spotify.com/web-api/authorization-guide/#client_credentials_flow
-// curl -X POST https://accounts.spotify.com/api/token -d grant_type=client_credentials --header "Authorization: Basic YmUxNTZlMWUxMGRlNDNiMmI0ZTNmNzNiMmY0MGQxZGM6ODMzOTJmMjkxYjBjNDYyMTk2OTgyYWY5NzUwMTQ0YTg="
-// Test Album ID: 5rOHrnrRomvSJhQLGVtfJ8, 0QhwxYDUougJiVDtyN4Lhm
-// Test Artist ID: 0OdUWJ0sBjDrqHygGUXeCF
 export default class SpotifyProvider extends Provider
 {
 	constructor() {

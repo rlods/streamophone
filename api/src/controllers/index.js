@@ -11,7 +11,7 @@ const BODY_PARSER_MIDDLEWARE = bodyParser.json()
 
 // ------------------------------------------------------------------
 
-async function handleTracks(req, res) { // TODO: cache
+async function handleTracks(req, res) {
 	try {
 		const { providerId, resourceType, resourceId } = req.params
 		const { count, transformation } = req.query
@@ -54,7 +54,7 @@ export function initRoutes(app) {
 	console.log('Registering routers')
 	app.get('/tracks/:providerId/:resourceType/:resourceId', BODY_PARSER_MIDDLEWARE, handleTracks)
 
-	app.use('/toto/:providerId/:resourceId', (req, res) => {
+	app.use('/stream/:providerId/:resourceId', (req, res) => {
 		const { providerId, resourceId } = req.params
 		const url = `http://fresques.ina.fr/jalons/media/video/lire/${resourceId}`
 		try {

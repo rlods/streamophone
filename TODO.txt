@@ -18,3 +18,16 @@
 
 https://www.html5rocks.com/en/tutorials/webaudio/intro/
 
+
+
+
+----------
+
+https://developer.spotify.com/my-applications/
+https://developer.spotify.com/web-api/authorization-guide/#client_credentials_flow
+curl -X POST https://accounts.spotify.com/api/token -d grant_type=client_credentials --header "Authorization: Basic ..."
+Test Album ID: 5rOHrnrRomvSJhQLGVtfJ8, 0QhwxYDUougJiVDtyN4Lhm
+Test Artist ID: 0OdUWJ0sBjDrqHygGUXeCF
+
+https://freesound.org/apiv2/packs/16873/sounds?format=json
+https://freesound.org/apiv2/sounds/395246?format=json

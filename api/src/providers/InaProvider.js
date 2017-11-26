@@ -1,5 +1,6 @@
 import axios from 'axios'
 //
+import config from '../config'
 import Provider from './Provider'
 
 // ------------------------------------------------------------------
@@ -14,7 +15,7 @@ const extractVideo = async url => {
 	const x = data.match(/window\[[^\]]*\]\ =\ ([^;]*)/m)[1]
 	const assets = JSON.parse(x).components['component.player.video'].api.document.mediaAssets
 	const lastKey = Object.keys(assets).slice(-1)[0]
-	return assets[lastKey][0].url.replace('http://fresques.ina.fr/jalons/media/video/lire/', 'http://localhost:8090/toto/ina/')
+	return assets[lastKey][0].url.replace('http://fresques.ina.fr/jalons/media/video/lire/', `${config.API.URL}/stream/ina/`)
 }
 
 export default class InaProvider extends Provider

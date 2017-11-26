@@ -1,9 +1,6 @@
 
 export default class Provider
 {
-	// constructor() {
-	// }
-
 	async enrichTracks(tracks, cb) {
 	}
 
@@ -16,5 +13,4 @@ export default class Provider
 			}
 		}
 	}
-
 }
