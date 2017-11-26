@@ -79,35 +79,19 @@ export default class DeezerProvider extends Provider
 		switch (sourceType)
 		{
 			case 'album':
-			{
-				const albumData = await this.fetchAlbum(sourceId)
-				tracks = albumData.tracks.data.map(track => {
-					// In that case we have to enrich each track data with the cover which is available in the album data
-					track.album = { cover_medium: albumData.cover_medium }
-					return track
-				})
+				tracks = await this.fetchTracksFromAlbum(sourceId)
 				break
-			}
 			case 'artist':
-			{
-				const artistTracksData = await this.fetchArtistTracks(sourceId)
-				tracks = artistTracksData.data.map(track => {
-					// In that case we have to enrich each track data with the cover which is available in the album data
-					track.link = 'https://www.deezer.com/track/' + track.id
-					return track
-				})
+				tracks = await this.fetchTracksFromArtist(sourceId)
 				break
-			}
 			case 'playlist':
-			{
-				const playlistData = await this.fetchPlaylist(sourceId)
-				tracks = playlistData.tracks.data
+				tracks = await this.fetchTracksFromPlaylist(sourceId)
 				break
-			}
+			case 'search':
+				tracks = await this.fetchTracksFromSearch(sourceId)
+				break
 			default:
-			{
 				throw new Error(`Unknown Deezer source type "${sourceType}"`)
-			}
 		}
 		return tracks
 		.filter(track => !!track.preview && track.readable)
@@ -120,15 +104,31 @@ export default class DeezerProvider extends Provider
 		}))
 	}
 
-	async fetchAlbum(albumId) {
-		return this.fetchAPI(`album/${albumId}`)
+	async fetchTracksFromAlbum(albumId) {
+		const album = await this.fetchAPI(`album/${albumId}`)
+		return album.tracks.data.map(track => {
+			// In that case we have to enrich each track data with the cover which is available in the album data
+			track.album = { cover_medium: album.cover_medium }
+			return track
+		})
 	}
 
-	async fetchArtistTracks(artistId) {
-		return this.fetchAPI(`artist/${artistId}/radio`)
+	async fetchTracksFromArtist(artistId) {
+		const artist = await this.fetchAPI(`artist/${artistId}/radio`)
+		return artist.data.map(track => {
+			// In that case we have to enrich each track data with the cover which is available in the album data
+			track.link = 'https://www.deezer.com/track/' + track.id
+			return track
+		})
 	}
 
-	async fetchPlaylist(playlistId) {
-		return this.fetchAPI(`playlist/${playlistId}`)
+	async fetchTracksFromPlaylist(playlistId) {
+		const playlist = await this.fetchAPI(`playlist/${playlistId}`)
+		return playlist.tracks.data
+	}
+
+	async fetchTracksFromSearch(query) {
+		const search = await this.fetchAPI(`search/track?q=${query}`)
+		return search.data
 	}
 }

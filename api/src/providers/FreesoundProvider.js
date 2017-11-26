@@ -32,24 +32,42 @@ export default class FreesoundProvider extends Provider
 		switch (sourceType)
 		{
 			case 'pack':
-				tracks = (await this.fetchPackSounds(sourceId)).results.map(track => {
-					const preview = track.previews ? track.previews['preview-lq-mp3'] : null
-					return {
-						cover: track.images.waveform_m,
-						id: track.id,
-						preview,
-						title: track.name,
-						url: track.url
-					}
-				})
+				tracks = await this.fetchTracksFromPack(sourceId)
+				break
+			case 'search':
+				tracks = await this.fetchTracksFromSearch(sourceId)
 				break
 			default:
 				throw new Error(`Unknown Freesound source type "${sourceType}"`)
 		}
-		return (await Promise.all(tracks)).filter(track => !!track.preview && preview.endsWith('.mp3'))
+		return tracks.filter(track => !!track.preview && track.preview.endsWith('.mp3'))
 	}
 
-	async fetchPackSounds(packId) {
-		return this.fetchAPI(`packs/${packId}/sounds?fields=id,name,images,previews,url`)
+	async fetchTracksFromPack(packId) {
+		const pack = await this.fetchAPI(`packs/${packId}/sounds?fields=id,name,images,previews,url`)
+		return pack.results.map(track => {
+			const preview = track.previews ? track.previews['preview-lq-mp3'] : null
+			return {
+				cover: track.images.waveform_m,
+				id: track.id,
+				preview,
+				title: track.name,
+				url: track.url
+			}
+		})
+	}
+
+	async fetchTracksFromSearch(query) {
+		const search = await this.fetchAPI(`search/text/?query=${query}&fields=id,name,images,previews,url`)
+		return search.results.map(track => {
+			const preview = track.previews ? track.previews['preview-lq-mp3'] : null
+			return {
+				cover: track.images.waveform_m,
+				id: track.id,
+				preview,
+				title: track.name,
+				url: track.url
+			}
+		})
 	}
 }

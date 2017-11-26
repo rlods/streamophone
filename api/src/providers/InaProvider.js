@@ -32,21 +32,16 @@ export default class InaProvider extends Provider
 	}
 
 	async fetchTracks(sourceType, sourceId) {
-		let resources
+		let tracks
 		switch (sourceType)
 		{
 			case 'search':
-			{
-				const searchData = await this.fetchSearch(sourceId)
-				resources = searchData.return.resources
+				tracks = await this.fetchTracksFromSearch(sourceId)
 				break
-			}
 			default:
-			{
 				throw new Error(`Unknown INA source type "${sourceType}"`)
-			}
 		}
-		return await Promise.all(resources.map(async resource => ({
+		return await Promise.all(tracks.map(async resource => ({
 			cover: 'http://fresques.ina.fr/jalons/media/imagette/512x384/' + resource.id,
 			id: resource.id,
 			preview: await extractVideo(resource.html.match(/src="([^"]*)/)[1]),
@@ -55,7 +50,8 @@ export default class InaProvider extends Provider
 		})))
 	}
 
-	async fetchSearch(query) {
-		return this.fetchAPI(`search?query=${query}`)
+	async fetchTracksFromSearch(query) {
+		const search = await this.fetchAPI(`search?query=${query}`)
+		return search.return.resources
 	}
 }
