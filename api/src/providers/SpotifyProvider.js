@@ -40,19 +40,16 @@ export default class SpotifyProvider extends Provider
 		switch (sourceType)
 		{
 			case 'album':
-			{
-				tracks = await this.fetchAlbumTracks(sourceId)
+				tracks = await this.fetchTracksFromAlbum(sourceId)
 				break
-			}
 			case 'artist':
-			{
-				tracks = await this.fetchArtistTracks(sourceId)
+				tracks = await this.fetchTracksFromArtist(sourceId)
 				break
-			}
+			case 'search':
+				tracks = await this.fetchTracksFromSearch(sourceId)
+				break
 			default:
-			{
 				throw new Error(`Unknown spotify source type "${sourceType}"`)
-			}
 		}
 		return tracks
 		.filter(track => !!track.preview_url)
@@ -111,7 +108,7 @@ export default class SpotifyProvider extends Provider
 		}
 	}
 
-	async fetchAlbumTracks(albumId) {
+	async fetchTracksFromAlbum(albumId) {
 		const albums = await this.fetchAPI(`albums/${albumId}`)
 		return albums.tracks.items.map(track => {
 			// In that case we have to enrich each track data with the cover which is available in the album data
@@ -120,7 +117,7 @@ export default class SpotifyProvider extends Provider
 		})
 	}
 
-	async fetchArtistTracks(artistId) {
+	async fetchTracksFromArtist(artistId) {
 		const albums = await this.fetchAPI(`artists/${artistId}/albums`)
 		const albumIds = albums.items.map(album => album.id).join(',')
 		const albumsDetailed = await this.fetchAPI(`albums?ids=${albumIds}`) // https://developer.spotify.com/web-api/console/get-several-albums/#complete
@@ -129,5 +126,14 @@ export default class SpotifyProvider extends Provider
 			track.cover = album.images[0].url
 			return track
 		})))
+	}
+
+	async fetchTracksFromSearch(query) {
+		const search = await this.fetchAPI(`search?q=${query}&type=track`)
+		return search.tracks.items.map(track => {
+			// In that case we have to enrich each track data with the cover which is available in the album data
+			track.cover = track.album.images[0].url
+			return track
+		})
 	}
 }
