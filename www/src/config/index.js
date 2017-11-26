@@ -26,15 +26,15 @@ const Config = {
 		{ sourceType: 'deezer_artist',   sourceId: '27',                     title: 'Daft Punk' },
 		{ sourceType: 'freesound_pack',  sourceId: '7447',                   title: 'Zeeland dunes' },
 		{ sourceType: 'freesound_pack',  sourceId: '16873',                  title: 'Industrial' },
+		{ sourceType: 'ina_search',      sourceId: 'guerre',                 title: 'World War Old Documentaries' },
 		{ sourceType: 'spotify_album',   sourceId: '0QhwxYDUougJiVDtyN4Lhm', title: 'SPT1' },
-		{ sourceType: 'spotify_artist',  sourceId: '0OdUWJ0sBjDrqHygGUXeCF', title: 'SPT2' },
-		{ sourceType: 'ina_search',      sourceId: 'guerre',                 title: 'World War Old Documentaries' }
+		{ sourceType: 'spotify_artist',  sourceId: '0OdUWJ0sBjDrqHygGUXeCF', title: 'SPT2' }
 	],
 
 	DEFAULT: {
-		SAMPLER_DURATION: -1, // do not shortened
+		SAMPLER_DURATION: -1, // default: not shortened
 		SAMPLER_STRATEGY: 'KEYBOARD_AZERTY',
-		SOURCE_BPM: -1, // do not adjust BPM
+		SOURCE_BPM: -1, // default: not adjusted
 		SOURCE_ID: '791313621',
 		SOURCE_TRANSFORMATION: 'shuffle',
 		SOURCE_TYPE: 'deezer_playlist'
