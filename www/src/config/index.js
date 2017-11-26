@@ -42,8 +42,6 @@ const Config = {
 
 	ENABLE_LOGGER: false, // process.env.NODE_ENV !== 'production'
 
-	ENABLE_VOLUME_FROM_GAIN: false, // TODO: enable that with a significative delay between calls because of Deezer API Rate Limits (not done yet)
-
 	DRIVERS: {
 		d1: {
 			type: 'basic'
@@ -97,7 +95,7 @@ const Config = {
 		},
 		// CUSTOM_SOCKET: {
 		//	driver: 'd3',
-		//	label: 'CUSTOM_SOCKET (25 samples)'
+		//	label: 'CUSTOM_SOCKET'
 		//}
 	},
 
@@ -108,11 +106,11 @@ const Config = {
 		deezer_search: 'Deezer Search',
 		freesound_pack: 'Freesound Pack',
 		freesound_search: 'Freesound Search',
+		ina_search: 'INA Search',
 		spotify_album: 'Spotify Album',
 		spotify_artist: 'Spotify Artist',
 		spotify_search: 'Spotify Search',
-		test_test: 'Test',
-		ina_search: 'INA Search'
+		...(process.env.NODE_ENV !== 'production' ? {test_test: 'Test'} : {})
 	}
 }
 
