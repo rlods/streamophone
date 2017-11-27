@@ -4,10 +4,6 @@ const config = {
 		PORT: process.env.STREAMOPHONE_API_PORT ? parseInt(process.env.STREAMOPHONE_API_PORT, 10) : 4242
 	},
 
-	WWW: {
-		URL: process.env.STREAMOPHONE_WWW_URL
-	},
-
 	/*
 	CACHE: {
 		HOST: process.env.STREAMOPHONE_CACHE_HOST || 'localhost',
@@ -28,6 +24,10 @@ const config = {
 		FREESOUND: process.env.STREAMOPHONE_FREESOUND_TOKEN,
 		SPOTIFY: process.env.STREAMOPHONE_SPOTIFY_CLIENT_ID,
 		SPOTIFY_SECRET: process.env.STREAMOPHONE_SPOTIFY_CLIENT_SECRET
-	}
+	},
+
+	WHITELIST: [
+		process.env.STREAMOPHONE_WWW_URL
+	]
 }
 export default config

@@ -14,12 +14,13 @@ const createApp = () => {
 	const app = express()
 	app.use(cors({
 		// credentials: true,
-		origin: config.WWW.URL
+		origin: function (origin, callback) {
+		    if (config.WHITELIST.indexOf(origin) !== -1)
+				callback(null, true)
+		    else
+				callback(new Error('Not allowed by CORS'))
+		}
 	}))
-
-	// console.log('Initializing cache')
-	// initCache()
-	// console.log('Cache initialized')
 
 	if (config.CACHE) {
 		console.log('Initializing cache')
