@@ -80,7 +80,7 @@ class Splash extends Component {
 					items={config.CURATED_SOURCES.sort((a, b) => a.title.localeCompare(b.title))}
 					value={`${this.props.sourceType}:${this.props.sourceId}`} onChange={this.props.onChangeCurated}
 					getValue={curated => `${curated.sourceType}:${curated.sourceId}`}
-					getText={curated => `${curated.title} (${config.SOURCE_TYPES[curated.sourceType]})`} />
+					getText={curated => `${curated.title} (${config.SOURCE_TYPES[curated.sourceType].label})`} />
 				<SelectField
 					name="Source BPM"
 					items={BPMS}
@@ -99,11 +99,11 @@ class Splash extends Component {
 					name="Source Type"
 					items={Object.entries(config.SOURCE_TYPES)}
 					value={this.props.sourceType} onChange={this.props.onChangeSourceType}
-					getValue={([sourceType, sourceLabel]) => sourceType}
-					getText={([sourceType, sourceLabel]) => sourceLabel}
+					getValue={([sourceType, sourceDef]) => sourceType}
+					getText={([sourceType, sourceDef]) => sourceDef.label}
 					canBeEmpty={true} />
 				<TextField
-					name="Source ID"
+					name={config.SOURCE_TYPES[this.props.sourceType].input_label}
 					value={this.props.sourceId}
 					onChange={this.props.onChangeSourceId} />
 				<div className="app-menu-field">

@@ -6,14 +6,34 @@ import TestProvider from './TestProvider'
 
 // ------------------------------------------------------------------
 
-export const createProvider = providerId => {
-	switch (providerId)
-	{
-	case 'deezer':    return new DeezerProvider()
-	case 'freesound': return new FreesoundProvider()
-	case 'ina':       return new InaProvider()
-	case 'spotify':   return new SpotifyProvider()
-	case 'test':      return new TestProvider()
-	default: throw new Error(`Unknown provider "${providerId}"`)
+const PROVIDERS = {}
+
+// ------------------------------------------------------------------
+
+export const getProvider = providerId => {
+	let provider = PROVIDERS[providerId]
+	if (!provider) {
+		switch (providerId)
+		{
+		case 'DEEZER':
+			provider = new DeezerProvider()
+			break
+		case 'FREESOUND':
+			provider = new FreesoundProvider()
+			break
+		case 'INA':
+			provider = new InaProvider()
+			break
+		case 'SPOTIFY':
+			provider = new SpotifyProvider()
+			break
+		case 'TEST':
+			provider = new TestProvider()
+			break
+		default:
+			throw new Error(`Unknown provider "${providerId}"`)
+		}
+		PROVIDERS[providerId] = provider
 	}
+	return provider
 }

@@ -15,7 +15,7 @@ const extractVideo = async url => {
 	const x = data.match(/window\[[^\]]*\]\ =\ ([^;]*)/m)[1]
 	const assets = JSON.parse(x).components['component.player.video'].api.document.mediaAssets
 	const lastKey = Object.keys(assets).slice(-1)[0]
-	return assets[lastKey][0].url.replace('http://fresques.ina.fr/jalons/media/video/lire/', `${config.API.URL}/stream/ina/`)
+	return assets[lastKey][0].url.replace('http://fresques.ina.fr/jalons/media/video/lire/', `${config.STREAMER.URL}/ina/`)
 }
 
 export default class InaProvider extends Provider
@@ -25,6 +25,7 @@ export default class InaProvider extends Provider
 	}
 
 	async fetchAPI(url) {
+		console.log('Fetching INA', url)
 		const response = await API_FETCHER.get(url)
 		const { data } = response
 		if (data && data.error)
@@ -36,7 +37,7 @@ export default class InaProvider extends Provider
 		let tracks
 		switch (sourceType)
 		{
-			case 'search':
+			case 'SEARCH':
 				tracks = await this.fetchTracksFromSearch(sourceId)
 				break
 			default:

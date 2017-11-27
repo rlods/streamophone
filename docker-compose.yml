@@ -49,8 +49,8 @@ services:
     build:
       context: www
       args:
-        - STREAMOPHONE_API_URL
-        - STREAMOPHONE_WWW_URL
+        - REACT_APP_STREAMOPHONE_API_URL
+        - REACT_APP_STREAMOPHONE_WWW_URL
     environment:
       - STREAMOPHONE_WWW_PORT
     networks:

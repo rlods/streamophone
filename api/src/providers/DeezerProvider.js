@@ -63,6 +63,7 @@ export default class DeezerProvider extends Provider
 	}
 
 	async fetchAPI(url) {
+		console.log('Fetching Deezer', url)
 		const response = await API_FETCHER.get(url)
 		const { data } = response
 		if (data && data.error)
@@ -78,16 +79,16 @@ export default class DeezerProvider extends Provider
 		let tracks
 		switch (sourceType)
 		{
-			case 'album':
+			case 'ALBUM':
 				tracks = await this.fetchTracksFromAlbum(sourceId)
 				break
-			case 'artist':
+			case 'ARTIST':
 				tracks = await this.fetchTracksFromArtist(sourceId)
 				break
-			case 'playlist':
+			case 'PLAYLIST':
 				tracks = await this.fetchTracksFromPlaylist(sourceId)
 				break
-			case 'search':
+			case 'SEARCH':
 				tracks = await this.fetchTracksFromSearch(sourceId)
 				break
 			default:

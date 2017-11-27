@@ -9,7 +9,7 @@ export default class TestProvider extends Provider
 		let tracks
 		switch (sourceType)
 		{
-			case 'test':
+			case 'TEST':
 			{
 				tracks = [
 					{

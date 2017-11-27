@@ -13,6 +13,7 @@ const API_FETCHER = axios.create({ baseURL: API_BASE_URL })
 export default class FreesoundProvider extends Provider
 {
 	async fetchAPI(url) {
+		console.log('Fetching Freesound', url)
 		const response = await API_FETCHER.get(`${url}&format=json&token=${config.TMP.FREESOUND}`)
 		const { data } = response
 		if (data && data.error)
@@ -24,10 +25,10 @@ export default class FreesoundProvider extends Provider
 		let tracks
 		switch (sourceType)
 		{
-			case 'pack':
+			case 'PACK':
 				tracks = await this.fetchTracksFromPack(sourceId)
 				break
-			case 'search':
+			case 'SEARCH':
 				tracks = await this.fetchTracksFromSearch(sourceId)
 				break
 			default:

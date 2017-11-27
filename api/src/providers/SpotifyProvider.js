@@ -34,13 +34,13 @@ export default class SpotifyProvider extends Provider
 		let tracks
 		switch (sourceType)
 		{
-			case 'album':
+			case 'ALBUM':
 				tracks = await this.fetchTracksFromAlbum(sourceId)
 				break
-			case 'artist':
+			case 'ARTIST':
 				tracks = await this.fetchTracksFromArtist(sourceId)
 				break
-			case 'search':
+			case 'SEARCH':
 				tracks = await this.fetchTracksFromSearch(sourceId)
 				break
 			default:
@@ -59,23 +59,23 @@ export default class SpotifyProvider extends Provider
 
 	async refreshAuthentication() {
 		try {
+			console.log('Refreshing Spotify authentication')
 			const response = await ACCOUNT_FETCHER.post('token')
 			const { data } = response
 			if (data && data.error)
 				throw new Error(data.error)
 			this.access_token = data.access_token
-			console.log('Authentication refresh succeeded', this.access_token)
+			console.log('Spotify authentication refresh succeeded', this.access_token)
 		}
 		catch (error) {
-			console.log('Authentication refresh failed', error)
+			console.log('Spotify authentication refresh failed', error)
 		}
 	}
 
 	async fetchAPI(url) {
-		let retry = true
-		while (retry) {
+		for (let i = 0; i < 2; ++i) {
 			try {
-				retry = false
+				console.log('Fetching Spotify', this.access_token)
 				const response = await API_FETCHER.get(url, {
 					headers: {
 						Authorization: `Bearer ${this.access_token}`
@@ -84,13 +84,12 @@ export default class SpotifyProvider extends Provider
 				const { data } = response
 				if (data && data.error)
 					throw new Error(data.error)
-				return  data
+				return data
 			}
 			catch (error) {
 				if (error.response) {
 					if (error.response.status === 401) {
 						await this.refreshAuthentication()
-						retry = true
 					}
 					else {
 						throw new Error(error.response.data.message)
@@ -112,11 +111,11 @@ export default class SpotifyProvider extends Provider
 		})
 	}
 
+	// https://developer.spotify.com/web-api/console/get-several-albums/#complete
 	async fetchTracksFromArtist(artistId) {
-		const albums = await this.fetchAPI(`artists/${artistId}/albums`)
-		const albumIds = albums.items.map(album => album.id).join(',')
-		const albumsDetailed = await this.fetchAPI(`albums?ids=${albumIds}`) // https://developer.spotify.com/web-api/console/get-several-albums/#complete
-		return [].concat.apply([], albumsDetailed.albums.map(album => album.tracks.items.map(track => {
+		let albums = await this.fetchAPI(`artists/${artistId}/albums`)
+		albums = (await this.fetchAPI(`albums?ids=${albums.items.map(album => album.id).join(',')}`)).albums
+		return [].concat.apply([], albums.map(album => album.tracks.items.map(track => {
 			// In that case we have to enrich each track data with the cover which is available in the album data
 			track.cover = album.images[0].url
 			return track

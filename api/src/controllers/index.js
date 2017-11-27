@@ -1,7 +1,7 @@
 import bodyParser from 'body-parser'
 import request from 'request' // TODO: remove is not used anymore
 //
-import { createProvider } from '../providers'
+import { getProvider } from '../providers'
 import { transformArray } from '../helpers'
 import { getCache } from '../helpers/cache'
 
@@ -23,8 +23,7 @@ async function handleTracks(req, res) {
 			tracks = JSON.parse(tracks)
 		}
 		else {
-			console.log(`Fetching "${providerId}"`)
-			tracks = await createProvider(providerId).fetchTracks(resourceType, resourceId)
+			tracks = await getProvider(providerId).fetchTracks(resourceType, resourceId)
 			if (cache)
 				cache.set(cacheKey, JSON.stringify(tracks))
 		}
