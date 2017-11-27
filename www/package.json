@@ -6,8 +6,8 @@
   "author": "rlods",
   "license": "ISC",
   "scripts": {
-    "dev": "PORT=${STREAMOPHONE_WWW_PORT} react-scripts start",
-    "prod:build": "react-scripts build",
+    "dev": "PORT=${STREAMOPHONE_WWW_PORT} REACT_APP_STREAMOPHONE_API_URL=${STREAMOPHONE_API_URL} react-scripts start",
+    "prod:build": "REACT_APP_STREAMOPHONE_API_URL=${STREAMOPHONE_API_URL} react-scripts build",
     "prod:start": "serve -s build -p ${STREAMOPHONE_WWW_PORT}"
   },
   "dependencies": {

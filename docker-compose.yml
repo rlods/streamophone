@@ -22,12 +22,13 @@ services:
       - ${STREAMOPHONE_CACHE_PORT}:${STREAMOPHONE_CACHE_PORT}
     restart: on-failure
       
-  api:
+  streamophone-api:
     build:
       context: api
     networks:
       - backend
       - data
+      - frontend
     environment:
       - STREAMOPHONE_API_PORT
       - STREAMOPHONE_API_URL
@@ -37,7 +38,9 @@ services:
       - STREAMOPHONE_FREESOUND_TOKEN
       - STREAMOPHONE_SPOTIFY_CLIENT_ID
       - STREAMOPHONE_SPOTIFY_CLIENT_SECRET
+      - STREAMOPHONE_STREAMER_URL
       - STREAMOPHONE_TEST_ASSETS_URL
+      - STREAMOPHONE_WWW_URL
     depends_on:
       - cache
     ports:
@@ -45,36 +48,35 @@ services:
     read_only: true
     restart: on-failure
 
-  www:
+  streamophone-www:
     build:
       context: www
       args:
-        - REACT_APP_STREAMOPHONE_API_URL
-        - REACT_APP_STREAMOPHONE_WWW_URL
+        - STREAMOPHONE_API_URL
     environment:
       - STREAMOPHONE_WWW_PORT
     networks:
       - backend
       - frontend
     depends_on:
-      - api
+      - streamophone-api
     ports:
       - ${STREAMOPHONE_WWW_PORT}:${STREAMOPHONE_WWW_PORT}
     read_only: true
     restart: on-failure
 
-  #proxy:
-  #  image: haproxy:1.7-alpine
-  #  restart: on-failure
-  #  networks:
-  #    - frontend
-  #  depends_on:
-  #    - api
-  #    - www
-  #  ports:
-  #    - 80:80 # TODO: in prod we should expose 80 & 443
-  #  volumes:
-  #    - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
+  proxy:
+    image: haproxy:1.7-alpine
+    networks:
+      - frontend
+    depends_on:
+      - streamophone-api
+      - streamophone-www
+    ports:
+      - 10000:10000 # TODO: in prod we should expose 80 & 443
+    volumes:
+      - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
+    restart: on-failure
 
 networks:
   backend:
