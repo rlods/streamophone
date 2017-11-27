@@ -9,7 +9,6 @@ WORKDIR /app
 # Adding Custom Environment Variables using process.env.REACT_APP_*
 # https://github.com/facebookincubator/create-react-app/tree/master/packages/react-scripts/template
 ARG REACT_APP_STREAMOPHONE_API_URL
-ARG REACT_APP_STREAMOPHONE_WWW_URL
 
 RUN npm install && npm run prod:build
 

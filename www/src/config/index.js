@@ -5,10 +5,6 @@ const Config = {
 		URL: process.env.REACT_APP_STREAMOPHONE_API_URL,
 	},
 
-	WWW: {
-		URL: process.env.REACT_APP_STREAMOPHONE_WWW_URL,
-	},
-
 	CURATED_SOURCES: [
 		{ sourceType: 'DEEZER_PLAYLIST', sourceId: '1083902971',             title: 'Hits 2017' },
 		{ sourceType: 'DEEZER_PLAYLIST', sourceId: '791313621',              title: 'The Greatest Piano Classics' },

@@ -1,5 +1,4 @@
 import { AUDIO_EVENT_PLAY } from './CustomAudio'
-import config from '../config'
 import { js_to_b64 } from '../tools'
 
 // ------------------------------------------------------------------
@@ -37,6 +36,6 @@ export default class AudioRecorder
 
 	snapshot() {
 		console.log('Export Sampling Events', this._data)
-		window.open(`${config.WWW.URL}/#/play/${js_to_b64(this._data)}`) // TODO: remove config.WWW.URL if useless
+		window.open(`/#/play/${js_to_b64(this._data)}`)
 	}
 }

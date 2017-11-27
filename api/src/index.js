@@ -14,7 +14,7 @@ const createApp = () => {
 	const app = express()
 	app.use(cors({
 		// credentials: true,
-		// origin: config.www.url
+		origin: config.WWW.URL
 	}))
 
 	// console.log('Initializing cache')

@@ -13,25 +13,25 @@ export default class TestProvider extends Provider
 			{
 				tracks = [
 					{
-						cover: config.FAKE.URL + '/fake/fake1.jpg',
+						cover: config.FAKE.URL + '/fake1.jpg',
 						id: 'fake1',
-						preview: config.FAKE.URL + '/fake/fake1.mp3',
+						preview: config.FAKE.URL + '/fake1.mp3',
 						readable: true,
 						title: 'Fake1',
 						url: '#'
 					},
 					{
-						cover: config.FAKE.URL + '/fake/fake2.jpg',
+						cover: config.FAKE.URL + '/fake2.jpg',
 						id: 'fake2',
-						preview: config.FAKE.URL + '/fake/fake2.mp3',
+						preview: config.FAKE.URL + '/fake2.mp3',
 						readable: true,
 						title: 'Fake2',
 						url: '#'
 					},
 					{
-						cover: config.FAKE.URL + '/fake/fake3.jpg',
+						cover: config.FAKE.URL + '/fake3.jpg',
 						id: 'fake3',
-						preview: config.FAKE.URL + '/fake/fake3.mp3',
+						preview: config.FAKE.URL + '/fake3.mp3',
 						readable: true,
 						title: 'Fake3',
 						url: '#'

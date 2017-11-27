@@ -1,7 +1,11 @@
 
 const config = {
 	API: {
-		PORT: process.env.STREAMOPHONE_API_PORT ? parseInt(process.env.STREAMOPHONE_API_PORT, 10) : 4242,
+		PORT: process.env.STREAMOPHONE_API_PORT ? parseInt(process.env.STREAMOPHONE_API_PORT, 10) : 4242
+	},
+
+	WWW: {
+		URL: process.env.STREAMOPHONE_WWW_URL
 	},
 
 	/*
@@ -13,7 +17,7 @@ const config = {
 	*/
 
 	FAKE: {
-		URL: process.env.STREAMOPHONE_TEST_ASSETS_URL,
+		URL: process.env.STREAMOPHONE_TEST_ASSETS_URL
 	},
 
 	STREAMER: {
