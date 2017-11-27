@@ -36,7 +36,9 @@ export const loadPlayer = data => async (dispatch, getState, { app }) => {
 		app.audioPlayer.initFromData(data)
 	}
 	catch (error) {
-		console.log('Cannot load player', error)
+		const message = error.response && error.response.data && error.response.data.message ? error.response.data.message : error
+		console.log('Cannot load player', message)
+		dispatch(displayError(`Cannot load player: ${message}`))
 	}
 }
 
