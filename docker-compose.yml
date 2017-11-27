@@ -3,7 +3,7 @@ version: '3.2'
 services:
 
   # Connect with CLI using:
-  # docker run -it --network dzfone_data --rm redis:4-alpine redis-cli -h streamophone_cache_1 -a PWD
+  # docker run -it --network ..._data --rm redis:4-alpine redis-cli -h ..._cache_1 -a PWD
   cache:
     image: redis:4-alpine
     command: [
@@ -22,7 +22,7 @@ services:
       - ${STREAMOPHONE_CACHE_PORT}:${STREAMOPHONE_CACHE_PORT}
     restart: on-failure
       
-  streamophone-api:
+  api:
     build:
       context: api
     networks:
@@ -48,7 +48,7 @@ services:
     read_only: true
     restart: on-failure
 
-  streamophone-www:
+  www:
     build:
       context: www
       args:
@@ -59,7 +59,7 @@ services:
       - backend
       - frontend
     depends_on:
-      - streamophone-api
+      - api
     ports:
       - ${STREAMOPHONE_WWW_PORT}:${STREAMOPHONE_WWW_PORT}
     read_only: true
@@ -70,8 +70,8 @@ services:
     networks:
       - frontend
     depends_on:
-      - streamophone-api
-      - streamophone-www
+      - api
+      - www
     ports:
       - 10000:10000 # TODO: in prod we should expose 80 & 443
     volumes:
