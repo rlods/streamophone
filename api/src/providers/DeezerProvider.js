@@ -129,7 +129,7 @@ export default class DeezerProvider extends Provider
 	}
 
 	async fetchTracksFromSearch(query) {
-		const search = await this.fetchAPI(`search/track?q=${query}`)
+		const search = await this.fetchAPI(`search/track?q=${encodeURI(query)}`)
 		return search.data
 	}
 }

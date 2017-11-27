@@ -52,7 +52,7 @@ export default class FreesoundProvider extends Provider
 	}
 
 	async fetchTracksFromSearch(query) {
-		const search = await this.fetchAPI(`search/text/?query=${query}&fields=id,name,images,previews,url`)
+		const search = await this.fetchAPI(`search/text/?query=${encodeURI(query)}&fields=id,name,images,previews,url`)
 		return search.results.map(track => {
 			const preview = track.previews ? track.previews['preview-lq-mp3'] : null
 			return {

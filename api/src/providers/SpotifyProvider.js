@@ -123,7 +123,7 @@ export default class SpotifyProvider extends Provider
 	}
 
 	async fetchTracksFromSearch(query) {
-		const search = await this.fetchAPI(`search?q=${query}&type=track`)
+		const search = await this.fetchAPI(`search?q=${encodeURI(query)}&type=track`)
 		return search.tracks.items.map(track => {
 			// In that case we have to enrich each track data with the cover which is available in the album data
 			track.cover = track.album.images[0].url

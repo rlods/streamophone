@@ -53,7 +53,7 @@ export default class InaProvider extends Provider
 	}
 
 	async fetchTracksFromSearch(query) {
-		const search = await this.fetchAPI(`search?query=${query}`)
+		const search = await this.fetchAPI(`search?query=${encodeURI(query)}`)
 		return search.return.resources
 	}
 }

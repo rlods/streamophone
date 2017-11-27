@@ -139,7 +139,7 @@ export const stopSample = sampleIndex => async (dispatch, getState, { app }) => 
 
 export const goToSampler = history => async (dispatch, getState, { app }) => {
 	const { sampler, source } = getState()
-	history.push(`make?sampler_duration=${sampler.defaultDuration}&sampler_strategy=${sampler.strategyId}&source_bpm=${source.bpm}&source_id=${source.id}&source_transformation=${source.transformation}&source_type=${source.type}`)
+	history.push(`make?sampler_duration=${sampler.defaultDuration}&sampler_strategy=${sampler.strategyId}&source_bpm=${source.bpm}&source_id=${encodeURI(source.id)}&source_transformation=${source.transformation}&source_type=${source.type}`)
 	dispatch(changeSamplerSamples(null)) // TODO: we should stop loading tracks (for ex soundcloud tracks are slow to download)
 }
 
