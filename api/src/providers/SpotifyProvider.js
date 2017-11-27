@@ -1,33 +1,20 @@
 import axios from 'axios'
 //
-import config from '../config'
 import Provider from './Provider'
 
 // ------------------------------------------------------------------
 
-const KEY = new Buffer(`${config.TMP.SPOTIFY}:${config.TMP.SPOTIFY_SECRET}`).toString('base64')
-
-const API_BASE_URL = 'https://api.spotify.com/v1/'
-const API_FETCHER = axios.create({ baseURL: API_BASE_URL })
-
-const ACCOUNT_FETCHER = axios.create({
-	baseURL: 'https://accounts.spotify.com/api/',
-	params:{
-		grant_type: 'client_credentials'
-	},
-	headers: {
-		'Authorization': `Basic ${KEY}`,
-		'Content-Type': 'application/x-www-form-urlencoded'
-	}
-})
+const API_URL = 'https://api.spotify.com/v1/'
+const ACCOUNT_API_URL = 'https://accounts.spotify.com/api/'
 
 // ------------------------------------------------------------------
 
 export default class SpotifyProvider extends Provider
 {
-	constructor() {
+	constructor({ clientId, clientSecret }) {
 		super()
 		this.access_token = null
+		this.key = new Buffer(`${clientId}:${clientSecret}`).toString('base64')
 	}
 
 	async fetchTracks(sourceType, sourceId) {
@@ -59,8 +46,21 @@ export default class SpotifyProvider extends Provider
 
 	async refreshAuthentication() {
 		try {
+			console.log(`Basic ${this.key}`)
 			console.log('Refreshing Spotify authentication')
-			const response = await ACCOUNT_FETCHER.post('token')
+
+			const fetcher = axios.create({
+				baseURL: ACCOUNT_API_URL,
+				params:{
+					grant_type: 'client_credentials'
+				},
+				headers: {
+					'Authorization': `Basic ${this.key}`,
+					'Content-Type': 'application/x-www-form-urlencoded'
+				}
+			})
+
+			const response = await fetcher.post('token')
 			const { data } = response
 			if (data && data.error)
 				throw new Error(data.error)
@@ -76,11 +76,13 @@ export default class SpotifyProvider extends Provider
 		for (let i = 0; i < 2; ++i) {
 			try {
 				console.log('Fetching Spotify', this.access_token)
-				const response = await API_FETCHER.get(url, {
+				const fetcher = axios.create({
+					baseURL: API_URL,
 					headers: {
 						Authorization: `Bearer ${this.access_token}`
 					}
 				})
+				const response = await fetcher.get(url)
 				const { data } = response
 				if (data && data.error)
 					throw new Error(data.error)

@@ -1,6 +1,5 @@
 import axios from 'axios'
 //
-import config from '../config'
 import Provider from './Provider'
 
 // ------------------------------------------------------------------
@@ -12,9 +11,14 @@ const API_FETCHER = axios.create({ baseURL: API_BASE_URL })
 
 export default class FreesoundProvider extends Provider
 {
+	constructor({ token }) {
+		super()
+		this.token = token
+	}
+	
 	async fetchAPI(url) {
 		console.log('Fetching Freesound', url)
-		const response = await API_FETCHER.get(`${url}&format=json&token=${config.TMP.FREESOUND}`)
+		const response = await API_FETCHER.get(`${url}&format=json&token=${this.token}`)
 		const { data } = response
 		if (data && data.error)
 			throw new Error(data.error)

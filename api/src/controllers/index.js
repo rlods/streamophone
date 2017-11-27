@@ -15,7 +15,10 @@ async function handleTracks(req, res) {
 	try {
 		const { providerId, resourceType, resourceId } = req.params
 		const { count, transformation } = req.query
-		
+		const provider = await getProvider(providerId)
+		if (!provider)
+			throw new Error(`Provider "${providerId}" is not supported`)
+
 		const cache = getCache()
 		const cacheKey = `TRACKS-${providerId}-${resourceType}-${resourceId}`
 		let tracks = cache ? await cache.get(cacheKey) : null
@@ -23,7 +26,7 @@ async function handleTracks(req, res) {
 			tracks = JSON.parse(tracks)
 		}
 		else {
-			tracks = await getProvider(providerId).fetchTracks(resourceType, resourceId)
+			tracks = await provider.fetchTracks(resourceType, resourceId)
 			if (cache)
 				cache.set(cacheKey, JSON.stringify(tracks))
 		}

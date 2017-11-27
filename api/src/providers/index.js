@@ -3,6 +3,7 @@ import FreesoundProvider from './FreesoundProvider'
 import InaProvider from './InaProvider'
 import SpotifyProvider from './SpotifyProvider'
 import TestProvider from './TestProvider'
+import config from '../config'
 
 // ------------------------------------------------------------------
 
@@ -13,27 +14,30 @@ const PROVIDERS = {}
 export const getProvider = providerId => {
 	let provider = PROVIDERS[providerId]
 	if (!provider) {
-		switch (providerId)
-		{
-		case 'DEEZER':
-			provider = new DeezerProvider()
-			break
-		case 'FREESOUND':
-			provider = new FreesoundProvider()
-			break
-		case 'INA':
-			provider = new InaProvider()
-			break
-		case 'SPOTIFY':
-			provider = new SpotifyProvider()
-			break
-		case 'TEST':
-			provider = new TestProvider()
-			break
-		default:
-			throw new Error(`Unknown provider "${providerId}"`)
+		const providerDef = config.PROVIDERS[providerId]
+		if (providerDef) {
+			switch (providerId)
+			{
+			case 'DEEZER':
+				provider = new DeezerProvider(providerDef)
+				break
+			case 'FREESOUND':
+				provider = new FreesoundProvider(providerDef)
+				break
+			case 'INA':
+				provider = new InaProvider(providerDef)
+				break
+			case 'SPOTIFY':
+				provider = new SpotifyProvider(providerDef)
+				break
+			case 'TEST':
+				provider = new TestProvider(providerDef)
+				break
+			default:
+				throw new Error(`Unknown provider "${providerId}"`)
+			}
+			PROVIDERS[providerId] = provider
 		}
-		PROVIDERS[providerId] = provider
 	}
 	return provider
 }

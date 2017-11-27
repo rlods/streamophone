@@ -1,4 +1,4 @@
-import { displayMessage } from './messages'
+import { displayError, displayMessage } from './messages'
 
 // ------------------------------------------------------------------
 
@@ -160,6 +160,8 @@ export const loadSampler = () => async (dispatch, getState, { app }) => {
 			source.transformation)
 	}
 	catch (error) {
-		console.log('Cannot load sampler', error)
+		const message = error.response && error.response.data && error.response.data.message ? error.response.data.message : error
+		console.log('Cannot load sampler', message)
+		dispatch(displayError(`Cannot load sampler: ${message}`))
 	}
 }
