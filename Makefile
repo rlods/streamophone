@@ -9,6 +9,9 @@ dev-cache:
 dev-api:
 	source .env-test; cd api; npm run dev
 
+dev-streamer:
+	source .env-test; cd streamer; npm run dev
+
 dev-www:
 	source .env-test; cd www; npm run dev
 

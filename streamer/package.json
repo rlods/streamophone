@@ -1,7 +1,7 @@
 {
-  "name": "streamophone-api",
+  "name": "streamophone-streamer",
   "version": "0.1.0",
-  "description": "Streamophone API",
+  "description": "Streamophone Streamer",
   "main": "src/index.js",
   "author": "rlods",
   "license": "ISC",
@@ -11,12 +11,9 @@
     "prod:start": "NODE_ENV=production node build/src/index.js"
   },
   "dependencies": {
-    "axios": "^0.17.1",
-    "body-parser": "^1.18.2",
     "cors": "^2.8.4",
     "express": "^4.16.2",
-    "ioredis": "^3.2.1",
-    "promise-retry": "^1.1.1"
+    "request": "^2.83.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

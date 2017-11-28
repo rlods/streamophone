@@ -3,7 +3,6 @@ import cors from 'cors'
 import express from 'express'
 //
 import config from './config'
-import { initCache } from './helpers/cache'
 import { initRoutes } from './controllers/'
 
 // ------------------------------------------------------------------
@@ -22,19 +21,21 @@ const createApp = () => {
 		}
 	}))
 
+	/*
 	if (config.CACHE) {
 		console.log('Initializing cache')
 		initCache()
 		console.log('Cache initialized')
 	}
+	*/
 
 	console.log('Initializing routes')
 	initRoutes(app)
 	console.log('Routes initialized')
 
-	app.listen(config.API.PORT)
+	app.listen(config.STREAMER.PORT)
 	app.emit('appReady') // for tests
-	console.log(`Listening on ${config.API.PORT}`)
+	console.log(`Listening on ${config.STREAMER.PORT}`)
 
 	return app
 }

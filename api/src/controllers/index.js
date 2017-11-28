@@ -1,5 +1,4 @@
 import bodyParser from 'body-parser'
-import request from 'request' // TODO: remove is not used anymore
 //
 import { getProvider } from '../providers'
 import { transformArray } from '../helpers'
@@ -55,16 +54,5 @@ async function handleTracks(req, res) {
 export function initRoutes(app) {
 	console.log('Registering routers')
 	app.get('/tracks/:providerId/:resourceType/:resourceId', BODY_PARSER_MIDDLEWARE, handleTracks)
-
-	app.use('/stream/:providerId/:resourceId', (req, res) => {
-		const { providerId, resourceId } = req.params
-		const url = `http://fresques.ina.fr/jalons/media/video/lire/${resourceId}`
-		try {
-			req.pipe(request(url)).pipe(res)
-		}
-		catch (error) {
-			console.log('PIPE ERROR', error)
-		}
-	})
 }
 

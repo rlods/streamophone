@@ -47,6 +47,21 @@ services:
       - ${STREAMOPHONE_API_PORT}:${STREAMOPHONE_API_PORT}
     read_only: true
     restart: on-failure
+    
+  streamer:
+    build:
+      context: streamer
+    networks:
+      - frontend
+    environment:
+      - STREAMOPHONE_STREAMER_PORT
+      - STREAMOPHONE_WWW_URL
+    depends_on:
+      - cache
+    ports:
+      - ${STREAMOPHONE_STREAMER_PORT}:${STREAMOPHONE_STREAMER_PORT}
+    read_only: true
+    restart: on-failure
 
   www:
     build:
@@ -71,6 +86,7 @@ services:
       - frontend
     depends_on:
       - api
+      - streamer
       - www
     ports:
       - 10000:10000 # TODO: in prod we should expose 80 & 443
