@@ -6,36 +6,12 @@ import './Splash.css'
 
 // --------------------------------------------------------------
 
-const BPMS = [
-	{ value: 50,  label: '50 (Tango)'  },
-	{ value: 110, label: '110 (New Beat)' },
-	{ value: 128, label: '128 (Trance)' },
-	{ value: 195, label: '195 (Speedcore)' },
-	{ value: -1,  label: 'Default' }
-]
-
-const DURATIONS = [
-	{ value: 1000,  label: '1 second' },
-	{ value: 2000,  label: '2 seconds' },
-	{ value: 3000,  label: '3 seconds' },
-	{ value: 10000, label: '10 seconds' },
-	{ value: 20000, label: '20 seconds' },
-	{ value: -1,    label: 'Full' }
-]
-
-const TRANSFORMATIONS = {
-	none: 'None',
-	shuffle: 'Shuffle'
-}
-
-// --------------------------------------------------------------
-
 class TextField extends Component {
 	render() {
 		return (
-			<div className="app-menu-field">
-				<label className="app-menu-field-label">{this.props.name}</label>
-				<input className="app-menu-field-control" type="text" value={this.props.value} placeholder={this.props.name} onChange={this.props.onChange} />
+			<div className="splash-field">
+				<label className="splash-field-label">{this.props.name}</label>
+				<input className="splash-field-control" type="text" value={this.props.value} placeholder={this.props.name} onChange={this.props.onChange} />
 			</div>
 		)
 	}
@@ -44,9 +20,9 @@ class TextField extends Component {
 class SelectField extends Component {
 	render() {
 		return (
-			<div className="app-menu-field">
-				<label className="app-menu-field-label">{this.props.name}</label>
-				<select className="app-menu-field-control" onChange={this.props.onChange} value={this.props.value}>
+			<div className="splash-field">
+				<label className="splash-field-label">{this.props.name}</label>
+				<select className="splash-field-control" onChange={this.props.onChange} value={this.props.value}>
 					{this.props.items.map(item => <option key={this.props.getValue(item)} value={this.props.getValue(item)}>{this.props.getText(item)}</option>)}
 				</select>
 			</div>
@@ -59,55 +35,61 @@ class SelectField extends Component {
 class Splash extends Component {
 	render() {
 		return (
-			<form className="app-menu" onSubmit={this.props.onCreate}>
-				<div className="app-title">The Streamophone</div>
-				<SelectField
-					name="Sample Controller"
-					items={Object.entries(config.STRATEGIES)}
-					value={this.props.samplerStrategyId}
-					onChange={this.props.onChangeSamplerStrategy}
-					getValue={([strategyId, strategyDefinition]) => strategyId}
-					getText={([strategyId, strategyDefinition]) => strategyDefinition.label} />
-				<SelectField
-					name="Sample Default Duration"
-					items={DURATIONS}
-					value={this.props.samplerDefaultDuration}
-					onChange={this.props.onChangeSamplerDefaultDuration}
-					getValue={duration => duration.value}
-					getText={duration => duration.label} />
-				<SelectField
-					name="Curated Sources"
-					items={config.CURATED_SOURCES.sort((a, b) => a.title.localeCompare(b.title))}
-					value={`${this.props.sourceType}:${this.props.sourceId}`} onChange={this.props.onChangeCurated}
-					getValue={curated => `${curated.sourceType}:${curated.sourceId}`}
-					getText={curated => `${curated.title} (${config.SOURCE_TYPES[curated.sourceType].label})`} />
-				<SelectField
-					name="Source BPM"
-					items={BPMS}
-					value={this.props.sourceBPM}
-					onChange={this.props.onChangeSourceBPM}
-					getValue={bpm => bpm.value}
-					getText={bpm => bpm.label} />
-				<SelectField
-					name="Source Transformation"
-					items={Object.entries(TRANSFORMATIONS)}
-					value={this.props.sourceTransformation}
-					onChange={this.props.onChangeSourceTransformation}
-					getValue={([transformationType, transformationLabel]) => transformationType}
-					getText={([transformationType, transformationLabel]) => transformationLabel} />
-				<SelectField
-					name="Source Type"
-					items={Object.entries(config.SOURCE_TYPES)}
-					value={this.props.sourceType} onChange={this.props.onChangeSourceType}
-					getValue={([sourceType, sourceDef]) => sourceType}
-					getText={([sourceType, sourceDef]) => sourceDef.label}
-					canBeEmpty={true} />
-				<TextField
-					name={config.SOURCE_TYPES[this.props.sourceType].input_label}
-					value={this.props.sourceId}
-					onChange={this.props.onChangeSourceId} />
-				<div className="app-menu-field">
-					<button className="app-menu-action" onClick={this.props.onCreate}><i className="fa fa-music" aria-hidden="true"></i></button>
+			<form className="splash" onSubmit={this.props.onCreate}>
+				{ !config.SPLASH.SHOW_CONTROLLER_SELECTION ? null :
+					<SelectField
+						name="Sampling Controller"
+						items={Object.entries(config.CONTROLLERS)}
+						value={this.props.samplerStrategyId}
+						onChange={this.props.onChangeSamplerStrategy}
+						getValue={([strategyId, strategyDefinition]) => strategyId}
+						getText={([strategyId, strategyDefinition]) => strategyDefinition.label} /> }
+				{ !config.SPLASH.SHOW_LENGTH_SELECTION ? null :
+					<SelectField
+						name="Samples Length"
+						items={config.SPLASH.DURATIONS}
+						value={this.props.samplerDefaultDuration}
+						onChange={this.props.onChangeSamplerDefaultDuration}
+						getValue={duration => duration.value}
+						getText={duration => duration.label} /> }
+				{ !config.SPLASH.SHOW_CURATION ? null :
+					<SelectField
+						name="Curation"
+						items={config.SPLASH.CURATED_SOURCES.sort((a, b) => a.title.localeCompare(b.title))}
+						value={`${this.props.sourceType}:${this.props.sourceId}`} onChange={this.props.onChangeCurated}
+						getValue={curated => `${curated.sourceType}:${curated.sourceId}`}
+						getText={curated => `${curated.title} (${config.SOURCE_TYPES[curated.sourceType].label})`} /> }
+				{ !config.SPLASH.SHOW_BPM ? null :
+					<SelectField
+						name="Adjusted BPM"
+						items={config.SPLASH.BPMS}
+						value={this.props.sourceBPM}
+						onChange={this.props.onChangeSourceBPM}
+						getValue={bpm => bpm.value}
+						getText={bpm => bpm.label} /> }
+				{ !config.SPLASH.SHOW_SOURCE_TRANSFORMATION ? null :
+					<SelectField
+						name="Transformation"
+						items={Object.entries(config.SPLASH.TRANSFORMATIONS)}
+						value={this.props.sourceTransformation}
+						onChange={this.props.onChangeSourceTransformation}
+						getValue={([transformationType, transformationLabel]) => transformationType}
+						getText={([transformationType, transformationLabel]) => transformationLabel} /> }
+				{ !config.SPLASH.SHOW_SOURCE_SELECTION ? null :
+					<SelectField
+						name="Source Type"
+						items={Object.entries(config.SOURCE_TYPES)}
+						value={this.props.sourceType} onChange={this.props.onChangeSourceType}
+						getValue={([sourceType, sourceDef]) => sourceType}
+						getText={([sourceType, sourceDef]) => sourceDef.label}
+						canBeEmpty={true} /> }
+				{ !config.SPLASH.SHOW_SOURCE_SELECTION ? null :
+					<TextField
+						name={config.SOURCE_TYPES[this.props.sourceType].input_label}
+						value={this.props.sourceId}
+						onChange={this.props.onChangeSourceId} /> }
+				<div className="splash-field">
+					<button className="splash-action" onClick={this.props.onCreate}><i className="fa fa-music" aria-hidden="true"></i></button>
 				</div>
 			</form>
 		)

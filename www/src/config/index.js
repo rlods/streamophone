@@ -5,28 +5,6 @@ const Config = {
 		URL: process.env.REACT_APP_STREAMOPHONE_API_URL,
 	},
 
-	CURATED_SOURCES: [
-		{ sourceType: 'DEEZER_PLAYLIST', sourceId: '1083902971',             title: 'Hits 2017' },
-		{ sourceType: 'DEEZER_PLAYLIST', sourceId: '791313621',              title: 'The Greatest Piano Classics' },
-		{ sourceType: 'DEEZER_PLAYLIST', sourceId: '548368765',              title: 'Long Playlist' },
-		{ sourceType: 'DEEZER_PLAYLIST', sourceId: '3789105302',             title: 'Steve Reich' },
-		{ sourceType: 'DEEZER_PLAYLIST', sourceId: '10178447',               title: 'Percus' },
-		{ sourceType: 'DEEZER_PLAYLIST', sourceId: '3791846562',             title: 'Speeches' },
-		{ sourceType: 'DEEZER_PLAYLIST', sourceId: '1194890603',             title: 'Best of Daft Punk' },
-		{ sourceType: 'DEEZER_PLAYLIST', sourceId: '771276181',              title: 'Musique concrète et électronique' },
-		{ sourceType: 'DEEZER_PLAYLIST', sourceId: '3510240466',             title: 'Soul to Funk' },
-		{ sourceType: 'DEEZER_PLAYLIST', sourceId: '23804156',               title: 'Minimal electro house' },
-		{ sourceType: 'DEEZER_PLAYLIST', sourceId: '2762818384',             title: 'Musique concrète' },
-		{ sourceType: 'DEEZER_ALBUM',    sourceId: '13686698',               title: 'Mr. Robot, Vol. 1' },
-		{ sourceType: 'DEEZER_ALBUM',    sourceId: '12541456',               title: 'BNF Collection, Ella and Louis, The Anthology' },
-		{ sourceType: 'DEEZER_ARTIST',   sourceId: '27',                     title: 'Daft Punk' },
-		{ sourceType: 'FREESOUND_PACK',  sourceId: '7447',                   title: 'Zeeland dunes' },
-		{ sourceType: 'FREESOUND_PACK',  sourceId: '16873',                  title: 'Industrial' },
-		{ sourceType: 'INA_SEARCH',      sourceId: 'guerre',                 title: 'World War Old Documentaries' },
-		{ sourceType: 'SPOTIFY_ALBUM',   sourceId: '0QhwxYDUougJiVDtyN4Lhm', title: 'SPT1' },
-		{ sourceType: 'SPOTIFY_ARTIST',  sourceId: '0OdUWJ0sBjDrqHygGUXeCF', title: 'SPT2' }
-	],
-
 	DEFAULT: {
 		SAMPLER_DURATION: -1, // default: not shortened
 		SAMPLER_STRATEGY: 'KEYBOARD_AZERTY',
@@ -52,7 +30,60 @@ const Config = {
 		// }
 	},
 
-	STRATEGIES: {
+	SPLASH: {
+		SHOW_BPM: false,
+		SHOW_CONTROLLER_SELECTION: true,
+		SHOW_CURATION: true,
+		SHOW_LENGTH_SELECTION: true,
+		SHOW_SOURCE_SELECTION: true,
+		SHOW_SOURCE_TRANSFORMATION: true,
+
+		BPMS: [
+			{ value: 50,  label: '50 (Tango)'  },
+			{ value: 110, label: '110 (New Beat)' },
+			{ value: 128, label: '128 (Trance)' },
+			{ value: 195, label: '195 (Speedcore)' },
+			{ value: -1,  label: 'Default' }
+		],
+
+		CURATED_SOURCES: [
+			{ sourceType: 'DEEZER_PLAYLIST', sourceId: '1083902971',             title: 'Hits 2017' },
+			{ sourceType: 'DEEZER_PLAYLIST', sourceId: '791313621',              title: 'The Greatest Piano Classics' },
+			{ sourceType: 'DEEZER_PLAYLIST', sourceId: '548368765',              title: 'Long Playlist' },
+			{ sourceType: 'DEEZER_PLAYLIST', sourceId: '3789105302',             title: 'Steve Reich' },
+			{ sourceType: 'DEEZER_PLAYLIST', sourceId: '10178447',               title: 'Percus' },
+			{ sourceType: 'DEEZER_PLAYLIST', sourceId: '3791846562',             title: 'Speeches' },
+			{ sourceType: 'DEEZER_PLAYLIST', sourceId: '1194890603',             title: 'Best of Daft Punk' },
+			{ sourceType: 'DEEZER_PLAYLIST', sourceId: '771276181',              title: 'Musique concrète et électronique' },
+			{ sourceType: 'DEEZER_PLAYLIST', sourceId: '3510240466',             title: 'Soul to Funk' },
+			{ sourceType: 'DEEZER_PLAYLIST', sourceId: '23804156',               title: 'Minimal electro house' },
+			{ sourceType: 'DEEZER_PLAYLIST', sourceId: '2762818384',             title: 'Musique concrète' },
+			{ sourceType: 'DEEZER_ALBUM',    sourceId: '13686698',               title: 'Mr. Robot, Vol. 1' },
+			{ sourceType: 'DEEZER_ALBUM',    sourceId: '12541456',               title: 'BNF Collection, Ella and Louis, The Anthology' },
+			{ sourceType: 'DEEZER_ARTIST',   sourceId: '27',                     title: 'Daft Punk' },
+			{ sourceType: 'FREESOUND_PACK',  sourceId: '7447',                   title: 'Zeeland dunes' },
+			{ sourceType: 'FREESOUND_PACK',  sourceId: '16873',                  title: 'Industrial' },
+			{ sourceType: 'INA_SEARCH',      sourceId: 'guerre',                 title: 'World War Old Documentaries' },
+			{ sourceType: 'SPOTIFY_ALBUM',   sourceId: '0QhwxYDUougJiVDtyN4Lhm', title: 'SPT1' },
+			{ sourceType: 'SPOTIFY_ARTIST',  sourceId: '0OdUWJ0sBjDrqHygGUXeCF', title: 'SPT2' }
+		],
+
+		DURATIONS: [
+			{ value: 1000,  label: '1 second' },
+			{ value: 2000,  label: '2 seconds' },
+			{ value: 3000,  label: '3 seconds' },
+			{ value: 10000, label: '10 seconds' },
+			{ value: 20000, label: '20 seconds' },
+			{ value: -1,    label: 'Full' }
+		],
+
+		TRANSFORMATIONS: {
+			none: 'None',
+			shuffle: 'Shuffle'
+		}
+	},
+
+	CONTROLLERS: {
 		KEYBOARD_AZERTY: {
 			driver: 'DRIVER1',
 			label: 'Keyboard Azerty'

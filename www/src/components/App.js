@@ -23,11 +23,18 @@ class App extends Component {
 						{this.props.messages.map(message => <div key={message.id} className={classNames('app-message', 'app-message-' + message.type)}>{message.text}</div>)}
 					</ReactCSSTransitionGroup>
 				</div>
-				<Switch>
-					<Route exact path="/" component={Splash} />
-					<Route exact path="/make" component={Sampler} />
-					<Route exact path="/play/:data" component={Player} />
-				</Switch>
+				<div className="app-head">
+					<h1 className="app-title">
+						streamo
+					</h1>
+				</div>
+				<div className="app-body">
+					<Switch>
+						<Route exact path="/" component={Splash} />
+						<Route exact path="/make" component={Sampler} />
+						<Route exact path="/play/:data" component={Player} />
+					</Switch>
+				</div>
 			</div>
 		)
 	}
