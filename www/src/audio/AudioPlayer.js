@@ -53,18 +53,25 @@ export default class AudioPlayer
 
 		console.log('Loading audios')
 		this._audios = tracks.map((track, sampleIndex) => {
-			track.playing = false
-			track.ready = false
-			track.totalDuration = durationsPerSample[sampleIndex] / 1000
-
 			const audio = new CustomAudio(track.preview, e => {
 				if      (e[0] === AUDIO_EVENT_PLAY)  this._dispatch(changePlayerSampleStatus(sampleIndex, true))
 				else if (e[0] === AUDIO_EVENT_PAUSE) this._dispatch(changePlayerSampleStatus(sampleIndex, false))
 			})
 			audio.setLoop(track.loopStart, track.loopEnd)
 			audio.setVolume(track.volume)
-			audio.init().then(() => this._dispatch(changePlayerSampleReady(sampleIndex)))
+			track.playing = false
+			track.ready = false
+			track.totalDuration = durationsPerSample[sampleIndex] / 1000
 			return audio
+		})
+		this.audios.forEach(async (audio, sampleIndex) => {
+			try {
+				await audio.init()
+				this._dispatch(changePlayerSampleReady(sampleIndex))
+			}
+			catch (error) {
+				console.log('Audio buffer initialization failed', error)
+			}
 		})
 
 		this._dispatch(changePlayerSamples(tracks))

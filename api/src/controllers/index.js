@@ -27,7 +27,7 @@ async function handleTracks(req, res) {
 		else {
 			tracks = await provider.fetchTracks(resourceType, resourceId)
 			if (cache)
-				cache.set(cacheKey, JSON.stringify(tracks))
+				cache.set(cacheKey, JSON.stringify(tracks), 'EX', provider.tracksCacheExpiration)
 		}
 
 		if (count > 0 && tracks.length > 0 && tracks.length !== count) {

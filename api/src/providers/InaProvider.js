@@ -22,6 +22,7 @@ export default class InaProvider extends Provider
 {
 	constructor() {
 		super()
+		this.tracksCacheExpiration = 60*60 // seconds (1h) overrides default value
 	}
 
 	async fetchAPI(url) {

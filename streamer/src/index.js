@@ -14,7 +14,7 @@ const createApp = () => {
 	app.use(cors({
 		// credentials: true,
 		origin: function (origin, callback) {
-			if (config.WHITELIST.indexOf(origin) !== -1)
+			if (('production' !== process.env.NODE_ENV && !origin) || config.WHITELIST.indexOf(origin) !== -1)
 				callback(null, true)
 			else
 				callback(new Error('Not allowed by CORS')) // TODO: do not throw, provide some error instead

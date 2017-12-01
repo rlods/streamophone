@@ -52,13 +52,8 @@ export default class CustomAudio
 
 	async init() {
 		if (!this._ready) {
-			try {
-				this._audioBuffer = await this._loadAudioBuffer()
-				this._ready = true
-			}
-			catch (error) {
-				console.log('Audio buffer creation failed', error)
-			}
+			this._audioBuffer = await this._loadAudioBuffer()
+			this._ready = true
 		}
 	}
 
@@ -100,7 +95,7 @@ export default class CustomAudio
 			this._sourceNode.connect(this._analyserNode)
 			this._sourceNode.start() // A new BufferSource must be created for each start
 			this._startedAt = AUDIO_CONTEXT.currentTime
-			if (this._eventCB) 
+			if (this._eventCB)
 				this._eventCB([AUDIO_EVENT_PLAY])
 			this._startVisualization()
 		}
@@ -124,7 +119,17 @@ export default class CustomAudio
 			const req = new XMLHttpRequest()
 			req.open('GET', this._url, true)
 			req.responseType = 'arraybuffer'
-			req.onload = () => AUDIO_CONTEXT.decodeAudioData(req.response, buffer => resolve(buffer), error => reject(error))
+			req.addEventListener('error', evt => reject(new Error('Audio buffer loading failed')), false)
+			req.addEventListener('load', async evt => {
+				try {
+					// https://github.com/WebAudio/web-audio-api/issues/1305
+					resolve(await AUDIO_CONTEXT.decodeAudioData(req.response))
+				}
+				catch (error) {
+					// INA sometimes returns raw text 'Fichier non trouve' without any error code
+					reject(error)
+				}
+			}, false)
 			req.send()
 		})
 	}

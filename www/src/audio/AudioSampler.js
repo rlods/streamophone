@@ -56,12 +56,13 @@ export default class AudioSampler
 		if (null !== this._audios)
 			throw new Error('Sampler is already initialized')
 
-		// Create strategy
+		// Create recorder and strategy
+		this._recorder = new AudioRecorder()
 		this._strategy = createStrategy(samplerStrategyId)
 		this._strategy.attachDispatcher(this._dispatch)
 		const samplesCount = this._strategy.samplesCount
 
-		// Get tracks
+		// Create tracks
 		const tracks = (await loadTracks({
 			providerId,
 			resourceType,
@@ -79,9 +80,9 @@ export default class AudioSampler
 			track.volume2 = 1.0
 			return track
 		})
+		this._dispatch(changeSamplerSamples(tracks))
 
 		// Create audios
-		this._recorder = new AudioRecorder()
 		this._audios = tracks.map((track, sampleIndex) => {
 			const audio = new CustomAudio(track.preview, e => {
 				if      (e[0] === AUDIO_EVENT_PLAY)  this._dispatch(changeSamplerSampleStatus(sampleIndex, true))
@@ -90,11 +91,17 @@ export default class AudioSampler
 			})
 			audio.setLoop(track.loopStart, track.loopEnd)
 			audio.setVolume(track.volume1 * track.volume2)
-			audio.init().then(() => this._dispatch(changeSamplerSampleReady(sampleIndex)))
 			return audio
 		})
-		this._dispatch(changeSamplerSamples(tracks))
-		
+		this._audios.forEach(async (audio, sampleIndex) => {
+			try {
+				await audio.init()
+				this._dispatch(changeSamplerSampleReady(sampleIndex))
+			}
+			catch (error) {
+				console.log('Audio buffer initialization failed:', error.message)
+			}
+		})
 	}
 
 	dispose() {
