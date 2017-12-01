@@ -39,6 +39,7 @@ export default class CustomAudio
 		this._speed = 1.0
 		this._startedAt = 0
 		this._url = url
+		
 		this._gainNode = AUDIO_CONTEXT.createGain()
 		this._gainNode.gain.value = 1.0
 		this._gainNode.connect(AUDIO_CONTEXT.destination)
@@ -82,7 +83,7 @@ export default class CustomAudio
 		this._gainNode.gain.value = volume
 	}
 
-	start() {
+	play() {
 		if (this._ready && !this._playing) {
 			this._playing = true
 			this._sourceNode = AUDIO_CONTEXT.createBufferSource()
@@ -101,7 +102,7 @@ export default class CustomAudio
 		}
 	}
 
-	stop() {
+	pause() {
 		if (null !== this._sourceNode)
 			this._sourceNode.stop()
 	}
@@ -119,7 +120,7 @@ export default class CustomAudio
 			const req = new XMLHttpRequest()
 			req.open('GET', this._url, true)
 			req.responseType = 'arraybuffer'
-			req.addEventListener('error', evt => reject(new Error('Audio buffer loading failed')), false)
+			req.addEventListener('error', () => reject(new Error('Audio buffer loading failed')), false)
 			req.addEventListener('load', async evt => {
 				try {
 					// https://github.com/WebAudio/web-audio-api/issues/1305

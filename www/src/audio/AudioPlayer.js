@@ -119,10 +119,10 @@ export default class AudioPlayer
 						this._audios[sampleIndex].setLoop(loopStart, loopEnd)
 						break
 					case AUDIO_EVENT_PLAY:
-						this._audios[sampleIndex].start()
+						this._audios[sampleIndex].play()
 						break
 					case AUDIO_EVENT_PAUSE:
-						this._audios[sampleIndex].stop()
+						this._audios[sampleIndex].pause()
 						break
 					case AUDIO_EVENT_SPEED:
 						speed = this._events[i++]
@@ -139,7 +139,7 @@ export default class AudioPlayer
 			}
 			
 			console.log('Terminated')
-			this._audios.forEach(audio => audio.stop()) // Stopping remaining audio (which can occur if playing has been stopped)
+			this._audios.forEach(audio => audio.pause()) // Stopping remaining audio (which can occur if playing has been stopped)
 			if (this._playing) {
 				this._stopVisualization()
 				this._eventCB([PLAYER_EVENT_PAUSE])

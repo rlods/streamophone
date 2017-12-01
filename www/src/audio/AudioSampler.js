@@ -106,7 +106,7 @@ export default class AudioSampler
 
 	dispose() {
 		if (this._audios) {
-			this._audios.forEach(audio => audio.stop())
+			this._audios.forEach(audio => audio.pause())
 			this._audios = null
 		}
 		this._recorder = null

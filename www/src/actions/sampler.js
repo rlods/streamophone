@@ -128,13 +128,13 @@ export const registerSampleCanvas = (sampleIndex, canvas) => (dispatch, getState
 export const startSample = sampleIndex => async (dispatch, getState, { app }) => {
 	const audio = app.audioSampler.getAudio(sampleIndex)
 	if (audio)
-		audio.start()
+		audio.play()
 }
 
 export const stopSample = sampleIndex => async (dispatch, getState, { app }) => {
 	const audio = app.audioSampler.getAudio(sampleIndex)
 	if (audio)
-		audio.stop()
+		audio.pause()
 }
 
 export const goToSampler = history => async (dispatch, getState, { app }) => {
