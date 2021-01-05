@@ -11,7 +11,7 @@
     "prod:start": "serve -s build -p ${STREAMOPHONE_WWW_PORT}"
   },
   "dependencies": {
-    "axios": "^0.17.1",
+    "axios": "^0.21.1",
     "classnames": "^2.2.5",
     "jsonp": "^0.2.1",
     "react": "^16.1.0",
