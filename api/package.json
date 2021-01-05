@@ -11,7 +11,7 @@
     "prod:start": "NODE_ENV=production node build/src/index.js"
   },
   "dependencies": {
-    "axios": "^0.17.1",
+    "axios": "^0.21.1",
     "body-parser": "^1.18.2",
     "cors": "^2.8.4",
     "express": "^4.16.2",
