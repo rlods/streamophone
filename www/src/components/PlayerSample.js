@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 //
@@ -7,19 +7,15 @@ import './PlayerSample.css'
 
 // --------------------------------------------------------------
 
-class PlayerSample extends Component {
-	render() {
-		return (
-			<div className={classNames('player-sample', { playing: this.props.playing })}>
-				<a className="player-sample-title" target="_blank" rel="noopener noreferrer" href={this.props.url}>{this.props.title}</a>
-				<div className="player-sample-metas">
-					{this.props.ready ? null : <i className="fa fa-exclamation-triangle player-sample-meta player-sample-meta-notready" title="not ready"></i>}
-				</div>
-				<div className="player-sample-totalDuration">{fmtMSS(this.props.totalDuration)}</div>
-			</div>
-		)
-	}
-}
+const PlayerSample = ({ playing, ready, title, totalDuration, url }) => (
+	<div className={classNames('player-sample', { playing })}>
+		<a className="player-sample-title" target="_blank" rel="noopener noreferrer" href={url}>{title}</a>
+		<div className="player-sample-metas">
+			{ready ? null : <i className="fa fa-exclamation-triangle player-sample-meta player-sample-meta-notready" title="not ready"></i>}
+		</div>
+		<div className="player-sample-totalDuration">{fmtMSS(totalDuration)}</div>
+	</div>
+)
 
 // --------------------------------------------------------------
 
