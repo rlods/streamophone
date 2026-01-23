@@ -36,8 +36,8 @@ export default class Custom_SocketStrategy extends Strategy {
 				id === 'annulaire' ? 30 :
 				40
 			const sampleIndex = base + y
-			// TODO : dispatch(stopSample(this.currentSamplesIndexes[index]))
-			this._dispatch!({ type: 'SAMPLER_START_SAMPLE', data: { sampleIndex } })
+			// TODO : this._callbacks?.onStopSample(this.currentSamplesIndexes[index])
+			this._callbacks?.onStartSample(sampleIndex)
 		}
 	}
 }

@@ -2,7 +2,6 @@ import CustomAudio, { AUDIO_EVENT_LOOP, AUDIO_EVENT_PLAY, AUDIO_EVENT_PAUSE, AUD
 import { b64_to_js, Sleeper } from '../tools'
 import { AUDIO_CONTEXT } from './'
 import { RECORD_FORMAT, RecordData } from './AudioRecorder'
-import type { AppDispatch } from '../types'
 
 // ------------------------------------------------------------------
 
@@ -31,16 +30,22 @@ export interface PlayerTrack {
 	bpm?: number
 }
 
+export interface PlayerCallbacks {
+	onStatusChange: (playing: boolean) => void
+	onSamplesChange: (tracks: PlayerTrack[]) => void
+	onSampleReady: (sampleIndex: number) => void
+	onSampleStatusChange: (sampleIndex: number, playing: boolean) => void
+}
+
 // ------------------------------------------------------------------
 
 export default class AudioPlayer {
 	private _audios: CustomAudio[] | null = null
 	private _canvas: HTMLCanvasElement | null = null
-	private _dispatch: AppDispatch | null = null
+	private _callbacks: PlayerCallbacks | null = null
 	private _drawing: boolean = false
 	private _drawingFrameRequest: number | null = null
 	private _duration: number = 0
-	private _eventCB: (e: PlayerEvent) => void
 	private _events: number[] = []
 	private _playing: boolean = false
 	private _ready: boolean = false
@@ -48,15 +53,11 @@ export default class AudioPlayer {
 	private _startedAt: number = 0
 
 	constructor() {
-		this._eventCB = (e: PlayerEvent) => {
-			if      (e[0] === PLAYER_EVENT_PLAY)  this._dispatch!({ type: 'PLAYER_SET_STATUS', data: { playing: true } })
-			else if (e[0] === PLAYER_EVENT_PAUSE) this._dispatch!({ type: 'PLAYER_SET_STATUS', data: { playing: false } })
-		}
 		this._sleeper = new Sleeper()
 	}
 
-	attachDispatcher(dispatch: AppDispatch): void {
-		this._dispatch = dispatch
+	setCallbacks(callbacks: PlayerCallbacks): void {
+		this._callbacks = callbacks
 	}
 
 	// --------------------------------------------------------------
@@ -76,8 +77,8 @@ export default class AudioPlayer {
 		console.log('Loading audios')
 		this._audios = tracks.map((track, sampleIndex) => {
 			const audio = new CustomAudio(track.preview, e => {
-				if      (e[0] === AUDIO_EVENT_PLAY)  this._dispatch!({ type: 'PLAYER_SET_SAMPLE_STATUS', data: { sampleIndex, playing: true } })
-				else if (e[0] === AUDIO_EVENT_PAUSE) this._dispatch!({ type: 'PLAYER_SET_SAMPLE_STATUS', data: { sampleIndex, playing: false } })
+				if      (e[0] === AUDIO_EVENT_PLAY)  this._callbacks?.onSampleStatusChange(sampleIndex, true)
+				else if (e[0] === AUDIO_EVENT_PAUSE) this._callbacks?.onSampleStatusChange(sampleIndex, false)
 			})
 			audio.setLoop(track.loopStart, track.loopEnd)
 			audio.setVolume(track.volume)
@@ -89,14 +90,14 @@ export default class AudioPlayer {
 		this._audios.forEach(async (audio, sampleIndex) => {
 			try {
 				await audio.init()
-				this._dispatch!({ type: 'PLAYER_SET_SAMPLE_READY', data: { sampleIndex } })
+				this._callbacks?.onSampleReady(sampleIndex)
 			}
 			catch (error) {
 				console.log('Audio buffer initialization failed', error)
 			}
 		})
 
-		this._dispatch!({ type: 'PLAYER_SET_SAMPLES', data: { tracks } })
+		this._callbacks?.onSamplesChange(tracks)
 		this._ready = true
 	}
 
@@ -119,7 +120,7 @@ export default class AudioPlayer {
 			this._startedAt = AUDIO_CONTEXT.currentTime
 
 			console.log('Starting')
-			this._eventCB([PLAYER_EVENT_PLAY])
+			this._callbacks?.onStatusChange(true)
 			this._startVisualization()
 
 			let previousTime = this._events[0], loopStart: number, loopEnd: number, speed: number, volume: number
@@ -164,7 +165,7 @@ export default class AudioPlayer {
 			this._audios!.forEach(audio => audio.pause()) // Stopping remaining audio (which can occur if playing has been stopped)
 			if (this._playing) {
 				this._stopVisualization()
-				this._eventCB([PLAYER_EVENT_PAUSE])
+				this._callbacks?.onStatusChange(false)
 				this._playing = false
 			}
 		}
@@ -173,7 +174,7 @@ export default class AudioPlayer {
 	pause(): void {
 		if (this._playing) {
 			this._stopVisualization()
-			this._eventCB([PLAYER_EVENT_PAUSE])
+			this._callbacks?.onStatusChange(false)
 			this._playing = false
 			this._sleeper.stop()
 		}

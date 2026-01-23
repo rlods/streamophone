@@ -20,13 +20,13 @@ class Keyboard_BasicStrategy extends Strategy {
 	handleKeyDown(keyCode: number): void {
 		const alphabetIndex = Math.abs(keyCode - A_CHAR_CODE)
 		if (alphabetIndex >= 0 && alphabetIndex < 26)
-			this._dispatch!({ type: 'SAMPLER_START_SAMPLE', data: { sampleIndex: this.keys.indexOf(KEY_ORDER_ALPHABET[alphabetIndex]) } })
+			this._callbacks?.onStartSample(this.keys.indexOf(KEY_ORDER_ALPHABET[alphabetIndex]))
 	}
 
 	handleKeyUp(keyCode: number): void {
 		const alphabetIndex = Math.abs(keyCode - A_CHAR_CODE)
 		if (alphabetIndex >= 0 && alphabetIndex < 26)
-			this._dispatch!({ type: 'SAMPLER_STOP_SAMPLE', data: { sampleIndex: this.keys.indexOf(KEY_ORDER_ALPHABET[alphabetIndex]) } })
+			this._callbacks?.onStopSample(this.keys.indexOf(KEY_ORDER_ALPHABET[alphabetIndex]))
 	}
 }
 

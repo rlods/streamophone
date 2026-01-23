@@ -22,10 +22,10 @@ class LightPadBlock_MidiStrategy extends MidiStrategy {
 			const m = this.mapping[k]
 			if (m !== undefined) {
 				if (c >= 145 && c < 160) {
-					this._dispatch!({ type: 'SAMPLER_START_SAMPLE', data: { sampleIndex: m } })
+					this._callbacks?.onStartSample(m)
 				}
 				else if (c < 145 && c >= 129) {
-					this._dispatch!({ type: 'SAMPLER_STOP_SAMPLE', data: { sampleIndex: m } })
+					this._callbacks?.onStopSample(m)
 				}
 			}
 		}

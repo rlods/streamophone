@@ -3,8 +3,8 @@ import type { NavigateFunction } from 'react-router-dom'
 import config from '../config'
 import { getSearchParam } from '../tools'
 import type { Track } from '../types'
-import type { ExtendedSamplerTrack } from '../audio/AudioSampler'
 import type AudioSampler from '../audio/AudioSampler'
+import type { ExtendedSamplerTrack, SamplerCallbacks } from '../audio/AudioSampler'
 import { displayError, displayMessage } from './messagesStore'
 import { useSourceStore } from './sourceStore'
 
@@ -122,7 +122,18 @@ let audioSamplerRef: AudioSampler | null = null
 
 export const setAudioSampler = (sampler: AudioSampler): void => {
 	audioSamplerRef = sampler
+	// Connect callbacks to store
+	sampler.setCallbacks(createSamplerCallbacks())
 }
+
+export const createSamplerCallbacks = (): SamplerCallbacks => ({
+	onSamplesChange: (tracks) => useSamplerStore.getState().setSamples(tracks),
+	onSampleReady: (sampleIndex) => useSamplerStore.getState().setSampleReady(sampleIndex),
+	onSampleStatusChange: (sampleIndex, playing) => useSamplerStore.getState().setSampleStatus(sampleIndex, playing),
+	onStartSample: (sampleIndex) => startSample(sampleIndex),
+	onStopSample: (sampleIndex) => stopSample(sampleIndex),
+	onSampleVolumeChange: (sampleIndex, volume) => changeSamplerSampleVolume(sampleIndex, volume)
+})
 
 export const changeSamplerSampleNormalizationVolume = (sampleIndex: number, volume: number): void => {
 	if (!audioSamplerRef) return
@@ -160,7 +171,7 @@ export const changeSamplerSampleVolume = (sampleIndex: number, volume: number): 
 export const handleKeyDown = async (keyCode: number): Promise<void> => {
 	if (!audioSamplerRef) return
 	if (keyCode === KEY_SPACE)
-		audioSamplerRef.getRecorder().snapshot()
+		audioSamplerRef.getRecorder()?.snapshot()
 	else
 		audioSamplerRef.handleKeyDown(keyCode)
 }
@@ -174,7 +185,7 @@ export const handleMidiEvent = (channel: number, key: number, velocity: number):
 }
 
 export const handleSocketEvent = (message: unknown): void => {
-	audioSamplerRef?.handleSocketMessage(message)
+	audioSamplerRef?.handleSocketEvent(message)
 }
 
 export const registerSampleCanvas = (sampleIndex: number, canvas: HTMLCanvasElement | null): void => {

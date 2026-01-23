@@ -18,6 +18,6 @@ export default class SocketDriver extends Driver {
 	}
 
 	onMessage(message: unknown): void {
-		this.dispatch!({ type: 'SAMPLER_HANDLE_SOCKET_EVENT', data: { message } })
+		this._callbacks?.onSocketEvent(message)
 	}
 }

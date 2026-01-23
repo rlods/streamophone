@@ -3,7 +3,6 @@ import AudioRecorder, { SamplerTrack } from './AudioRecorder'
 import CustomAudio, { AUDIO_EVENT_PLAY, AUDIO_EVENT_PAUSE } from './CustomAudio'
 import { AUDIO_CONTEXT } from './'
 import { loadTracks, LoadedTrack } from './TrackLoader'
-import type { AppDispatch } from '../types'
 import type Strategy from '../strategies/Strategy'
 
 // ------------------------------------------------------------------
@@ -14,23 +13,32 @@ export interface ExtendedSamplerTrack extends SamplerTrack {
 	bpm?: number
 }
 
+export interface SamplerCallbacks {
+	onSamplesChange: (tracks: ExtendedSamplerTrack[]) => void
+	onSampleReady: (sampleIndex: number) => void
+	onSampleStatusChange: (sampleIndex: number, playing: boolean) => void
+	onStartSample: (sampleIndex: number) => void
+	onStopSample: (sampleIndex: number) => void
+	onSampleVolumeChange: (sampleIndex: number, volume: number) => void
+}
+
 // ------------------------------------------------------------------
 
 export default class AudioSampler {
 	private _audios: CustomAudio[] | null = null
-	private _dispatch: AppDispatch | null = null
+	private _callbacks: SamplerCallbacks | null = null
 	private _recorder: AudioRecorder | null = null
 	private _strategy: Strategy | null = null
 
 	constructor() {
 		this._audios = null
-		this._dispatch = null
+		this._callbacks = null
 		this._recorder = null
 		this._strategy = null
 	}
 
-	attachDispatcher(dispatch: AppDispatch): void {
-		this._dispatch = dispatch
+	setCallbacks(callbacks: SamplerCallbacks): void {
+		this._callbacks = callbacks
 	}
 
 	// --------------------------------------------------------------
@@ -79,7 +87,11 @@ export default class AudioSampler {
 		// Create recorder and strategy
 		this._recorder = new AudioRecorder()
 		this._strategy = createStrategy(samplerStrategyId)
-		this._strategy.attachDispatcher(this._dispatch!)
+		this._strategy.setCallbacks({
+			onStartSample: (sampleIndex) => this._callbacks?.onStartSample(sampleIndex),
+			onStopSample: (sampleIndex) => this._callbacks?.onStopSample(sampleIndex),
+			onSampleVolumeChange: (sampleIndex, volume) => this._callbacks?.onSampleVolumeChange(sampleIndex, volume)
+		})
 		const samplesCount = this._strategy.samplesCount
 
 		// Create tracks
@@ -103,13 +115,13 @@ export default class AudioSampler {
 			extendedTrack.volume2 = 1.0
 			return extendedTrack
 		})
-		this._dispatch!({ type: 'SAMPLER_SET_SAMPLES', data: { tracks } })
+		this._callbacks?.onSamplesChange(tracks)
 
 		// Create audios
 		this._audios = tracks.map((track, sampleIndex) => {
 			const audio = new CustomAudio(track.preview, e => {
-				if      (e[0] === AUDIO_EVENT_PLAY)  this._dispatch!({ type: 'SAMPLER_SET_SAMPLE_STATUS', data: { sampleIndex, playing: true } })
-				else if (e[0] === AUDIO_EVENT_PAUSE) this._dispatch!({ type: 'SAMPLER_SET_SAMPLE_STATUS', data: { sampleIndex, playing: false } })
+				if      (e[0] === AUDIO_EVENT_PLAY)  this._callbacks?.onSampleStatusChange(sampleIndex, true)
+				else if (e[0] === AUDIO_EVENT_PAUSE) this._callbacks?.onSampleStatusChange(sampleIndex, false)
 				this._recorder!.pushEvent(AUDIO_CONTEXT.currentTime, sampleIndex, e, track)
 			})
 			audio.setLoop(track.loopStart, track.loopEnd)
@@ -119,7 +131,7 @@ export default class AudioSampler {
 		this._audios.forEach(async (audio, sampleIndex) => {
 			try {
 				await audio.init()
-				this._dispatch!({ type: 'SAMPLER_SET_SAMPLE_READY', data: { sampleIndex } })
+				this._callbacks?.onSampleReady(sampleIndex)
 			}
 			catch (error) {
 				console.log('Audio buffer initialization failed:', (error as Error).message)

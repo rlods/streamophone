@@ -1,18 +1,24 @@
-import type { AppDispatch } from '../types'
+// --------------------------------------------------------------
+
+export interface StrategyCallbacks {
+	onStartSample: (sampleIndex: number) => void
+	onStopSample: (sampleIndex: number) => void
+	onSampleVolumeChange: (sampleIndex: number, volume: number) => void
+}
 
 // --------------------------------------------------------------
 
 export default class Strategy {
-	protected _dispatch: AppDispatch | null = null
+	protected _callbacks: StrategyCallbacks | null = null
 	public samplesCount: number = 0
 
 	constructor() {
-		this._dispatch = null
+		this._callbacks = null
 		this.samplesCount = 0
 	}
 
-	attachDispatcher(dispatch: AppDispatch): void {
-		this._dispatch = dispatch
+	setCallbacks(callbacks: StrategyCallbacks): void {
+		this._callbacks = callbacks
 	}
 
 	handleKeyDown(keyCode: number): void {

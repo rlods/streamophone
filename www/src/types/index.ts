@@ -20,58 +20,6 @@ export interface Message {
 	text: string
 }
 
-// Legacy dispatch type for audio classes and drivers (kept for compatibility)
-export interface AppAction {
-	type: string
-	data?: Record<string, unknown>
-}
-
-export type AppDispatch = (action: AppAction | ((dispatch: AppDispatch) => void)) => void
-
-// Audio types (simplified interfaces for external classes)
-export interface AudioPlayerType {
-	attachDispatcher: (dispatch: AppDispatch) => void
-	dispose: () => void
-	init: (data: string) => Promise<void>
-	play: () => void
-	pause: () => void
-	attachCanvas: (canvas: HTMLCanvasElement | null) => void
-}
-
-export interface AudioSamplerType {
-	attachDispatcher: (dispatch: AppDispatch) => void
-	dispose: () => void
-	init: (
-		strategyId: string,
-		defaultDuration: number,
-		resourceProviderId: string,
-		resourceType: string,
-		sourceId: string,
-		transformation: string
-	) => Promise<void>
-	getAudio: (index: number) => CustomAudioType | null
-	getRecorder: () => AudioRecorderType
-	handleKeyDown: (keyCode: number) => void
-	handleKeyUp: (keyCode: number) => void
-	handleMidiEvent: (channel: number, key: number, velocity: number) => void
-	handleSocketMessage: (message: unknown) => void
-}
-
-export interface CustomAudioType {
-	play: () => void
-	pause: () => void
-	setVolume: (volume: number) => void
-	setSpeed: (speed: number) => void
-	attachCanvas: (canvas: HTMLCanvasElement | null) => void
-}
-
-export interface AudioRecorderType {
-	snapshot: () => void
-}
-
-export interface DriverType {
-	attachDispatcher: (dispatch: AppDispatch) => void
-}
 
 // Config types
 export interface BpmOption {

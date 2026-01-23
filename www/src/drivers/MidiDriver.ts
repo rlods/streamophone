@@ -92,6 +92,6 @@ export default class MidiDriver extends Driver {
 
 	onMessage(message: WebMidi.MIDIMessageEvent): void {
 		const data = message.data
-		this.dispatch!({ type: 'SAMPLER_HANDLE_MIDI_EVENT', data: { channel: data[0], key: data[1], velocity: data[2] } })
+		this._callbacks?.onMidiEvent(data[0], data[1], data[2])
 	}
 }

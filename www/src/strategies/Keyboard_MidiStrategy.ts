@@ -23,11 +23,11 @@ export default class Keyboard_MidiStrategy extends MidiStrategy {
 			console.log(k, c)
 			if (c === keyDown) {
 				console.log("start sample", sample)
-				this._dispatch!({ type: 'SAMPLER_START_SAMPLE', data: { sampleIndex: sample } })
+				this._callbacks?.onStartSample(sample)
 			} else if (c === keyUp) {
-				this._dispatch!({ type: 'SAMPLER_STOP_SAMPLE', data: { sampleIndex: sample } })
+				this._callbacks?.onStopSample(sample)
 			}
-			this._dispatch!({ type: 'SAMPLER_SET_SAMPLE_VOLUME', data: { sampleIndex: sample, volume: v / 128 } })
+			this._callbacks?.onSampleVolumeChange(sample, v / 128)
 		}
 	}
 }

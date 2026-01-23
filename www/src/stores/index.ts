@@ -24,4 +24,3 @@ export {
 	goToSampler,
 	loadSampler
 } from './samplerStore'
-export { createDispatchAdapter } from './dispatchAdapter'

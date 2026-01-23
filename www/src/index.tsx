@@ -7,9 +7,8 @@ import App from './containers/App'
 import AudioPlayer from './audio/AudioPlayer'
 import AudioSampler from './audio/AudioSampler'
 import { createDrivers } from './drivers'
-import Driver from './drivers/Driver'
-import { setAudioPlayer, setAudioSampler } from './stores'
-import { createDispatchAdapter } from './stores/dispatchAdapter'
+import type Driver from './drivers/Driver'
+import { setAudioPlayer, setAudioSampler, handleMidiEvent, handleSocketEvent } from './stores'
 import config from './config'
 import './index.css'
 
@@ -31,20 +30,17 @@ const app: AppInstance = {
 
 // --------------------------------------------------------------
 
-// Initialize stores with audio references
+// Initialize stores with audio references (callbacks are automatically connected)
 setAudioPlayer(app.audioPlayer)
 setAudioSampler(app.audioSampler)
 
-// Create dispatch adapter that routes Redux-style actions to Zustand stores
-const dispatch = createDispatchAdapter()
-
-// Attach dispatch adapter to audio components and drivers
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-app.audioPlayer.attachDispatcher(dispatch as any)
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-app.audioSampler.attachDispatcher(dispatch as any)
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-Object.values(app.drivers).forEach(driver => driver.attachDispatcher(dispatch as any))
+// Connect drivers with callbacks
+Object.values(app.drivers).forEach(driver => {
+	driver.setCallbacks({
+		onMidiEvent: handleMidiEvent,
+		onSocketEvent: handleSocketEvent
+	})
+})
 
 // --------------------------------------------------------------
 

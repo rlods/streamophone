@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import type { Track } from '../types'
-import type { PlayerTrack } from '../audio/AudioPlayer'
 import type AudioPlayer from '../audio/AudioPlayer'
+import type { PlayerTrack, PlayerCallbacks } from '../audio/AudioPlayer'
 import { displayError } from './messagesStore'
 
 // ------------------------------------------------------------------
@@ -47,12 +47,21 @@ let audioPlayerRef: AudioPlayer | null = null
 
 export const setAudioPlayer = (player: AudioPlayer): void => {
 	audioPlayerRef = player
+	// Connect callbacks to store
+	player.setCallbacks(createPlayerCallbacks())
 }
+
+export const createPlayerCallbacks = (): PlayerCallbacks => ({
+	onStatusChange: (playing) => usePlayerStore.getState().setStatus(playing),
+	onSamplesChange: (tracks) => usePlayerStore.getState().setSamples(tracks),
+	onSampleReady: (sampleIndex) => usePlayerStore.getState().setSampleReady(sampleIndex),
+	onSampleStatusChange: (sampleIndex, playing) => usePlayerStore.getState().setSampleStatus(sampleIndex, playing)
+})
 
 export const loadPlayer = async (data: string): Promise<void> => {
 	if (!audioPlayerRef) return
 	try {
-		audioPlayerRef.init(data)
+		audioPlayerRef.initFromData(data)
 	} catch (error) {
 		const err = error as { response?: { data?: { message?: string } } }
 		const message = err.response?.data?.message ?? String(error)
