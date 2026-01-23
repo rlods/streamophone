@@ -1,10 +1,10 @@
-FROM node:20-alpine
+FROM oven/bun:1-alpine
 
 COPY src /app/src/
-COPY package.json package-lock.json babel.config.json /app/
+COPY package.json tsconfig.json /app/
 
 WORKDIR /app
 
-RUN npm install && npm run prod:build
+RUN bun install --frozen-lockfile || bun install
 
-CMD npm run prod:start
+CMD ["bun", "run", "start"]

@@ -1,12 +1,11 @@
-import Provider from './Provider'
+import Provider, { type Track } from './Provider'
 import config from '../config'
 
 // ------------------------------------------------------------------
 
-export default class TestProvider extends Provider
-{
-	async fetchTracks(sourceType, sourceId) {
-		let tracks
+export default class TestProvider extends Provider {
+	async fetchTracks(sourceType: string, _sourceId: string): Promise<Track[]> {
+		let tracks: Track[]
 		switch (sourceType)
 		{
 			case 'TEST':

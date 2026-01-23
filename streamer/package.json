@@ -2,13 +2,13 @@
   "name": "streamophone-streamer",
   "version": "0.2.0",
   "description": "Streamophone Streamer",
-  "main": "src/index.js",
+  "main": "src/index.ts",
   "author": "rlods",
   "license": "ISC",
   "scripts": {
-    "dev": "NODE_ENV=development nodemon src/index.js --exec babel-node",
-    "prod:build": "babel src -d build/src --source-root src/index.js --copy-files",
-    "prod:start": "NODE_ENV=production node build/src/index.js"
+    "dev": "NODE_ENV=development bun --watch src/index.ts",
+    "start": "NODE_ENV=production bun src/index.ts",
+    "prod:start": "NODE_ENV=production bun src/index.ts"
   },
   "dependencies": {
     "axios": "^1.6.7",
@@ -16,10 +16,9 @@
     "express": "^4.18.2"
   },
   "devDependencies": {
-    "@babel/cli": "^7.23.9",
-    "@babel/core": "^7.23.9",
-    "@babel/node": "^7.23.9",
-    "@babel/preset-env": "^7.23.9",
-    "nodemon": "^3.0.3"
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.11.0",
+    "typescript": "^5.3.3"
   }
 }

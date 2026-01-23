@@ -7,6 +7,8 @@
   "license": "ISC",
   "scripts": {
     "dev": "PORT=${STREAMOPHONE_WWW_PORT} REACT_APP_STREAMOPHONE_API_URL=${STREAMOPHONE_API_URL} react-scripts start",
+    "build": "REACT_APP_STREAMOPHONE_API_URL=${STREAMOPHONE_API_URL} react-scripts build",
+    "start": "serve -s build -p ${STREAMOPHONE_WWW_PORT}",
     "prod:build": "REACT_APP_STREAMOPHONE_API_URL=${STREAMOPHONE_API_URL} react-scripts build",
     "prod:start": "serve -s build -p ${STREAMOPHONE_WWW_PORT}"
   },

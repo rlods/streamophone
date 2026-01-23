@@ -1,20 +1,19 @@
 import Redis from 'ioredis'
-//
 import config from '../config'
 
 // ------------------------------------------------------------------
 
-let CACHE = null
+let CACHE: Redis | null = null
 
 // ------------------------------------------------------------------
 
-export function getCache() {
+export function getCache(): Redis | null {
 	return CACHE
 }
 
 // ------------------------------------------------------------------
 
-export function initCache() {
+export function initCache(): void {
 	console.log('Creating cache connection...')
 	CACHE = new Redis({
 		host: config.CACHE.HOST,

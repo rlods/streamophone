@@ -1,41 +1,38 @@
-import 'babel-polyfill'
 import cors from 'cors'
-import express from 'express'
-//
+import express, { type Application } from 'express'
 import config from './config'
+import { initCache } from './helpers/cache'
 import { initRoutes } from './controllers/'
 
 // ------------------------------------------------------------------
 
 console.log('CONFIG', config)
 
-const createApp = () => {
-	const app = express()
+const createApp = (): Application => {
+	const app: Application = express()
 	app.use(cors({
 		// credentials: true,
-		origin: function (origin, callback) {
-			if (('production' !== process.env.NODE_ENV && !origin) || config.WHITELIST.indexOf(origin) !== -1)
+		origin: function (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) {
+			if (origin && config.WHITELIST.indexOf(origin) !== -1)
 				callback(null, true)
 			else
 				callback(new Error('Not allowed by CORS')) // TODO: do not throw, provide some error instead
 		}
 	}))
 
-	/*
 	if (config.CACHE) {
 		console.log('Initializing cache')
 		initCache()
 		console.log('Cache initialized')
 	}
-	*/
 
 	console.log('Initializing routes')
 	initRoutes(app)
 	console.log('Routes initialized')
 
-	app.listen(config.STREAMER.PORT)
+	app.listen(config.API.PORT)
 	app.emit('appReady') // for tests
-	console.log(`Listening on ${config.STREAMER.PORT}`)
+	console.log(`Listening on ${config.API.PORT}`)
 
 	return app
 }
