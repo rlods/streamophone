@@ -2,7 +2,7 @@
   "name": "streamophone-www",
   "version": "0.2.0",
   "description": "Streamophone Web Client",
-  "main": "src/index.js",
+  "main": "src/index.tsx",
   "author": "rlods",
   "license": "ISC",
   "scripts": {
@@ -25,8 +25,15 @@
     "socket.io-client": "^4.7.4"
   },
   "devDependencies": {
+    "@types/jsonp": "^0.2.3",
+    "@types/node": "^20.11.0",
+    "@types/react": "^18.2.48",
+    "@types/react-dom": "^18.2.18",
+    "@types/react-transition-group": "^4.4.10",
     "react-scripts": "5.0.1",
-    "redux-logger": "^3.0.6"
+    "redux-logger": "^3.0.6",
+    "@types/redux-logger": "^3.0.13",
+    "typescript": "^5.3.3"
   },
   "browserslist": {
     "production": [
