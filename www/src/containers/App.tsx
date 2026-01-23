@@ -1,14 +1,13 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
 //
 import AppComponent from '../components/App'
-import type { RootState } from '../types'
+import { useMessagesStore, useSamplerStore } from '../stores'
 
 // --------------------------------------------------------------
 
 const App: React.FC = () => {
-	const messages = useSelector((state: RootState) => state.messages)
-	const ready = useSelector((state: RootState) => !!state.sampler.tracks)
+	const messages = useMessagesStore((state) => state.messages)
+	const ready = useSamplerStore((state) => !!state.tracks)
 
 	return <AppComponent messages={messages} ready={ready} />
 }

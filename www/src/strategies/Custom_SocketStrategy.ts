@@ -1,4 +1,3 @@
-import { startSample } from '../actions/sampler'
 import Strategy from './Strategy'
 
 // --------------------------------------------------------------
@@ -38,7 +37,7 @@ export default class Custom_SocketStrategy extends Strategy {
 				40
 			const sampleIndex = base + y
 			// TODO : dispatch(stopSample(this.currentSamplesIndexes[index]))
-			this._dispatch!(startSample(sampleIndex))
+			this._dispatch!({ type: 'SAMPLER_START_SAMPLE', data: { sampleIndex } })
 		}
 	}
 }

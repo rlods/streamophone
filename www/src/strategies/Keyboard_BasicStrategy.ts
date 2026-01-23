@@ -1,4 +1,3 @@
-import { startSample, stopSample } from '../actions/sampler'
 import Strategy from './Strategy'
 import { KEY_ORDER_AZERTY, KEY_ORDER_QWERTY } from '../tools'
 
@@ -21,13 +20,13 @@ class Keyboard_BasicStrategy extends Strategy {
 	handleKeyDown(keyCode: number): void {
 		const alphabetIndex = Math.abs(keyCode - A_CHAR_CODE)
 		if (alphabetIndex >= 0 && alphabetIndex < 26)
-			this._dispatch!(startSample(this.keys.indexOf(KEY_ORDER_ALPHABET[alphabetIndex])))
+			this._dispatch!({ type: 'SAMPLER_START_SAMPLE', data: { sampleIndex: this.keys.indexOf(KEY_ORDER_ALPHABET[alphabetIndex]) } })
 	}
 
 	handleKeyUp(keyCode: number): void {
 		const alphabetIndex = Math.abs(keyCode - A_CHAR_CODE)
 		if (alphabetIndex >= 0 && alphabetIndex < 26)
-			this._dispatch!(stopSample(this.keys.indexOf(KEY_ORDER_ALPHABET[alphabetIndex])))
+			this._dispatch!({ type: 'SAMPLER_STOP_SAMPLE', data: { sampleIndex: this.keys.indexOf(KEY_ORDER_ALPHABET[alphabetIndex]) } })
 	}
 }
 

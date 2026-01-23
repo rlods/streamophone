@@ -1,7 +1,6 @@
 import io, { Socket } from 'socket.io-client'
 //
 import Driver from './Driver'
-import { handleSocketEvent } from '../actions/sampler'
 
 // --------------------------------------------------------------
 
@@ -19,6 +18,6 @@ export default class SocketDriver extends Driver {
 	}
 
 	onMessage(message: unknown): void {
-		this.dispatch!(handleSocketEvent(message))
+		this.dispatch!({ type: 'SAMPLER_HANDLE_SOCKET_EVENT', data: { message } })
 	}
 }

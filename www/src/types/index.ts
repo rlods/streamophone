@@ -1,6 +1,3 @@
-import type { ThunkAction, ThunkDispatch } from 'redux-thunk'
-import type { Action } from 'redux'
-
 // Track types
 export interface Track {
 	bpm: number
@@ -23,63 +20,13 @@ export interface Message {
 	text: string
 }
 
-// State types
-export interface AppState {
-	[key: string]: unknown
-}
-
-export interface PlayerState {
-	playing: boolean
-	tracks: Track[] | null
-}
-
-export interface SamplerState {
-	started: boolean
-	tracks: Track[] | null
-	defaultDuration: number
-	strategyId: string
-}
-
-export interface SourceState {
-	bpm: number
-	id: string
-	transformation: string
+// Legacy dispatch type for audio classes and drivers (kept for compatibility)
+export interface AppAction {
 	type: string
-}
-
-export type MessagesState = Message[]
-
-// Root state
-export interface RootState {
-	app: AppState
-	player: PlayerState
-	messages: MessagesState
-	sampler: SamplerState
-	source: SourceState
-}
-
-// Action types
-export interface AppAction extends Action<string> {
 	data?: Record<string, unknown>
 }
 
-// Thunk types
-export interface AppExtra {
-	app: {
-		audioPlayer: AudioPlayerType
-		audioSampler: AudioSamplerType
-		drivers: Record<string, DriverType>
-	}
-}
-
-export type AppThunk<ReturnType = void> = ThunkAction<
-	ReturnType,
-	RootState,
-	AppExtra,
-	AppAction
->
-
-export type AppDispatch = ThunkDispatch<RootState, AppExtra, AppAction>
+export type AppDispatch = (action: AppAction | ((dispatch: AppDispatch) => void)) => void
 
 // Audio types (simplified interfaces for external classes)
 export interface AudioPlayerType {

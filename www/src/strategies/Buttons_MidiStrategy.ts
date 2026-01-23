@@ -1,4 +1,3 @@
-import { startSample, stopSample, changeSamplerSampleVolume } from '../actions/sampler'
 import MidiStrategy from './MidiStrategy'
 
 // --------------------------------------------------------------
@@ -13,7 +12,7 @@ export default class Buttons_MidiStrategy extends MidiStrategy {
 		if (c === 176 && k >= 1 && k <= 8) {
 			// change volume of k-1
 			console.log("Change volume of ", k-1, " to ", v/127)
-			this._dispatch!(changeSamplerSampleVolume(k-1, v/127))
+			this._dispatch!({ type: 'SAMPLER_SET_SAMPLE_VOLUME', data: { sampleIndex: k-1, volume: v/127 } })
 		}
 		else {
 			// start one sample
@@ -52,10 +51,10 @@ export default class Buttons_MidiStrategy extends MidiStrategy {
 			if (sample!==-1) {
 				if (v === 0) {
 					console.log("stop sample ", sample)
-					this._dispatch!(stopSample(sample))
+					this._dispatch!({ type: 'SAMPLER_STOP_SAMPLE', data: { sampleIndex: sample } })
 				} else if (v === 127) {
 					console.log("start sample ", sample)
-					this._dispatch!(startSample(sample))
+					this._dispatch!({ type: 'SAMPLER_START_SAMPLE', data: { sampleIndex: sample } })
 				}
 			}
 		}

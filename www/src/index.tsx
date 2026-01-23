@@ -1,20 +1,16 @@
 import React from 'react'
 import { createRoot } from 'react-dom/client'
-import { createStore, applyMiddleware, Middleware, Store } from 'redux'
-import { Provider } from 'react-redux'
 // import { BrowserRouter as Router } from 'react-router-dom' // should be used when you have a server that will handle dynamic requests (knows how to respond to any possible URI)
 import { HashRouter as Router } from 'react-router-dom' // should be used for static websites
-import logger from 'redux-logger'
-import { thunk } from 'redux-thunk'
 // ...
-import rootReducer from './reducers'
 import App from './containers/App'
 import AudioPlayer from './audio/AudioPlayer'
 import AudioSampler from './audio/AudioSampler'
 import { createDrivers } from './drivers'
 import Driver from './drivers/Driver'
+import { setAudioPlayer, setAudioSampler } from './stores'
+import { createDispatchAdapter } from './stores/dispatchAdapter'
 import config from './config'
-import type { RootState, AppExtra, AppAction } from './types'
 import './index.css'
 
 // --------------------------------------------------------------
@@ -35,22 +31,20 @@ const app: AppInstance = {
 
 // --------------------------------------------------------------
 
-const middlewares: Middleware[] = [
-	thunk.withExtraArgument({ app } as unknown as AppExtra),
-	config.ENABLE_LOGGER && logger
-].filter((middleware): middleware is Middleware => !!middleware)
+// Initialize stores with audio references
+setAudioPlayer(app.audioPlayer)
+setAudioSampler(app.audioSampler)
 
-const store: Store<RootState, AppAction> = createStore(
-	rootReducer,
-	{} as RootState,
-	applyMiddleware(...middlewares)
-)
+// Create dispatch adapter that routes Redux-style actions to Zustand stores
+const dispatch = createDispatchAdapter()
 
-// --------------------------------------------------------------
-
-app.audioPlayer.attachDispatcher(store.dispatch)
-app.audioSampler.attachDispatcher(store.dispatch)
-Object.values(app.drivers).forEach(driver => driver.attachDispatcher(store.dispatch))
+// Attach dispatch adapter to audio components and drivers
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+app.audioPlayer.attachDispatcher(dispatch as any)
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+app.audioSampler.attachDispatcher(dispatch as any)
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+Object.values(app.drivers).forEach(driver => driver.attachDispatcher(dispatch as any))
 
 // --------------------------------------------------------------
 
@@ -58,9 +52,7 @@ const container = document.getElementById('root')
 const root = createRoot(container!)
 
 root.render(
-	<Provider store={store}>
-		<Router>
-			<App />
-		</Router>
-	</Provider>
+	<Router>
+		<App />
+	</Router>
 )

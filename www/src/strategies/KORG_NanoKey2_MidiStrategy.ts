@@ -1,4 +1,3 @@
-import { startSample, stopSample, changeSamplerSampleVolume } from '../actions/sampler'
 import MidiStrategy from './MidiStrategy'
 
 // --------------------------------------------------------------
@@ -24,11 +23,11 @@ export default class KORG_NanoKey2_MidiStrategy extends MidiStrategy {
 			console.log(k, c)
 			if (c === keyDown) {
 				console.log("start sample", sample)
-				this._dispatch!(startSample(sample))
+				this._dispatch!({ type: 'SAMPLER_START_SAMPLE', data: { sampleIndex: sample } })
 			} else if (c === keyUp) {
-				this._dispatch!(stopSample(sample))
+				this._dispatch!({ type: 'SAMPLER_STOP_SAMPLE', data: { sampleIndex: sample } })
 			}
-			this._dispatch!(changeSamplerSampleVolume(sample, v / 128))
+			this._dispatch!({ type: 'SAMPLER_SET_SAMPLE_VOLUME', data: { sampleIndex: sample, volume: v / 128 } })
 		}
 	}
 }

@@ -1,4 +1,3 @@
-import { changeSamplerSampleReady, changeSamplerSampleStatus, changeSamplerSamples } from '../actions/sampler'
 import { createStrategy } from '../strategies'
 import AudioRecorder, { SamplerTrack } from './AudioRecorder'
 import CustomAudio, { AUDIO_EVENT_PLAY, AUDIO_EVENT_PAUSE } from './CustomAudio'
@@ -104,13 +103,13 @@ export default class AudioSampler {
 			extendedTrack.volume2 = 1.0
 			return extendedTrack
 		})
-		this._dispatch!(changeSamplerSamples(tracks))
+		this._dispatch!({ type: 'SAMPLER_SET_SAMPLES', data: { tracks } })
 
 		// Create audios
 		this._audios = tracks.map((track, sampleIndex) => {
 			const audio = new CustomAudio(track.preview, e => {
-				if      (e[0] === AUDIO_EVENT_PLAY)  this._dispatch!(changeSamplerSampleStatus(sampleIndex, true))
-				else if (e[0] === AUDIO_EVENT_PAUSE) this._dispatch!(changeSamplerSampleStatus(sampleIndex, false))
+				if      (e[0] === AUDIO_EVENT_PLAY)  this._dispatch!({ type: 'SAMPLER_SET_SAMPLE_STATUS', data: { sampleIndex, playing: true } })
+				else if (e[0] === AUDIO_EVENT_PAUSE) this._dispatch!({ type: 'SAMPLER_SET_SAMPLE_STATUS', data: { sampleIndex, playing: false } })
 				this._recorder!.pushEvent(AUDIO_CONTEXT.currentTime, sampleIndex, e, track)
 			})
 			audio.setLoop(track.loopStart, track.loopEnd)
@@ -120,7 +119,7 @@ export default class AudioSampler {
 		this._audios.forEach(async (audio, sampleIndex) => {
 			try {
 				await audio.init()
-				this._dispatch!(changeSamplerSampleReady(sampleIndex))
+				this._dispatch!({ type: 'SAMPLER_SET_SAMPLE_READY', data: { sampleIndex } })
 			}
 			catch (error) {
 				console.log('Audio buffer initialization failed:', (error as Error).message)

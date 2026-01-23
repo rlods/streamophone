@@ -1,9 +1,7 @@
 import React, { useCallback } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
 //
-import { registerSampleCanvas, startSample, stopSample } from '../actions/sampler'
+import { useSamplerStore, registerSampleCanvas, startSample, stopSample } from '../stores'
 import SamplerSampleComponent from '../components/SamplerSample'
-import type { RootState, AppDispatch } from '../types'
 
 // --------------------------------------------------------------
 
@@ -17,41 +15,40 @@ interface SamplerSampleProps {
 }
 
 const SamplerSample: React.FC<SamplerSampleProps> = ({ index, info }) => {
-	const dispatch = useDispatch<AppDispatch>()
-	const track = useSelector((state: RootState) => state.sampler.tracks![index])
+	const track = useSamplerStore((state) => state.tracks![index])
 
 	const onMouseDown = useCallback((e: React.MouseEvent): void => {
-		if (e.button === 0) dispatch(startSample(index))
-	}, [dispatch, index])
+		if (e.button === 0) startSample(index)
+	}, [index])
 
 	const onMouseUp = useCallback((e: React.MouseEvent): void => {
-		if (e.button === 0) dispatch(stopSample(index))
-	}, [dispatch, index])
+		if (e.button === 0) stopSample(index)
+	}, [index])
 
 	const onMouseEnter = useCallback((e: React.MouseEvent): void => {
 		if (e.buttons) {
-			dispatch(startSample(index))
+			startSample(index)
 		}
-	}, [dispatch, index])
+	}, [index])
 
 	const onMouseLeave = useCallback((e: React.MouseEvent): void => {
 		if (e.buttons) {
-			dispatch(stopSample(index))
+			stopSample(index)
 		}
-	}, [dispatch, index])
+	}, [index])
 
 	const onTouchStart = useCallback((e: React.TouchEvent): void => {
 		e.preventDefault()
-		dispatch(startSample(index))
-	}, [dispatch, index])
+		startSample(index)
+	}, [index])
 
-	const onTouchEnd = useCallback((e: React.TouchEvent): void => {
-		dispatch(stopSample(index))
-	}, [dispatch, index])
+	const onTouchEnd = useCallback((): void => {
+		stopSample(index)
+	}, [index])
 
 	const onRegisterCanvas = useCallback((canvas: HTMLCanvasElement | null): void => {
-		dispatch(registerSampleCanvas(index, canvas))
-	}, [dispatch, index])
+		registerSampleCanvas(index, canvas)
+	}, [index])
 
 	return (
 		<SamplerSampleComponent

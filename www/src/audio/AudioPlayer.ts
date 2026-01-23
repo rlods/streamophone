@@ -1,4 +1,3 @@
-import { changePlayerSampleReady, changePlayerSampleStatus, changePlayerStatus, changePlayerSamples } from '../actions/player'
 import CustomAudio, { AUDIO_EVENT_LOOP, AUDIO_EVENT_PLAY, AUDIO_EVENT_PAUSE, AUDIO_EVENT_SPEED, AUDIO_EVENT_VOLUME } from './CustomAudio'
 import { b64_to_js, Sleeper } from '../tools'
 import { AUDIO_CONTEXT } from './'
@@ -50,8 +49,8 @@ export default class AudioPlayer {
 
 	constructor() {
 		this._eventCB = (e: PlayerEvent) => {
-			if      (e[0] === PLAYER_EVENT_PLAY)  this._dispatch!(changePlayerStatus(true))
-			else if (e[0] === PLAYER_EVENT_PAUSE) this._dispatch!(changePlayerStatus(false))
+			if      (e[0] === PLAYER_EVENT_PLAY)  this._dispatch!({ type: 'PLAYER_SET_STATUS', data: { playing: true } })
+			else if (e[0] === PLAYER_EVENT_PAUSE) this._dispatch!({ type: 'PLAYER_SET_STATUS', data: { playing: false } })
 		}
 		this._sleeper = new Sleeper()
 	}
@@ -77,8 +76,8 @@ export default class AudioPlayer {
 		console.log('Loading audios')
 		this._audios = tracks.map((track, sampleIndex) => {
 			const audio = new CustomAudio(track.preview, e => {
-				if      (e[0] === AUDIO_EVENT_PLAY)  this._dispatch!(changePlayerSampleStatus(sampleIndex, true))
-				else if (e[0] === AUDIO_EVENT_PAUSE) this._dispatch!(changePlayerSampleStatus(sampleIndex, false))
+				if      (e[0] === AUDIO_EVENT_PLAY)  this._dispatch!({ type: 'PLAYER_SET_SAMPLE_STATUS', data: { sampleIndex, playing: true } })
+				else if (e[0] === AUDIO_EVENT_PAUSE) this._dispatch!({ type: 'PLAYER_SET_SAMPLE_STATUS', data: { sampleIndex, playing: false } })
 			})
 			audio.setLoop(track.loopStart, track.loopEnd)
 			audio.setVolume(track.volume)
@@ -90,14 +89,14 @@ export default class AudioPlayer {
 		this._audios.forEach(async (audio, sampleIndex) => {
 			try {
 				await audio.init()
-				this._dispatch!(changePlayerSampleReady(sampleIndex))
+				this._dispatch!({ type: 'PLAYER_SET_SAMPLE_READY', data: { sampleIndex } })
 			}
 			catch (error) {
 				console.log('Audio buffer initialization failed', error)
 			}
 		})
 
-		this._dispatch!(changePlayerSamples(tracks))
+		this._dispatch!({ type: 'PLAYER_SET_SAMPLES', data: { tracks } })
 		this._ready = true
 	}
 

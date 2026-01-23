@@ -1,4 +1,3 @@
-import { startSample, stopSample } from '../actions/sampler'
 import MidiStrategy from './MidiStrategy'
 
 // --------------------------------------------------------------
@@ -23,10 +22,10 @@ class LightPadBlock_MidiStrategy extends MidiStrategy {
 			const m = this.mapping[k]
 			if (m !== undefined) {
 				if (c >= 145 && c < 160) {
-					this._dispatch!(startSample(m))
+					this._dispatch!({ type: 'SAMPLER_START_SAMPLE', data: { sampleIndex: m } })
 				}
 				else if (c < 145 && c >= 129) {
-					this._dispatch!(stopSample(m))
+					this._dispatch!({ type: 'SAMPLER_STOP_SAMPLE', data: { sampleIndex: m } })
 				}
 			}
 		}

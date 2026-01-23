@@ -1,8 +1,7 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
 //
 import PlayerSampleComponent from '../components/PlayerSample'
-import type { RootState } from '../types'
+import { usePlayerStore } from '../stores'
 
 // --------------------------------------------------------------
 
@@ -11,7 +10,7 @@ interface PlayerSampleProps {
 }
 
 const PlayerSample: React.FC<PlayerSampleProps> = ({ index }) => {
-	const track = useSelector((state: RootState) => state.player.tracks![index])
+	const track = usePlayerStore((state) => state.tracks![index])
 
 	return (
 		<PlayerSampleComponent

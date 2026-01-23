@@ -1,60 +1,62 @@
 import React, { useCallback } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate, NavigateFunction } from 'react-router-dom'
 //
-import { changeSamplerDefaultDuration, changeSamplerStrategy } from '../actions/sampler'
-import { changeSourceBPM, changeSourceId, changeSourceTransformation, changeSourceType } from '../actions/source'
-import { goToSampler } from '../actions/sampler'
+import { useSamplerStore, useSourceStore, goToSampler } from '../stores'
 import SplashComponent from '../components/Splash'
-import type { RootState, AppDispatch } from '../types'
 
 // --------------------------------------------------------------
 
 const Splash: React.FC = () => {
-	const dispatch = useDispatch<AppDispatch>()
 	const navigate: NavigateFunction = useNavigate()
 
-	const samplerDefaultDuration = useSelector((state: RootState) => state.sampler.defaultDuration)
-	const samplerStrategyId = useSelector((state: RootState) => state.sampler.strategyId)
-	const sourceBPM = useSelector((state: RootState) => state.source.bpm)
-	const sourceId = useSelector((state: RootState) => state.source.id)
-	const sourceTransformation = useSelector((state: RootState) => state.source.transformation)
-	const sourceType = useSelector((state: RootState) => state.source.type)
+	const samplerDefaultDuration = useSamplerStore((state) => state.defaultDuration)
+	const samplerStrategyId = useSamplerStore((state) => state.strategyId)
+	const setDefaultDuration = useSamplerStore((state) => state.setDefaultDuration)
+	const setStrategy = useSamplerStore((state) => state.setStrategy)
+
+	const sourceBPM = useSourceStore((state) => state.bpm)
+	const sourceId = useSourceStore((state) => state.id)
+	const sourceTransformation = useSourceStore((state) => state.transformation)
+	const sourceType = useSourceStore((state) => state.type)
+	const setBpm = useSourceStore((state) => state.setBpm)
+	const setId = useSourceStore((state) => state.setId)
+	const setTransformation = useSourceStore((state) => state.setTransformation)
+	const setType = useSourceStore((state) => state.setType)
 
 	const onChangeCurated = useCallback((e: React.ChangeEvent<HTMLSelectElement>): void => {
 		const [sourceType, sourceId] = e.target.value.split(':')
-		dispatch(changeSourceId(sourceId))
-		dispatch(changeSourceType(sourceType))
-	}, [dispatch])
+		setId(sourceId)
+		setType(sourceType)
+	}, [setId, setType])
 
 	const onChangeSamplerDefaultDuration = useCallback((e: React.ChangeEvent<HTMLSelectElement>): void => {
-		dispatch(changeSamplerDefaultDuration(parseInt(e.target.value, 10)))
-	}, [dispatch])
+		setDefaultDuration(parseInt(e.target.value, 10))
+	}, [setDefaultDuration])
 
 	const onChangeSamplerStrategy = useCallback((e: React.ChangeEvent<HTMLSelectElement>): void => {
-		dispatch(changeSamplerStrategy(e.target.value))
-	}, [dispatch])
+		setStrategy(e.target.value)
+	}, [setStrategy])
 
 	const onChangeSourceBPM = useCallback((e: React.ChangeEvent<HTMLSelectElement>): void => {
-		dispatch(changeSourceBPM(parseInt(e.target.value, 10)))
-	}, [dispatch])
+		setBpm(parseInt(e.target.value, 10))
+	}, [setBpm])
 
 	const onChangeSourceId = useCallback((e: React.ChangeEvent<HTMLInputElement>): void => {
-		dispatch(changeSourceId(e.target.value))
-	}, [dispatch])
+		setId(e.target.value)
+	}, [setId])
 
 	const onChangeSourceTransformation = useCallback((e: React.ChangeEvent<HTMLSelectElement>): void => {
-		dispatch(changeSourceTransformation(e.target.value))
-	}, [dispatch])
+		setTransformation(e.target.value)
+	}, [setTransformation])
 
 	const onChangeSourceType = useCallback((e: React.ChangeEvent<HTMLSelectElement>): void => {
-		dispatch(changeSourceType(e.target.value))
-	}, [dispatch])
+		setType(e.target.value)
+	}, [setType])
 
 	const onCreate = useCallback((e: React.FormEvent<HTMLFormElement>): void => {
 		e.preventDefault()
-		dispatch(goToSampler(navigate))
-	}, [dispatch, navigate])
+		goToSampler(navigate)
+	}, [navigate])
 
 	return (
 		<SplashComponent

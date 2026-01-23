@@ -1,29 +1,25 @@
 import React, { useCallback } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
 //
-import { handleKeyDown, handleKeyUp, loadSampler } from '../actions/sampler'
+import { useSamplerStore, handleKeyDown, handleKeyUp, loadSampler } from '../stores'
 import SamplerComponent from '../components/Sampler'
-import type { RootState, AppDispatch } from '../types'
 
 // --------------------------------------------------------------
 
 const Sampler: React.FC = () => {
-	const dispatch = useDispatch<AppDispatch>()
-
-	const strategyId = useSelector((state: RootState) => state.sampler.strategyId)
-	const tracks = useSelector((state: RootState) => state.sampler.tracks)
+	const strategyId = useSamplerStore((state) => state.strategyId)
+	const tracks = useSamplerStore((state) => state.tracks)
 
 	const onKeyDown = useCallback((e: KeyboardEvent): void => {
-		if (!e.repeat) dispatch(handleKeyDown(e.keyCode))
-	}, [dispatch])
+		if (!e.repeat) handleKeyDown(e.keyCode)
+	}, [])
 
 	const onKeyUp = useCallback((e: KeyboardEvent): void => {
-		dispatch(handleKeyUp(e.keyCode))
-	}, [dispatch])
+		handleKeyUp(e.keyCode)
+	}, [])
 
 	const onInit = useCallback((): void => {
-		dispatch(loadSampler())
-	}, [dispatch])
+		loadSampler()
+	}, [])
 
 	return (
 		<SamplerComponent
