@@ -1,6 +1,6 @@
 {
   "name": "streamophone-api",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Streamophone API",
   "main": "src/index.js",
   "author": "rlods",
@@ -11,17 +11,18 @@
     "prod:start": "NODE_ENV=production node build/src/index.js"
   },
   "dependencies": {
-    "axios": "^0.17.1",
-    "body-parser": "^1.18.2",
-    "cors": "^2.8.4",
-    "express": "^4.16.2",
-    "ioredis": "^3.2.1",
-    "promise-retry": "^1.1.1"
+    "axios": "^1.6.7",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "ioredis": "^5.3.2",
+    "promise-retry": "^2.0.1"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-polyfill": "^6.26.0",
-    "babel-preset-env": "^1.6.1",
-    "nodemon": "^1.12.1"
+    "@babel/cli": "^7.23.9",
+    "@babel/core": "^7.23.9",
+    "@babel/node": "^7.23.9",
+    "@babel/preset-env": "^7.23.9",
+    "nodemon": "^3.0.3"
   }
 }

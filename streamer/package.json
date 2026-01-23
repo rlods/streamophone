@@ -1,6 +1,6 @@
 {
   "name": "streamophone-streamer",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Streamophone Streamer",
   "main": "src/index.js",
   "author": "rlods",
@@ -11,14 +11,15 @@
     "prod:start": "NODE_ENV=production node build/src/index.js"
   },
   "dependencies": {
-    "cors": "^2.8.4",
-    "express": "^4.16.2",
-    "request": "^2.83.0"
+    "axios": "^1.6.7",
+    "cors": "^2.8.5",
+    "express": "^4.18.2"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-polyfill": "^6.26.0",
-    "babel-preset-env": "^1.6.1",
-    "nodemon": "^1.12.1"
+    "@babel/cli": "^7.23.9",
+    "@babel/core": "^7.23.9",
+    "@babel/node": "^7.23.9",
+    "@babel/preset-env": "^7.23.9",
+    "nodemon": "^3.0.3"
   }
 }

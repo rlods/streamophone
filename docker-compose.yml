@@ -1,11 +1,11 @@
-version: '3.2'
+version: '3.8'
 
 services:
 
   # Connect with CLI using:
-  # docker run -it --network ..._data --rm redis:4-alpine redis-cli -h ..._cache_1 -a PWD
+  # docker run -it --network ..._data --rm redis:7-alpine redis-cli -h ..._cache_1 -a PWD
   cache:
-    image: redis:4-alpine
+    image: redis:7-alpine
     command: [
       "redis-server",
       "--appendonly", "yes",
@@ -21,7 +21,7 @@ services:
     ports:
       - ${STREAMOPHONE_CACHE_PORT}:${STREAMOPHONE_CACHE_PORT}
     restart: on-failure
-      
+
   api:
     build:
       context: api
@@ -47,7 +47,7 @@ services:
       - ${STREAMOPHONE_API_PORT}:${STREAMOPHONE_API_PORT}
     read_only: true
     restart: on-failure
-    
+
   streamer:
     build:
       context: streamer
@@ -81,7 +81,7 @@ services:
     restart: on-failure
 
   proxy:
-    image: haproxy:1.7-alpine
+    image: haproxy:2.9-alpine
     networks:
       - frontend
     depends_on:

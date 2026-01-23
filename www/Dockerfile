@@ -1,4 +1,4 @@
-FROM node:8-alpine
+FROM node:20-alpine
 
 COPY public /app/public/
 COPY src /app/src/
