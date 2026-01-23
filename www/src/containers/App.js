@@ -1,15 +1,15 @@
-import { connect } from 'react-redux'
+import React from 'react'
+import { useSelector } from 'react-redux'
 //
-import App from '../components/App'
+import AppComponent from '../components/App'
 
 // --------------------------------------------------------------
 
-const mapStateToProps = (state, ownProps) => ({
-	messages: state.messages,
-	ready: !!state.sampler.tracks // So that the App component is re-evaluated when needed
-})
+const App = () => {
+	const messages = useSelector(state => state.messages)
+	const ready = useSelector(state => !!state.sampler.tracks)
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
-})
+	return <AppComponent messages={messages} ready={ready} />
+}
 
-export default connect(mapStateToProps, mapDispatchToProps)(App)
+export default App

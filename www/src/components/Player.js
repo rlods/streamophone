@@ -7,8 +7,8 @@ import './Player.css'
 // --------------------------------------------------------------
 
 class Player extends Component {
-	componentWillMount() {
-		if (null === this.props.tracks)	
+	componentDidMount() {
+		if (null === this.props.tracks)
 			this.props.onInit()
 	}
 

@@ -10,16 +10,16 @@ import './Sampler.css'
 // --------------------------------------------------------------
 
 class Sampler extends Component {
-	componentWillMount() {
-		document.addEventListener('keydown', this.props.onKeyDown.bind(this))
-		document.addEventListener('keyup', this.props.onKeyUp.bind(this))
-		if (null === this.props.tracks)	
+	componentDidMount() {
+		document.addEventListener('keydown', this.props.onKeyDown)
+		document.addEventListener('keyup', this.props.onKeyUp)
+		if (null === this.props.tracks)
 			this.props.onInit() // Because user directly opened the page directly not from the splash screen
 	}
 
 	componentWillUnmount() {
-		document.removeEventListener('keydown', this.props.onKeyDown.bind(this))
-		document.addEventListener('keyup', this.props.onKeyUp.bind(this))
+		document.removeEventListener('keydown', this.props.onKeyDown)
+		document.removeEventListener('keyup', this.props.onKeyUp)
 	}
 
 	render() {

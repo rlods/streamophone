@@ -1,20 +1,34 @@
-import { connect } from 'react-redux'
+import React, { useCallback } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { useParams } from 'react-router-dom'
 //
 import { loadPlayer, play, pause, registerPlayerCanvas } from '../actions/player'
-import Player from '../components/Player'
+import PlayerComponent from '../components/Player'
 
 // --------------------------------------------------------------
 
-const mapStateToProps = (state, ownProps) => ({
-	playing: state.player.playing,
-	tracks: state.player.tracks
-})
+const Player = () => {
+	const dispatch = useDispatch()
+	const { data } = useParams()
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
-	onInit: ()               => dispatch(loadPlayer(ownProps.match.params.data)),
-	onPlay: ()               => dispatch(play()),
-	onPause: ()              => dispatch(pause()),
-	onRegisterCanvas: canvas => dispatch(registerPlayerCanvas(canvas))
-})
+	const playing = useSelector(state => state.player.playing)
+	const tracks = useSelector(state => state.player.tracks)
 
-export default connect(mapStateToProps, mapDispatchToProps)(Player)
+	const onInit = useCallback(() => dispatch(loadPlayer(data)), [dispatch, data])
+	const onPlay = useCallback(() => dispatch(play()), [dispatch])
+	const onPause = useCallback(() => dispatch(pause()), [dispatch])
+	const onRegisterCanvas = useCallback(canvas => dispatch(registerPlayerCanvas(canvas)), [dispatch])
+
+	return (
+		<PlayerComponent
+			playing={playing}
+			tracks={tracks}
+			onInit={onInit}
+			onPlay={onPlay}
+			onPause={onPause}
+			onRegisterCanvas={onRegisterCanvas}
+		/>
+	)
+}
+
+export default Player
