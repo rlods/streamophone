@@ -1,4 +1,4 @@
-import { FC, MouseEvent, ReactNode, useCallback } from 'react'
+import { FC, MouseEvent, ReactNode, TouchEvent, useCallback } from 'react'
 import classNames from 'classnames'
 //
 import { useSamplerStore, registerSampleCanvas, startSample, stopSample } from '../stores'
@@ -43,7 +43,7 @@ const SamplerSample: FC<SamplerSampleProps> = ({ index, info }) => {
 		startSample(index)
 	}, [index])
 
-	const onTouchEnd = useCallback((e: React.TouchEvent): void => {
+	const onTouchEnd = useCallback((_e: TouchEvent): void => {
 		stopSample(index)
 	}, [index])
 
