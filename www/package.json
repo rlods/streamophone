@@ -10,7 +10,10 @@
     "build": "REACT_APP_STREAMOPHONE_API_URL=${STREAMOPHONE_API_URL} react-scripts build",
     "start": "serve -s build -p ${STREAMOPHONE_WWW_PORT}",
     "prod:build": "REACT_APP_STREAMOPHONE_API_URL=${STREAMOPHONE_API_URL} react-scripts build",
-    "prod:start": "serve -s build -p ${STREAMOPHONE_WWW_PORT}"
+    "prod:start": "serve -s build -p ${STREAMOPHONE_WWW_PORT}",
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix",
+    "format": "prettier --write src"
   },
   "dependencies": {
     "axios": "^1.6.7",
@@ -25,13 +28,20 @@
     "zustand": "^4.5.0"
   },
   "devDependencies": {
+    "@eslint/js": "^9.0.0",
     "@types/jsonp": "^0.2.3",
     "@types/node": "^20.11.0",
     "@types/react": "^18.2.48",
     "@types/react-dom": "^18.2.18",
     "@types/react-transition-group": "^4.4.10",
+    "eslint": "^9.0.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-react-hooks": "^5.0.0",
+    "eslint-plugin-react-refresh": "^0.4.5",
+    "prettier": "^3.2.5",
     "react-scripts": "5.0.1",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "typescript-eslint": "^8.0.0"
   },
   "browserslist": {
     "production": [
