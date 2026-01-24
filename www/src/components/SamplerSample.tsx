@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import { FC, MouseEvent, ReactNode, useCallback } from 'react'
 import classNames from 'classnames'
 //
 import { useSamplerStore, registerSampleCanvas, startSample, stopSample } from '../stores'
@@ -15,30 +15,30 @@ interface SamplerSampleProps {
 	info?: string
 }
 
-const SamplerSample: React.FC<SamplerSampleProps> = ({ index, info }) => {
+const SamplerSample: FC<SamplerSampleProps> = ({ index, info }) => {
 	const track = useSamplerStore((state) => state.tracks![index])
 
-	const onMouseDown = useCallback((e: React.MouseEvent): void => {
+	const onMouseDown = useCallback((e: MouseEvent): void => {
 		if (e.button === 0) startSample(index)
 	}, [index])
 
-	const onMouseUp = useCallback((e: React.MouseEvent): void => {
+	const onMouseUp = useCallback((e: MouseEvent): void => {
 		if (e.button === 0) stopSample(index)
 	}, [index])
 
-	const onMouseEnter = useCallback((e: React.MouseEvent): void => {
+	const onMouseEnter = useCallback((e: MouseEvent): void => {
 		if (e.buttons) {
 			startSample(index)
 		}
 	}, [index])
 
-	const onMouseLeave = useCallback((e: React.MouseEvent): void => {
+	const onMouseLeave = useCallback((e: MouseEvent): void => {
 		if (e.buttons) {
 			stopSample(index)
 		}
 	}, [index])
 
-	const onTouchStart = useCallback((e: React.TouchEvent): void => {
+	const onTouchStart = useCallback((e: TouchEvent): void => {
 		e.preventDefault()
 		startSample(index)
 	}, [index])
@@ -56,9 +56,9 @@ const SamplerSample: React.FC<SamplerSampleProps> = ({ index, info }) => {
 	const speed = track.speed.toFixed(2)
 
 	// props.info is given for the keyboard strategy to display keycode
-	const canvas: React.ReactNode = track.playing ? <canvas className="sampler-sample-canvas" width="300" height="300" ref={onRegisterCanvas}></canvas> : null
-	const infoElement: React.ReactNode = info ? <div className="sampler-sample-info">{info}</div> : null
-	const meta: React.ReactNode = (
+	const canvas: ReactNode = track.playing ? <canvas className="sampler-sample-canvas" width="300" height="300" ref={onRegisterCanvas}></canvas> : null
+	const infoElement: ReactNode = info ? <div className="sampler-sample-info">{info}</div> : null
+	const meta: ReactNode = (
 		<div className="sampler-sample-metas">
 			{bpm ? <i className="sampler-sample-meta sampler-sample-meta-bpm">{bpm}</i> : null}
 			{Math.abs(track.speed - 1.0) > Number.EPSILON ? <i className="sampler-sample-meta sampler-sample-meta-spped">{speed}</i> : null}
@@ -66,7 +66,7 @@ const SamplerSample: React.FC<SamplerSampleProps> = ({ index, info }) => {
 			{track.ready ? null : <i className="fa fa-exclamation-triangle sampler-sample-meta sampler-sample-meta-notready" title="not ready"></i>}
 		</div>
 	)
-	const menu: React.ReactNode = true ? null : (
+	const menu: ReactNode = true ? null : (
 		<div className="sampler-sample-menu">TEST</div>
 	)
 
