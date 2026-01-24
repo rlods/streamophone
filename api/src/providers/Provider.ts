@@ -21,7 +21,7 @@ export default class Provider {
     this.tracksCacheExpiration = 60 * 60 * 24; // seconds (1d) can be overriden per Provider
   }
 
-  async enrichTracks(_tracks: Track[], _cb: EnrichmentCallback): Promise<void> {
+  enrichTracks(_tracks: Track[], _cb: EnrichmentCallback): void {
     // To be overridden by subclasses
   }
 
