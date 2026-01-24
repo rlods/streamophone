@@ -1,7 +1,6 @@
 # Streamophone Makefile
-# Supports both bun and npm (bun preferred)
 
-RUNTIME := $(shell command -v bun 2> /dev/null && echo "bun" || echo "npm")
+RUNTIME := bun
 
 install:
 	cd api && $(RUNTIME) install

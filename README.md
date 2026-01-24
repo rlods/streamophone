@@ -20,28 +20,8 @@ streamophone/
 
 ## Installation
 
-### Using Bun (Recommended)
-
 ```bash
-# Install all dependencies
-cd api && bun install
-cd ../streamer && bun install
-cd ../www && bun install
-
-# Or use the Makefile
 make bun-install
-```
-
-### Using npm
-
-```bash
-# Install all dependencies
-cd api && npm install
-cd ../streamer && npm install
-cd ../www && npm install
-
-# Or use the Makefile
-make install
 ```
 
 ## Development
@@ -50,8 +30,6 @@ make install
 
 ```bash
 make dev-cache
-# or
-docker-compose up cache
 ```
 
 ### 2. Configure environment
@@ -64,19 +42,6 @@ source .env-test
 
 ### 3. Start services
 
-Using Bun:
-```bash
-# Terminal 1 - API
-cd api && bun run dev
-
-# Terminal 2 - Streamer
-cd streamer && bun run dev
-
-# Terminal 3 - Frontend
-cd www && bun run dev
-```
-
-Using Makefile:
 ```bash
 make dev-api       # Start API
 make dev-streamer  # Start Streamer
