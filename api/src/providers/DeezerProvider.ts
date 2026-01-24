@@ -91,11 +91,7 @@ class EnrichmentProcessor {
             await this.provider.fetchAPI<DeezerTrackDetailResponse>(
               `track/${track.id}`,
             );
-          return {
-            id,
-            bpm,
-            gain,
-          };
+          return { id, bpm, gain };
         }),
       );
       this.cb!(this.baseIndex, enrichedTracks);
