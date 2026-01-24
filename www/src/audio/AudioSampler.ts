@@ -11,6 +11,8 @@ export interface ExtendedSamplerTrack extends SamplerTrack {
 	playing: boolean
 	ready: boolean
 	bpm?: number
+	cover?: string
+	normalized?: boolean
 }
 
 export interface SamplerCallbacks {

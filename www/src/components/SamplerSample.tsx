@@ -43,7 +43,7 @@ const SamplerSample: FC<SamplerSampleProps> = ({ index, info }) => {
 		startSample(index)
 	}, [index])
 
-	const onTouchEnd = useCallback((): void => {
+	const onTouchEnd = useCallback((e: React.TouchEvent): void => {
 		stopSample(index)
 	}, [index])
 
