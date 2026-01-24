@@ -1,41 +1,45 @@
-import cors from 'cors'
-import express, { type Application } from 'express'
-import config from './config'
-import { initCache } from './helpers/cache'
-import { initRoutes } from './controllers/'
+import cors from "cors";
+import express, { type Application } from "express";
+import config from "./config";
+import { initCache } from "./helpers/cache";
+import { initRoutes } from "./controllers/";
 
 // ------------------------------------------------------------------
 
-console.log('CONFIG', config)
+console.log("CONFIG", config);
 
 const createApp = (): Application => {
-	const app: Application = express()
-	app.use(cors({
-		// credentials: true,
-		origin: function (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) {
-			if (origin && config.WHITELIST.indexOf(origin) !== -1)
-				callback(null, true)
-			else
-				callback(new Error('Not allowed by CORS')) // TODO: do not throw, provide some error instead
-		}
-	}))
+  const app: Application = express();
+  app.use(
+    cors({
+      // credentials: true,
+      origin: function (
+        origin: string | undefined,
+        callback: (err: Error | null, allow?: boolean) => void,
+      ) {
+        if (origin && config.WHITELIST.indexOf(origin) !== -1)
+          callback(null, true);
+        else callback(new Error("Not allowed by CORS")); // TODO: do not throw, provide some error instead
+      },
+    }),
+  );
 
-	if (config.CACHE) {
-		console.log('Initializing cache')
-		initCache()
-		console.log('Cache initialized')
-	}
+  if (config.CACHE) {
+    console.log("Initializing cache");
+    initCache();
+    console.log("Cache initialized");
+  }
 
-	console.log('Initializing routes')
-	initRoutes(app)
-	console.log('Routes initialized')
+  console.log("Initializing routes");
+  initRoutes(app);
+  console.log("Routes initialized");
 
-	app.listen(config.API.PORT)
-	app.emit('appReady') // for tests
-	console.log(`Listening on ${config.API.PORT}`)
+  app.listen(config.API.PORT);
+  app.emit("appReady"); // for tests
+  console.log(`Listening on ${config.API.PORT}`);
 
-	return app
-}
+  return app;
+};
 
-const app = createApp()
-export default app // for tests
+const app = createApp();
+export default app; // for tests

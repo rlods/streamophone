@@ -1,20 +1,18 @@
 interface StreamerConfig {
-	PORT: number;
+  PORT: number;
 }
 
 interface Config {
-	STREAMER: StreamerConfig;
-	WHITELIST: (string | undefined)[];
+  STREAMER: StreamerConfig;
+  WHITELIST: (string | undefined)[];
 }
 
 const config: Config = {
-	STREAMER: {
-		PORT: parseInt(process.env.STREAMOPHONE_STREAMER_PORT || '3000', 10)
-	},
+  STREAMER: {
+    PORT: parseInt(process.env.STREAMOPHONE_STREAMER_PORT || "3000", 10),
+  },
 
-	WHITELIST: [
-		process.env.STREAMOPHONE_WWW_URL
-	]
+  WHITELIST: [process.env.STREAMOPHONE_WWW_URL],
 };
 
 export default config;

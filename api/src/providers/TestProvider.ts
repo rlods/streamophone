@@ -1,48 +1,45 @@
-import Provider, { type Track } from './Provider'
-import config from '../config'
+import Provider, { type Track } from "./Provider";
+import config from "../config";
 
 // ------------------------------------------------------------------
 
 export default class TestProvider extends Provider {
-	async fetchTracks(sourceType: string, _sourceId: string): Promise<Track[]> {
-		let tracks: Track[]
-		switch (sourceType)
-		{
-			case 'TEST':
-			{
-				tracks = [
-					{
-						cover: config.FAKE.URL + '/fake1.jpg',
-						id: 'fake1',
-						preview: config.FAKE.URL + '/fake1.mp3',
-						readable: true,
-						title: 'Fake1',
-						url: '#'
-					},
-					{
-						cover: config.FAKE.URL + '/fake2.jpg',
-						id: 'fake2',
-						preview: config.FAKE.URL + '/fake2.mp3',
-						readable: true,
-						title: 'Fake2',
-						url: '#'
-					},
-					{
-						cover: config.FAKE.URL + '/fake3.jpg',
-						id: 'fake3',
-						preview: config.FAKE.URL + '/fake3.mp3',
-						readable: true,
-						title: 'Fake3',
-						url: '#'
-					}
-				]
-				break
-			}
-			default:
-			{
-				throw new Error(`Unknown test source type "${sourceType}"`)
-			}
-		}
-		return tracks
-	}
+  async fetchTracks(sourceType: string, _sourceId: string): Promise<Track[]> {
+    let tracks: Track[];
+    switch (sourceType) {
+      case "TEST": {
+        tracks = [
+          {
+            cover: config.FAKE.URL + "/fake1.jpg",
+            id: "fake1",
+            preview: config.FAKE.URL + "/fake1.mp3",
+            readable: true,
+            title: "Fake1",
+            url: "#",
+          },
+          {
+            cover: config.FAKE.URL + "/fake2.jpg",
+            id: "fake2",
+            preview: config.FAKE.URL + "/fake2.mp3",
+            readable: true,
+            title: "Fake2",
+            url: "#",
+          },
+          {
+            cover: config.FAKE.URL + "/fake3.jpg",
+            id: "fake3",
+            preview: config.FAKE.URL + "/fake3.mp3",
+            readable: true,
+            title: "Fake3",
+            url: "#",
+          },
+        ];
+        break;
+      }
+      default: {
+        throw new Error(`Unknown test source type "${sourceType}"`);
+      }
+    }
+    return tracks;
+  }
 }
