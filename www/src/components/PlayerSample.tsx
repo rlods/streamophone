@@ -20,7 +20,7 @@ const PlayerSample: React.FC<PlayerSampleProps> = ({ index }) => {
 			<div className="player-sample-metas">
 				{track.ready ? null : <i className="fa fa-exclamation-triangle player-sample-meta player-sample-meta-notready" title="not ready"></i>}
 			</div>
-			<div className="player-sample-totalDuration">{fmtMSS(track.totalDuration)}</div>
+			<div className="player-sample-totalDuration">{fmtMSS(track.totalDuration ?? 0)}</div>
 		</div>
 	)
 }

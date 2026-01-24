@@ -1,5 +1,4 @@
 import { create } from 'zustand'
-import type { Track } from '../types'
 import type AudioPlayer from '../audio/AudioPlayer'
 import type { PlayerTrack, PlayerCallbacks } from '../audio/AudioPlayer'
 import { displayError } from './messagesStore'
@@ -8,7 +7,7 @@ import { displayError } from './messagesStore'
 
 interface PlayerState {
 	playing: boolean
-	tracks: Track[] | null
+	tracks: PlayerTrack[] | null
 	setSampleReady: (sampleIndex: number) => void
 	setSampleStatus: (sampleIndex: number, playing: boolean) => void
 	setSamples: (tracks: PlayerTrack[] | null) => void

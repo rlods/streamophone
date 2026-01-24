@@ -2,7 +2,6 @@ import { create } from 'zustand'
 import type { NavigateFunction } from 'react-router-dom'
 import config from '../config'
 import { getSearchParam } from '../tools'
-import type { Track } from '../types'
 import type AudioSampler from '../audio/AudioSampler'
 import type { ExtendedSamplerTrack, SamplerCallbacks } from '../audio/AudioSampler'
 import { displayError, displayMessage } from './messagesStore'
@@ -29,7 +28,7 @@ const getInitialStrategy = (): string => {
 
 interface SamplerState {
 	started: boolean
-	tracks: Track[] | null
+	tracks: ExtendedSamplerTrack[] | null
 	defaultDuration: number
 	strategyId: string
 	setDefaultDuration: (defaultDuration: number) => void

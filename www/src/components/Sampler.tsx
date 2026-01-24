@@ -49,24 +49,24 @@ const Sampler: React.FC = () => {
 					tracks.slice(0, 10),
 					tracks.slice(10, 20),
 					tracks.slice(20)
-				].map((row: Track[], rowIndex: number) => <div className="samples-group samples-group-by-row" key={rowIndex}>{row.map((sample: Track, sampleIndex: number) => <SamplerSample key={sampleIndex} index={rowIndex * 10 + sampleIndex} info={keys[rowIndex * 10 + sampleIndex]} />)}</div>)
+				].map((row, rowIndex) => <div className="samples-group samples-group-by-row" key={rowIndex}>{row.map((sample, sampleIndex) => <SamplerSample key={sampleIndex} index={rowIndex * 10 + sampleIndex} info={keys[rowIndex * 10 + sampleIndex]} />)}</div>)
 				break
 
 			case 'BCF2000_MULTISLIDERS':
 				chunkSize = Math.floor(tracks.length / 8)
-				body = chunkArray(tracks, chunkSize).map((chunk: Track[], chunkIndex: number) => <div className="samples-group samples-group-by-col" key={chunkIndex}>{chunk.map((sample: Track, sampleIndex: number) => <SamplerSample key={sampleIndex} index={chunkIndex * chunkSize + sampleIndex} />)}</div>)
+				body = chunkArray(tracks, chunkSize).map((chunk, chunkIndex) => <div className="samples-group samples-group-by-col" key={chunkIndex}>{chunk.map((sample, sampleIndex) => <SamplerSample key={sampleIndex} index={chunkIndex * chunkSize + sampleIndex} />)}</div>)
 				break
 
 			case 'LIGHTPADBLOCK_4':
 			case 'LIGHTPADBLOCK_16':
 				layoutClassName = 'LIGHTPADBLOCK'
 				chunkSize = Math.sqrt(tracks.length)
-				body = chunkArray(tracks, chunkSize).map((chunk: Track[], chunkIndex: number) => <div className="samples-group samples-group-by-row" key={chunkIndex}>{chunk.map((sample: Track, sampleIndex: number) => <SamplerSample key={sampleIndex} index={chunkIndex * chunkSize + sampleIndex} />)}</div>)
+				body = chunkArray(tracks, chunkSize).map((chunk, chunkIndex) => <div className="samples-group samples-group-by-row" key={chunkIndex}>{chunk.map((sample, sampleIndex) => <SamplerSample key={sampleIndex} index={chunkIndex * chunkSize + sampleIndex} />)}</div>)
 				break
 
 			case 'CUSTOM_SOCKET_STRATEGY':
 				chunkSize = Math.floor(tracks.length / 5)
-				body = chunkArray(tracks, chunkSize).map((chunk: Track[], chunkIndex: number) => <div className="samples-group samples-group-by-col" key={chunkIndex}>{chunk.map((sample: Track, sampleIndex: number) => <SamplerSample key={sampleIndex} index={chunkIndex * chunkSize + sampleIndex} />)}</div>)
+				body = chunkArray(tracks, chunkSize).map((chunk, chunkIndex) => <div className="samples-group samples-group-by-col" key={chunkIndex}>{chunk.map((sample, sampleIndex) => <SamplerSample key={sampleIndex} index={chunkIndex * chunkSize + sampleIndex} />)}</div>)
 				break
 
 			case 'KORG_NANOKEY2':
@@ -104,7 +104,7 @@ const Sampler: React.FC = () => {
 				break
 
 			default:
-				body = tracks.map((sample: Track, sampleIndex: number) => <SamplerSample key={sampleIndex} index={sampleIndex} />)
+				body = tracks.map((sample, sampleIndex) => <SamplerSample key={sampleIndex} index={sampleIndex} />)
 				break
 		}
 

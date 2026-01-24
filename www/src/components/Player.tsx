@@ -33,7 +33,7 @@ const Player: React.FC = () => {
 					: <button onClick={play}><i className="fa fa-play" aria-hidden="true"></i></button>}
 				</div>
 				<canvas className="player-timeline" ref={onRegisterCanvas} width="400" height="50"></canvas>
-				<div className="player-samples">{tracks.map((sample: Track, sampleIndex: number) => <PlayerSample key={sampleIndex} index={sampleIndex} />)}</div>
+				<div className="player-samples">{tracks.map((sample, sampleIndex) => <PlayerSample key={sampleIndex} index={sampleIndex} />)}</div>
 			</div>
 		)
 	}
