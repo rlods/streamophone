@@ -1,36 +1,39 @@
-import React, { useEffect } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import classNames from 'classnames'
 //
 import type { Track } from '../types'
-import { chunkArray } from '../tools'
-import SamplerSample from '../containers/SamplerSample'
-import { KEY_ORDER_AZERTY, KEY_ORDER_QWERTY } from '../tools'
+import { chunkArray, KEY_ORDER_AZERTY, KEY_ORDER_QWERTY } from '../tools'
+import { useSamplerStore, handleKeyDown, handleKeyUp, loadSampler } from '../stores'
+import SamplerSample from './SamplerSample'
 import './Sampler.css'
 
 // --------------------------------------------------------------
 
-interface SamplerProps {
-	strategyId: string
-	tracks: Track[] | null
-	onKeyDown: (event: KeyboardEvent) => void
-	onKeyUp: (event: KeyboardEvent) => void
-	onInit: () => void
-}
+const Sampler: React.FC = () => {
+	const strategyId = useSamplerStore((state) => state.strategyId)
+	const tracks = useSamplerStore((state) => state.tracks)
 
-const Sampler: React.FC<SamplerProps> = ({ strategyId, tracks, onKeyDown, onKeyUp, onInit }) => {
+	const onKeyDown = useCallback((e: KeyboardEvent): void => {
+		if (!e.repeat) handleKeyDown(e.keyCode)
+	}, [])
+
+	const onKeyUp = useCallback((e: KeyboardEvent): void => {
+		handleKeyUp(e.keyCode)
+	}, [])
+
 	useEffect(() => {
 		document.addEventListener('keydown', onKeyDown)
 		document.addEventListener('keyup', onKeyUp)
 
 		if (null === tracks) {
-			onInit() // Because user directly opened the page directly not from the splash screen
+			loadSampler() // Because user directly opened the page directly not from the splash screen
 		}
 
 		return () => {
 			document.removeEventListener('keydown', onKeyDown)
 			document.removeEventListener('keyup', onKeyUp)
 		}
-	}, [onKeyDown, onKeyUp, tracks, onInit])
+	}, [onKeyDown, onKeyUp, tracks])
 
 	if (null !== tracks) {
 		let chunkSize: number
@@ -115,7 +118,7 @@ const Sampler: React.FC<SamplerProps> = ({ strategyId, tracks, onKeyDown, onKeyU
 		)
 	}
 	else {
-		return null // onInit will be called to load tracks
+		return null // loadSampler will be called to load tracks
 	}
 }
 

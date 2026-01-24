@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client'
 // import { BrowserRouter as Router } from 'react-router-dom' // should be used when you have a server that will handle dynamic requests (knows how to respond to any possible URI)
 import { HashRouter as Router } from 'react-router-dom' // should be used for static websites
 // ...
-import App from './containers/App'
+import App from './components/App'
 import AudioPlayer from './audio/AudioPlayer'
 import AudioSampler from './audio/AudioSampler'
 import { createDrivers } from './drivers'
